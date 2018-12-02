@@ -1,0 +1,54 @@
+.home-search {
+    display: none;
+}
+
+.home-categories {
+    margin: 25px 0px;
+}
+
+.search-form {
+    display: none;
+}
+
+.content {
+    padding: 15px;
+    margin: 15px 5px;
+}
+
+.content pre {
+    padding: 0px;
+}
+
+span.execute-glyph {
+    display: block;
+    float: right;
+    padding: 8px;
+}
+
+span.copy-glyph {
+    display: block;
+    float: right;
+    padding: 8px;
+}
+
+/*
+pre code.execute:before {
+    content: '\21b5';
+    padding-right: 5px;
+}
+
+pre code.execute-1:before {
+    content: '\21b5';
+    padding-right: 5px;
+}
+
+pre code.execute-2:before {
+    content: '\21b5';
+    padding-right: 5px;
+}
+
+pre code.copy:before {
+    content: '\2702';
+    padding-right: 5px;
+}
+*/

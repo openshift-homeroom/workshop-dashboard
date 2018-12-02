@@ -1,0 +1,148 @@
+doctype html
+html
+    head
+        script(src="../static/js/jquery.min.js")
+        script(src="../static/js/bootstrap.min.js")
+        script(src="../static/js/require.min.js")
+        link(rel='stylesheet', href="../static/css/bootstrap.min.css")
+
+    style.
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+        body {
+            padding: 6px;
+        }
+        .split {
+            -webkit-box-sizing: border-box;
+               -moz-box-sizing: border-box;
+                    box-sizing: border-box;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        .gutter {
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-position: 50%;
+        }
+        .gutter.gutter-horizontal {
+            cursor: col-resize;
+            background-image: url('../static/img/vertical.png');
+          }
+        .gutter.gutter-vertical {
+            cursor: row-resize;
+            background-image: url('../static/img/horizontal.png');
+        }
+        .split.split-horizontal, .gutter.gutter-horizontal {
+            height: 100%;
+            float: left
+        }
+        .pane-content {
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #cover {
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            top:0;
+            left: 0;
+            background: #FFFFFF;
+            z-index: 9999;
+            background-image: url('../static/img/OpenShiftPanda.png');
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .iframe-div {
+          width: 100%;
+          padding: 0;
+          overflow: hidden;
+        }
+
+        .iframe-div iframe {
+          width: 100%;
+          height: 100%;
+        }
+
+    script.
+        require.config({
+          paths: {
+            "split": "../static/js/split.min"
+          }
+        });
+
+        function send_to_terminal(value, terminal="1") {
+            $("#terminals").trigger("click");
+            var name = "terminal" + terminal + "-iframe";
+            var terminal_iframe = document.getElementById(name);
+            terminal_iframe.contentWindow.butterfly.focus();
+            terminal_iframe.contentWindow.butterfly.send(value + '\n');
+        }
+
+        function adjust_split_panes() {
+            var height = $("#workarea-div").height();
+
+            height = height - $("#workarea-nav").height();
+
+            $("#terminals-pane").height(height);
+            $("#console-pane").height(height);
+
+            var width = $("#workarea-div").width();
+
+            $("#terminals-pane").width(width);
+            $("#console-pane").width(width);
+        }
+
+        $(window).on('load', function() {
+           adjust_split_panes();
+           $("#cover").hide();
+        });
+
+body(onresize="adjust_split_panes()")
+    div#cover
+
+    div.split.split-horizontal.pane-content.iframe-div#workshop-div
+        iframe#workshop-iframe(src="../workshop?embedded=1")
+
+    div.split.split-horizontal.pane-content#workarea-div
+        ul.nav.nav-tabs#workarea-nav(role="tablist")
+            li.nav-item
+                a.nav-link.active#terminals-tab(data-toggle="tab" href="#terminals-pane" role="tab" aria-controls="terminals-pane" aria-selected=true) Terminals
+            li.nav-item
+                a.nav-link#console-tab(data-toggle="tab" href="#console-pane" role="tab" aria-controls="console-pane" aria-selected=false) Console
+
+        div.tab-content
+            div.tab-pane.fade.show.active#terminals-pane(role="tabpanel" aria-labelledby="terminals-tab")
+                div.split.iframe-div#terminal1-div
+                    iframe#terminal1-iframe(src="../terminal/session/1")
+                div.split.iframe-div#terminal2-div
+                    iframe#terminal2-iframe(src="../terminal/session/2")
+
+            div.tab-pane.fade.show.iframe-div#console-pane(role="tabpanel" aria-labelledby="console-tab")
+                iframe#console-iframe(src="../console")
+
+    script.
+        require(['split'], function(split) {
+            split(['#workshop-div', '#workarea-div'], {
+                gutterSize: 6,
+                sizes: [35, 65],
+                cursor: 'row-resize',
+                onDrag: function () {
+                    adjust_split_panes();
+                }
+            });
+
+            split(['#terminal1-div', '#terminal2-div'], {
+                gutterSize: 6,
+                sizes: [60, 40],
+                direction: 'vertical',
+                onDrag: function () {
+                    adjust_split_panes();
+                }
+            });
+        });

@@ -1,0 +1,16 @@
+{
+  "name": "workshop",
+  "version": "1.0.0",
+  "description": "",
+  "main": "config.js",
+  "scripts": {
+    "gulp": "gulp",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "debug": "3.1.0",
+    "gulp": "4.0.0",
+    "gulp-shell": "0.6.5",
+    "raneto": "0.14.0"
+  }
+}
