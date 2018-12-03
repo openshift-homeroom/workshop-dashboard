@@ -181,7 +181,7 @@
                                 "name": "terminal",
                                 "ports": [
                                     {
-                                        "containerPort": 8080,
+                                        "containerPort": 10080,
                                         "protocol": "TCP"
                                     }
                                 ],
@@ -213,10 +213,10 @@
             "spec": {
                 "ports": [
                     {
-                        "name": "8080-tcp",
+                        "name": "10080-tcp",
                         "protocol": "TCP",
-                        "port": 8080,
-                        "targetPort": 8080
+                        "port": 10080,
+                        "targetPort": 10080
                     }
                 ],
                 "selector": {
@@ -242,7 +242,7 @@
                     "weight": 100
                 },
                 "port": {
-                    "targetPort": "8080-tcp"
+                    "targetPort": "10080-tcp"
                 },
                 "tls": {
                     "termination": "edge",

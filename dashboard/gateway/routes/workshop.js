@@ -8,7 +8,7 @@ var uri_pattern = '^' + uri_root_path + '/workshop';
 var app = express();
 
 app.use(proxy({
-    target: 'http://127.0.0.1:8082',
+    target: 'http://127.0.0.1:10082',
     pathRewrite: {
         [uri_pattern]: ''
     },
