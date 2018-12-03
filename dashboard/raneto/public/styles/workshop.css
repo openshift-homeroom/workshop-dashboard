@@ -30,25 +30,3 @@ span.copy-glyph {
     float: right;
     padding: 8px;
 }
-
-/*
-pre code.execute:before {
-    content: '\21b5';
-    padding-right: 5px;
-}
-
-pre code.execute-1:before {
-    content: '\21b5';
-    padding-right: 5px;
-}
-
-pre code.execute-2:before {
-    content: '\21b5';
-    padding-right: 5px;
-}
-
-pre code.copy:before {
-    content: '\2702';
-    padding-right: 5px;
-}
-*/
