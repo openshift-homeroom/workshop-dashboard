@@ -1,0 +1,278 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "workshop-dashboard-development",
+        "annotations": {
+            "openshift.io/display-name": "Workshop Dashboard (Development)"
+        }
+    },
+    "parameters": [
+        {
+            "name": "APPLICATION_NAME",
+            "value": "workshop",
+            "required": true
+        },
+        {
+            "name": "PROJECT_ROLE",
+            "value": "edit",
+            "required": true
+        },
+        {
+            "name": "OC_VERSION",
+            "value": ""
+        },
+        {
+            "name": "ODO_VERSION",
+            "value": ""
+        },
+        {
+            "name": "KUBECTL_VERSION",
+            "value": ""
+        },
+        {
+            "name": "AUTH_USERNAME",
+            "value": "workshop",
+            "required": true
+        },
+        {
+            "name": "AUTH_PASSWORD",
+	    "generate": "expression",
+	    "from": "[a-zA-Z0-9]{16}",
+            "required": true
+        },
+        {
+            "name": "TERMINAL_IMAGE",
+            "value": "quay.io/osevg/workshop-terminals:develop"
+        }
+    ],
+    "objects": [
+        {
+            "kind": "ServiceAccount",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${APPLICATION_NAME}-role",
+                "labels": {
+                    "app": "${APPLICATION_NAME}"
+                }
+            }
+        },
+        {
+            "kind": "RoleBinding",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${APPLICATION_NAME}-${PROJECT_ROLE}",
+                "labels": {
+                    "app": "${APPLICATION_NAME}"
+                }
+            },
+            "subjects": [
+                {
+                    "kind": "ServiceAccount",
+                    "name": "${APPLICATION_NAME}-role"
+                }
+            ],
+            "roleRef": {
+                "name": "${PROJECT_ROLE}"
+            }
+        },
+        {
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${APPLICATION_NAME}-s2i",
+                "labels": {
+                    "app": "${APPLICATION_NAME}"
+                }
+            },
+            "spec": {
+                "lookupPolicy": {
+                    "local": true
+                },
+                "tags": [
+                    {
+                        "name": "latest",
+                        "from": {
+                            "kind": "DockerImage",
+                            "name": "${TERMINAL_IMAGE}"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${APPLICATION_NAME}-img",
+                "labels": {
+                    "app": "${APPLICATION_NAME}"
+                }
+            },
+            "lookupPolicy": {
+                "local": true
+            }
+        },
+        {
+            "kind": "BuildConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${APPLICATION_NAME}-img",
+                "labels": {
+                    "app": "${APPLICATION_NAME}"
+                }
+            },
+            "spec": {
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "type": "ImageChange"
+                    }
+                ],
+                "source": {
+                    "type": "Git",
+                    "git": {
+                        "uri": "https://github.com/openshift-labs/workshop-dashboard.git"
+                    },
+                    "contextDir": "dashboard"
+                },
+                "strategy": {
+                    "type": "Docker",
+                    "dockerStrategy": {
+                        "from": {
+			    "kind": "ImageStreamTag",
+			    "name": "${APPLICATION_NAME}-s2i:latest"
+                        }
+                    }
+                },
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "${APPLICATION_NAME}-img:latest"
+                    }
+                }
+            }
+        },
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${APPLICATION_NAME}",
+                "labels": {
+                    "app": "${APPLICATION_NAME}"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "Recreate"
+                },
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "type": "ImageChange",
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "terminal"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "${APPLICATION_NAME}-img:latest"
+                            }
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "selector": {
+                    "app": "${APPLICATION_NAME}",
+                    "deploymentconfig": "${APPLICATION_NAME}"
+                },
+                "template": {
+                    "metadata": {
+                        "labels": {
+                            "app": "${APPLICATION_NAME}",
+                            "deploymentconfig": "${APPLICATION_NAME}"
+                        }
+                    },
+                    "spec": {
+                        "serviceAccountName": "${APPLICATION_NAME}-role",
+                        "containers": [
+                            {
+                                "name": "terminal",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "env": [
+                                    {
+                                        "name": "AUTH_USERNAME",
+                                        "value": "${AUTH_USERNAME}"
+                                    },
+                                    {
+                                        "name": "AUTH_PASSWORD",
+                                        "value": "${AUTH_PASSWORD}"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${APPLICATION_NAME}",
+                "labels": {
+                    "app": "${APPLICATION_NAME}"
+                }
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "8080-tcp",
+                        "protocol": "TCP",
+                        "port": 8080,
+                        "targetPort": 8080
+                    }
+                ],
+                "selector": {
+                    "app": "${APPLICATION_NAME}",
+                    "deploymentconfig": "${APPLICATION_NAME}"
+                }
+            }
+        },
+        {
+            "kind": "Route",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${APPLICATION_NAME}",
+                "labels": {
+                    "app": "${APPLICATION_NAME}"
+                }
+            },
+            "spec": {
+                "host": "",
+                "to": {
+                    "kind": "Service",
+                    "name": "${APPLICATION_NAME}",
+                    "weight": 100
+                },
+                "port": {
+                    "targetPort": "8080-tcp"
+                },
+                "tls": {
+                    "termination": "edge",
+                    "insecureEdgeTerminationPolicy": "Redirect"
+                }
+            }
+        }
+    ]
+}
