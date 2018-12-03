@@ -80,30 +80,6 @@
             "kind": "ImageStream",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${APPLICATION_NAME}-s2i",
-                "labels": {
-                    "app": "${APPLICATION_NAME}"
-                }
-            },
-            "spec": {
-                "lookupPolicy": {
-                    "local": true
-                },
-                "tags": [
-                    {
-                        "name": "latest",
-                        "from": {
-                            "kind": "DockerImage",
-                            "name": "${TERMINAL_IMAGE}"
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            "kind": "ImageStream",
-            "apiVersion": "v1",
-            "metadata": {
                 "name": "${APPLICATION_NAME}-img",
                 "labels": {
                     "app": "${APPLICATION_NAME}"
@@ -142,8 +118,8 @@
                     "type": "Docker",
                     "dockerStrategy": {
                         "from": {
-			    "kind": "ImageStreamTag",
-			    "name": "${APPLICATION_NAME}-s2i:latest"
+			    "kind": "DockerImage",
+			    "name": "${TERMINAL_IMAGE}"
                         }
                     }
                 },
