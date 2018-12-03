@@ -113,8 +113,10 @@ body(onresize="adjust_split_panes()")
         ul.nav.nav-tabs#workarea-nav(role="tablist")
             li.nav-item
                 a.nav-link.active#terminals-tab(data-toggle="tab" href="#terminals-pane" role="tab" aria-controls="terminals-pane" aria-selected=true) Terminals
-            li.nav-item
-                a.nav-link#console-tab(data-toggle="tab" href="#console-pane" role="tab" aria-controls="console-pane" aria-selected=false) Console
+
+            if console_url
+                li.nav-item
+                    a.nav-link#console-tab(data-toggle="tab" href="#console-pane" role="tab" aria-controls="console-pane" aria-selected=false) Console
 
         div.tab-content
             div.tab-pane.fade.show.active#terminals-pane(role="tabpanel" aria-labelledby="terminals-tab")
@@ -123,8 +125,9 @@ body(onresize="adjust_split_panes()")
                 div.split.iframe-div#terminal2-div
                     iframe#terminal2-iframe(src="../terminal/session/2")
 
-            div.tab-pane.fade.show.iframe-div#console-pane(role="tabpanel" aria-labelledby="console-tab")
-                iframe#console-iframe(src="../console")
+            if console_url
+                div.tab-pane.fade.show.iframe-div#console-pane(role="tabpanel" aria-labelledby="console-tab")
+                    iframe#console-iframe(src="../console")
 
     script.
         require(['split'], function(split) {

@@ -5,13 +5,17 @@ var uri_root_path = process.env.URI_ROOT_PATH || '';
 
 var uri_pattern = '^' + uri_root_path + '/console';
 
+var console_url = process.env.CONSOLE_URL;
+
 var app = express();
 
-app.use(proxy({
-    target: 'http://127.0.0.1:10083',
-    onProxyRes: function (proxyRes, req, res) {
-        delete proxyRes.headers['x-frame-options'];
-    }
-}));
+if (console_url) {
+    app.use(proxy({
+        target: console_url,
+        onProxyRes: function (proxyRes, req, res) {
+            delete proxyRes.headers['x-frame-options'];
+        }
+    }));
+}
 
 module.exports = app
