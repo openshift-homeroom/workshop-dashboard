@@ -107,12 +107,12 @@ var config = {
 
     variables: [
       {
-        name: 'namespace',
-        content: process.env.NAMESPACE
+        name: 'user_namespace',
+        content: process.env.USER_NAMESPACE
       },
       {
-        name: 'domain',
-        content: process.env.APPS_SUB_DOMAIN
+        name: 'cluster_subdomain',
+        content: process.env.CLUSTER_SUBDOMAIN
       }
     ]
 };
