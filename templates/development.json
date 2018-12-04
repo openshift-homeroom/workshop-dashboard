@@ -37,8 +37,8 @@
         },
         {
             "name": "AUTH_PASSWORD",
-	    "generate": "expression",
-	    "from": "[a-zA-Z0-9]{16}",
+            "generate": "expression",
+            "from": "[a-zA-Z0-9]{16}",
             "required": true
         },
         {
@@ -120,8 +120,8 @@
                     "type": "Docker",
                     "dockerStrategy": {
                         "from": {
-			    "kind": "DockerImage",
-			    "name": "${TERMINAL_IMAGE}"
+                            "kind": "DockerImage",
+                            "name": "${TERMINAL_IMAGE}"
                         }
                     }
                 },
