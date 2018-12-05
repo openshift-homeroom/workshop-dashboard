@@ -35,6 +35,9 @@ $(document).ready(function() {
 	this.parent().click(handle_copy);
     });
 
-    $('section.content p a').attr('target','_blank');
-    $('section.content li a').attr('target','_blank');
+    $('section.content a').each(function() {
+      if(!(location.hostname === this.hostname || !this.hostname.length)) {
+	$(this).attr('target','_blank');
+      }
+    });
 });
