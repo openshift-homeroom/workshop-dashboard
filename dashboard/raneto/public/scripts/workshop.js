@@ -19,6 +19,7 @@ $(document).ready(function() {
     $.each([$('code.execute'), $('code.execute-1')], function() {
         this.parent().prepend('<span class="execute-glyph glyphicon glyphicon-play-circle" aria-hidden="true"></span>');
 	this.parent().click(function(event) {
+            $(this).find('.execute-glyph').addClass('text-danger');
             handle_execute(event, 1);
 	});
     });
@@ -26,13 +27,17 @@ $(document).ready(function() {
     $.each([$('code.execute-2')], function() {
         this.parent().prepend('<span class="execute-glyph glyphicon glyphicon-play-circle" aria-hidden="true"></span>');
 	this.parent().click(function(event) {
+            $(this).find('.execute-glyph').addClass('text-danger');
             handle_execute(event, 2);
 	});
     });
 
     $.each([$('code.copy')], function() {
         this.parent().prepend('<span class="copy-glyph glyphicon glyphicon-scissors" aria-hidden="true"></span>');
-	this.parent().click(handle_copy);
+	this.parent().click(function(event) {
+            $(this).find('.copy-glyph').addClass('text-danger');
+	    handle_copy(event);
+        });
     });
 
     $('section.content a').each(function() {
