@@ -114,7 +114,9 @@ var config = {
         name: 'cluster_subdomain',
         content: process.env.CLUSTER_SUBDOMAIN
       }
-    ]
+    ],
+
+    restart_url: process.env.RESTART_URL
 };
 
 if (fs.existsSync('/opt/app-root/src/raneto/content')) {

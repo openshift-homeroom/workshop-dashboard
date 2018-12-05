@@ -51,19 +51,19 @@
     <section class="content">
 
       <div class="btn-group btn-group-xs pull-right">
-          {{#meta.prev}}
-            <button type="button" onclick="location.href='./{{meta.prev}}';" class="btn btn-xs" aria-label="Prev">
+          {{#meta.prev_page}}
+            <button type="button" onclick="location.href='./{{meta.prev_page}}';" class="btn btn-xs" aria-label="Prev">
               <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
             </button>
-          {{/meta.prev}}
+          {{/meta.prev_page}}
           <button type="button" onclick="location.href='{{config.base_url}}';" class="btn btn-xs" aria-label="Home">
             <span class="glyphicon glyphicon-home" aria-hidden="true"></span>
           </button>
-          {{#meta.next}}
-            <button type="button" onclick="location.href='./{{meta.next}}';" class="btn btn-xs" aria-label="Next">
+          {{#meta.next_page}}
+            <button type="button" onclick="location.href='./{{meta.next_page}}';" class="btn btn-xs" aria-label="Next">
               <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
             </button>
-          {{/meta.next}}
+          {{/meta.next_page}}
       </div>
 
       {{#canEdit}}
@@ -93,14 +93,37 @@
           {{lang.global.lastUpdated}} {{last_modified}}
         </div>
         -->
-        {{#meta.next}}
-        <input type="button" class="btn btn-primary pull-right" onclick="location.href='./{{meta.next}}';" value="Continue" />
-        {{/meta.next}}
-        {{^meta.next}}
-          {{#meta.prev}}
-          <input type="button" class="btn btn-success pull-right" onclick="location.href='{{config.base_url}}';" value="Exit" />
-          {{/meta.prev}}
-        {{/meta.next}}
+        {{#meta.next_page}}
+          {{#meta.exit_sign}}
+            <input type="button" class="btn btn-primary pull-right" onclick="location.href='./{{meta.next_page}}';" value="{{meta.exit_sign}}" />
+          {{/meta.exit_sign}}
+          {{^meta.exit_sign}}
+            <input type="button" class="btn btn-primary pull-right" onclick="location.href='./{{meta.next_page}}';" value="Continue" />
+          {{/meta.exit_sign}}
+        {{/meta.next_page}}
+        {{^meta.next_page}}
+          {{#meta.exit_link}}
+            {{#meta.exit_sign}}
+              <input type="button" class="btn btn-success pull-right" onclick="location.href='{{meta.exit_link}}';" value="{{meta.exit_sign}}" />
+            {{/meta.exit_sign}}
+            {{^meta.exit_sign}}
+              <input type="button" class="btn btn-success pull-right" onclick="location.href='{{meta.exit_link}}';" value="Continue" />
+            {{/meta.exit_sign}}
+          {{/meta.exit_link}}
+          {{^meta.exit_link}}
+            {{#meta.exit_sign}}
+              {{#config.restart_url}}
+                <input type="button" class="btn btn-danger pull-right" onclick="window.parent.location.href='{{config.restart_url}}';" value="{{meta.exit_sign}}" />
+              {{/config.restart_url}}
+              {{^config.restart_url}}
+                <input type="button" class="btn btn-success pull-right" onclick="location.href='{{config.base_url}}';" value="{{meta.exit_sign}}" />
+              {{/config.restart_url}}
+            {{/meta.exit_sign}}
+            {{^meta.exit_sign}}
+              <input type="button" class="btn btn-success pull-right" onclick="location.href='{{config.base_url}}';" value="Home" />
+            {{/meta.exit_sign}}
+          {{/meta.exit_link}}
+        {{/meta.next_page}}
       </div>
 
     </section>
