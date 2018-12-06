@@ -107,6 +107,10 @@ var config = {
 
     variables: [
       {
+        name: 'username',
+        content: process.env.JUPYTERHUB_USER
+      },
+      {
         name: 'user_namespace',
         content: process.env.USER_NAMESPACE
       },
