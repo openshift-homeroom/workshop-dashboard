@@ -95,32 +95,32 @@
         -->
         {{#meta.next_page}}
           {{#meta.exit_sign}}
-            <input type="button" class="btn btn-primary pull-right" onclick="location.href='./{{meta.next_page}}';" value="{{meta.exit_sign}}" />
+            <input type="button" class="btn btn-lg btn-primary pull-right" onclick="location.href='./{{meta.next_page}}';" value="{{meta.exit_sign}}" />
           {{/meta.exit_sign}}
           {{^meta.exit_sign}}
-            <input type="button" class="btn btn-primary pull-right" onclick="location.href='./{{meta.next_page}}';" value="Continue" />
+            <input type="button" class="btn btn-lg btn-primary pull-right" onclick="location.href='./{{meta.next_page}}';" value="Continue" />
           {{/meta.exit_sign}}
         {{/meta.next_page}}
         {{^meta.next_page}}
           {{#meta.exit_link}}
             {{#meta.exit_sign}}
-              <input type="button" class="btn btn-success pull-right" onclick="location.href='{{meta.exit_link}}';" value="{{meta.exit_sign}}" />
+              <input type="button" class="btn btn-lg btn-success pull-right" onclick="location.href='{{meta.exit_link}}';" value="{{meta.exit_sign}}" />
             {{/meta.exit_sign}}
             {{^meta.exit_sign}}
-              <input type="button" class="btn btn-success pull-right" onclick="location.href='{{meta.exit_link}}';" value="Continue" />
+              <input type="button" class="btn btn-lg btn-success pull-right" onclick="location.href='{{meta.exit_link}}';" value="Continue" />
             {{/meta.exit_sign}}
           {{/meta.exit_link}}
           {{^meta.exit_link}}
             {{#meta.exit_sign}}
               {{#config.restart_url}}
-                <input type="button" class="btn btn-danger pull-right" onclick="window.parent.location.href='{{config.restart_url}}';" value="{{meta.exit_sign}}" />
+                <input type="button" class="btn btn-lg btn-danger pull-right" onclick="window.parent.location.href='{{config.restart_url}}';" value="{{meta.exit_sign}}" />
               {{/config.restart_url}}
               {{^config.restart_url}}
-                <input type="button" class="btn btn-success pull-right" onclick="location.href='{{config.base_url}}';" value="{{meta.exit_sign}}" />
+                <input type="button" class="btn btn-lg btn-success pull-right" onclick="location.href='{{config.base_url}}';" value="{{meta.exit_sign}}" />
               {{/config.restart_url}}
             {{/meta.exit_sign}}
             {{^meta.exit_sign}}
-              <input type="button" class="btn btn-success pull-right" onclick="location.href='{{config.base_url}}';" value="Home" />
+              <input type="button" class="btn btn-lg btn-success pull-right" onclick="location.href='{{config.base_url}}';" value="Home" />
             {{/meta.exit_sign}}
           {{/meta.exit_link}}
         {{/meta.next_page}}
