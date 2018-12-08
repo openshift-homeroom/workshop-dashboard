@@ -1,7 +1,8 @@
 var express = require('express');
+var path = require('path');
 
 var app = express();
 
-app.use(express.static('/opt/workshop/gateway/static'))
+app.use(express.static(path.join(__dirname, '..', 'static')));
 
 module.exports = app
