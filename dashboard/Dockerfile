@@ -1,4 +1,4 @@
-FROM quay.io/osevg/workshop-terminal:master
+FROM quay.io/osevg/workshop-terminal:1.1.0
 
 USER root
 

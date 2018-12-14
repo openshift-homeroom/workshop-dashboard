@@ -14,11 +14,6 @@
             "required": true
         },
         {
-            "name": "PROJECT_ROLE",
-            "value": "edit",
-            "required": true
-        },
-        {
             "name": "OC_VERSION",
             "value": ""
         },
@@ -31,19 +26,8 @@
             "value": ""
         },
         {
-            "name": "AUTH_USERNAME",
-            "value": "workshop",
-            "required": true
-        },
-        {
-            "name": "AUTH_PASSWORD",
-            "generate": "expression",
-            "from": "[a-zA-Z0-9]{16}",
-            "required": true
-        },
-        {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshiftlabs/workshop-terminal:1.0.0"
+            "value": "quay.io/openshiftlabs/workshop-terminal:1.1.0"
         }
     ],
     "objects": [
@@ -51,9 +35,14 @@
             "kind": "ServiceAccount",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${APPLICATION_NAME}-role",
+                "name": "${APPLICATION_NAME}-user",
                 "labels": {
                     "app": "${APPLICATION_NAME}"
+                },
+                "annotations": {
+                    "serviceaccounts.openshift.io/oauth-redirectreference.first": "{\"kind\":\"OAuthRedirectReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"Route\",\"name\":\"${APPLICATION_NAME}\"}}",
+                    "serviceaccounts.openshift.io/oauth-redirecturi.first": "oauth_callback",
+                    "serviceaccounts.openshift.io/oauth-want-challenges": "false"
                 }
             }
         },
@@ -61,7 +50,7 @@
             "kind": "RoleBinding",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${APPLICATION_NAME}-${PROJECT_ROLE}",
+                "name": "${APPLICATION_NAME}-admin",
                 "labels": {
                     "app": "${APPLICATION_NAME}"
                 }
@@ -69,11 +58,11 @@
             "subjects": [
                 {
                     "kind": "ServiceAccount",
-                    "name": "${APPLICATION_NAME}-role"
+                    "name": "${APPLICATION_NAME}-user"
                 }
             ],
             "roleRef": {
-                "name": "${PROJECT_ROLE}"
+                "name": "admin"
             }
         },
         {
@@ -177,7 +166,7 @@
                         }
                     },
                     "spec": {
-                        "serviceAccountName": "${APPLICATION_NAME}-role",
+                        "serviceAccountName": "${APPLICATION_NAME}-user",
                         "containers": [
                             {
                                 "name": "terminal",
@@ -189,12 +178,39 @@
                                 ],
                                 "env": [
                                     {
-                                        "name": "AUTH_USERNAME",
-                                        "value": "${AUTH_USERNAME}"
+                                        "name": "OAUTH_SERVICE_ACCOUNT",
+                                        "value": "${APPLICATION_NAME}-user"
                                     },
                                     {
-                                        "name": "AUTH_PASSWORD",
-                                        "value": "${AUTH_PASSWORD}"
+                                        "name": "CONSOLE_URL",
+                                        "value": "http://0.0.0.0:10083"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "console",
+                                "image": "quay.io/openshift/origin-console:latest",
+                                "command": [ "/opt/bridge/bin/bridge" ],
+                                "env": [
+                                    {
+                                        "name": "BRIDGE_K8S_MODE",
+                                        "value": "in-cluster"
+                                    },
+                                    {
+                                        "name": "BRIDGE_LISTEN",
+                                        "value": "http://0.0.0.0:10083"
+                                    },
+                                    {
+                                        "name": "BRIDGE_BASE_PATH",
+                                        "value": "/console/"
+                                    },
+                                    {
+                                        "name": "BRIDGE_PUBLIC_DIR",
+                                        "value": "/opt/bridge/static"
+                                    },
+                                    {
+                                        "name": "BRIDGE_USER_AUTH",
+                                        "value": "disabled"
                                     }
                                 ]
                             }
