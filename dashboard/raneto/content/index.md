@@ -12,7 +12,7 @@ In the meantime, feel free to play with the various tests below.
 echo "standard code block"
 ```
 
-#### Click to execute (#1)
+#### Click text to execute
 
 ```execute
 echo "execute in terminal 1"
@@ -22,16 +22,14 @@ echo "execute in terminal 1"
 echo "execute in terminal 1"
 ```
 
-#### Click to execute (#2)
-
 ```execute-2
 echo "execute in terminal 2"
 ```
 
-#### Click to copy text
+#### Click text to copy
 
 ```copy
-echo "copy text"
+echo "copy text to buffer"
 ```
 
 #### Variable interpolation
