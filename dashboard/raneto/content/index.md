@@ -14,16 +14,16 @@ echo "standard code block"
 
 #### Click text to execute
 
-```execute
-echo "execute in terminal 1"
-```
-
 ```execute-1
 echo "execute in terminal 1"
 ```
 
 ```execute-2
 echo "execute in terminal 2"
+```
+
+```execute
+echo "execute in terminal 1"
 ```
 
 #### Click text to copy
