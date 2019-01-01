@@ -2,33 +2,34 @@
 Title: Nothing to See !!!
 ---
 
-Sorry, but it seems there is no workshop content available. For more
-information on how to add your own workshop content see:
-
-* https://github.com/openshift-labs/workshop-dashboard
-
+Sorry, but it seems there is no workshop content available. See the
+documentation for more information on how to add your own workshop content.
 In the meantime, feel free to play with the various tests below.
 
-#### Click to execute (#1)
+#### Standard code block
 
-```execute
-ls -las
 ```
+echo "standard code block"
+```
+
+#### Click text to execute
 
 ```execute-1
-ls -las
+echo "execute in terminal 1"
 ```
-
-#### Click to execute (#2)
 
 ```execute-2
-ls -las
+echo "execute in terminal 2"
 ```
 
-#### Click to copy text
+```execute
+echo "execute in terminal 1"
+```
+
+#### Click text to copy
 
 ```copy
-echo hi
+echo "copy text to buffer"
 ```
 
 #### Variable interpolation
