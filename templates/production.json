@@ -146,6 +146,14 @@
                                 ],
                                 "env": [
                                     {
+                                        "name": "PROJECT_NAMESPACE",
+                                        "valueFrom": {
+                                            "fieldRef": {
+                                                "fieldPath": "metadata.namespace"
+                                            }
+                                        }
+                                    },
+                                    {
                                         "name": "OAUTH_SERVICE_ACCOUNT",
                                         "value": "${APPLICATION_NAME}-user"
                                     },

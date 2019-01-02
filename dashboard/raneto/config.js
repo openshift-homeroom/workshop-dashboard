@@ -137,15 +137,18 @@ var config = {
     variables: [
       {
         name: 'username',
-        content: process.env.JUPYTERHUB_USER
+        content: ((process.env.JUPYTERHUB_USER === undefined)
+            ? '' : process.env.JUPYTERHUB_USER)
       },
       {
-        name: 'user_namespace',
-        content: process.env.USER_NAMESPACE
+        name: 'project_namespace',
+        content: ((process.env.PROJECT_NAMESPACE === undefined)
+            ? '' : process.env.PROJECT_NAMESPACE)
       },
       {
         name: 'cluster_subdomain',
-        content: process.env.CLUSTER_SUBDOMAIN
+        content: ((process.env.CLUSTER_SUBDOMAIN === undefined)
+            ? '' : process.env.CLUSTER_SUBDOMAIN)
       }
     ],
 
