@@ -38,7 +38,7 @@ base_url: %base_url%
 
 username: %username%
 
-user_namespace: %user_namespace%
+project_namespace: %project_namespace%
 
 cluster_subdomain: %cluster_subdomain%
 
