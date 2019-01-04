@@ -178,7 +178,7 @@ if (config_file && fs.existsSync(config_file)) {
     for (var key1 in config_overrides) {
         var value1 = config_overrides[key1];
         if (value1.constructor == Array) {
-            config[key1].concat(value);
+            config[key1].concat(value1);
         }
         else if (value1.constructor == Object) {
             for (var key2 in value1) {
