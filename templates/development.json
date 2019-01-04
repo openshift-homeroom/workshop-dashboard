@@ -27,7 +27,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshiftlabs/workshop-terminal:1.1.2"
+            "value": "quay.io/openshiftlabs/workshop-terminal:1.1.3"
         }
     ],
     "objects": [
@@ -184,6 +184,10 @@
                                                 "fieldPath": "metadata.namespace"
                                             }
                                         }
+                                    },
+                                    {
+                                        "name": "APPLICATION_NAME",
+                                        "value": "${APPLICATION_NAME}"
                                     },
                                     {
                                         "name": "OAUTH_SERVICE_ACCOUNT",
