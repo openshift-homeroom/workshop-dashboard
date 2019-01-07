@@ -78,7 +78,7 @@ html
         });
 
         function send_to_terminal(value, terminal="1") {
-            $("#terminals").trigger("click");
+            $("#terminals-tab").trigger("click");
             var name = "terminal" + terminal + "-iframe";
             var terminal_iframe = document.getElementById(name);
             terminal_iframe.contentWindow.butterfly.focus();
