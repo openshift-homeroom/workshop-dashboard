@@ -82,6 +82,7 @@ html
             var name = "terminal" + terminal + "-iframe";
             var terminal_iframe = document.getElementById(name);
             terminal_iframe.contentWindow.butterfly.focus();
+            terminal_iframe.contentWindow.butterfly.nativeScrollTo();
             terminal_iframe.contentWindow.butterfly.send(value + '\n');
         }
 
@@ -101,6 +102,15 @@ html
 
         $(window).on('load', function() {
            adjust_split_panes();
+
+            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                var target = $(e.target).attr('href')
+                if (target == '#terminals-pane') {
+                    $('#terminal1-iframe')[0].contentWindow.butterfly.nativeScrollTo();
+                    $('#terminal2-iframe')[0].contentWindow.butterfly.nativeScrollTo();
+                }
+            });
+
            $("#cover").hide();
         });
 
@@ -113,11 +123,11 @@ body(onresize="adjust_split_panes()")
     div.split.split-horizontal.pane-content#workarea-div
         ul.nav.nav-pills.mb-1#workarea-nav(role="tablist")
             li.nav-item
-                a.nav-link.active#terminals-tab(data-toggle="pill" href="#terminals-pane" role="tab" aria-controls="terminals-pane" aria-selected=true) Terminals
+                a.nav-link.active#terminals-tab(data-toggle="tab" href="#terminals-pane" role="tab" aria-controls="terminals-pane" aria-selected=true) Terminals
 
             if console_url
                 li.nav-item
-                    a.nav-link#console-tab(data-toggle="pill" href="#console-pane" role="tab" aria-controls="console-pane" aria-selected=false) Console
+                    a.nav-link#console-tab(data-toggle="tab" href="#console-pane" role="tab" aria-controls="console-pane" aria-selected=false) Console
 
             if restart_url
                 li.nav-item.ml-auto
