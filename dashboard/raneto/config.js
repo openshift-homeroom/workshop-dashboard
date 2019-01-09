@@ -161,9 +161,17 @@ var config_file;
 
 // Check for alternate locations for content.
 
-if (fs.existsSync('/opt/app-root/src/raneto/content')) {
+if (fs.existsSync('/opt/app-root/src/workshop/content')) {
+    config.content_dir = '/opt/app-root/src/workshop/content';
+    config_file = '/opt/app-root/src/workshop/config.js';
+}
+else if (fs.existsSync('/opt/app-root/src/raneto/content')) {
     config.content_dir = '/opt/app-root/src/raneto/content';
     config_file = '/opt/app-root/src/raneto/config.js';
+}
+else if (fs.existsSync('/opt/app-root/workshop/content')) {
+    config.content_dir = '/opt/app-root/workshop/content';
+    config_file = '/opt/app-root/workshop/config.js';
 }
 else if (fs.existsSync('/opt/app-root/raneto/content')) {
     config.content_dir = '/opt/app-root/raneto/content';
