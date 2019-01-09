@@ -93,11 +93,13 @@ html
 
             $("#terminals-pane").height(height);
             $("#console-pane").height(height);
+            $("#slides-pane").height(height);
 
             var width = $("#workarea-div").width();
 
             $("#terminals-pane").width(width);
             $("#console-pane").width(width);
+            $("#slides-pane").width(width);
         }
 
         $(window).on('load', function() {
@@ -129,6 +131,10 @@ body(onresize="adjust_split_panes()")
                 li.nav-item
                     a.nav-link#console-tab(data-toggle="tab" href="#console-pane" role="tab" aria-controls="console-pane" aria-selected=false) Console
 
+            if with_slides
+                li.nav-item
+                    a.nav-link#slides-tab(data-toggle="tab" href="#slides-pane" role="tab" aria-controls="slides-pane" aria-selected=false) Slides
+
             if restart_url
                 li.nav-item.ml-auto
                     input.nav-link.btn.btn-danger(type="button" onclick=`location.href='${restart_url}';` value="Restart")
@@ -143,6 +149,10 @@ body(onresize="adjust_split_panes()")
             if console_url
                 div.tab-pane.fade.show.iframe-div#console-pane(role="tabpanel" aria-labelledby="console-tab")
                     iframe#console-iframe(src="../console")
+
+            if with_slides
+                div.tab-pane.fade.show.iframe-div#slides-pane(role="tabpanel" aria-labelledby="slides-tab")
+                    iframe#slides-iframe(src="../slides/index.html")
 
     script.
         require(['split'], function(split) {
