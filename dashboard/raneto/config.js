@@ -157,25 +157,53 @@ var config = {
     restart_url: process.env.RESTART_URL
 };
 
-var config_file;
+var workshop_dir = process.env.WORKSHOP_DIR || '/opt/app-root/src/workshop';
+
+var config_file = process.env.CONFIG_FILE;
+var content_dir = process.env.CONTENT_DIR;
 
 // Check for alternate locations for content.
 
-if (fs.existsSync('/opt/app-root/src/workshop/content')) {
-    config.content_dir = '/opt/app-root/src/workshop/content';
-    config_file = '/opt/app-root/src/workshop/config.js';
+if (content_dir && fs.existsSync(content_dir)) {
+    config.content_dir = content_dir;
 }
-else if (fs.existsSync('/opt/app-root/src/raneto/content')) {
-    config.content_dir = '/opt/app-root/src/raneto/content';
-    config_file = '/opt/app-root/src/raneto/config.js';
+else {
+    content_dir = undefined;
 }
-else if (fs.existsSync('/opt/app-root/workshop/content')) {
-    config.content_dir = '/opt/app-root/workshop/content';
-    config_file = '/opt/app-root/workshop/config.js';
+
+if (!content_dir) {
+    if (fs.existsSync(workshop_dir + '/content')) {
+        config.content_dir = workshop_dir + '/content';
+    }
+    else if (fs.existsSync('/opt/app-root/workshop/content')) {
+        config.content_dir = '/opt/app-root/workshop/content';
+    }
+    else if (fs.existsSync('/opt/app-root/src/raneto/content')) {
+        // Backward compatiblity only. Will be removed.
+        config.content_dir = '/opt/app-root/src/raneto/content';
+        config_file = '/opt/app-root/src/raneto/config.js';
+    }
+    else if (fs.existsSync('/opt/app-root/raneto/content')) {
+        // Backward compatiblity only. Will be removed.
+        config.content_dir = '/opt/app-root/raneto/content';
+        config_file = '/opt/app-root/raneto/config.js';
+    }
 }
-else if (fs.existsSync('/opt/app-root/raneto/content')) {
-    config.content_dir = '/opt/app-root/raneto/content';
-    config_file = '/opt/app-root/raneto/config.js';
+
+if (config_file && !fs.existsSync(config_file)) {
+    config_file = undefined;
+}
+
+if (!config_file) {
+    if (fs.existsSync('/opt/app-root/src/.workshop/config.js')) {
+        config_file = '/opt/app-root/.workshop/config.js';
+    }
+    else if (fs.existsSync(workshop_dir + '/config.js')) {
+        config_file = workshop_dir + '/config.js';
+    }
+    else if (fs.existsSync('/opt/app-root/workshop/config.js')) {
+        config_file = '/opt/app-root/workshop/config.js';
+    }
 }
 
 // If a config.js is supplied with alternate content, merge it with the
