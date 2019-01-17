@@ -195,7 +195,7 @@ if (config_file && !fs.existsSync(config_file)) {
 }
 
 if (!config_file) {
-    if (fs.existsSync('/opt/app-root/src/.workshop/config.js')) {
+    if (fs.existsSync('/opt/app-root/.workshop/config.js')) {
         config_file = '/opt/app-root/.workshop/config.js';
     }
     else if (fs.existsSync(workshop_dir + '/config.js')) {
