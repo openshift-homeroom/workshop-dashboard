@@ -14,7 +14,7 @@ if (slides_dir) {
 }
 
 if (!slides_dir) {
-    if (fs.existsSync(workshop_dir + 'slides/index.html')) {
+    if (fs.existsSync(workshop_dir + '/slides/index.html')) {
         slides_dir = workshop_dir + '/slides';
     }
     else if (fs.existsSync('/opt/app-root/workshop/slides/index.html')) {
