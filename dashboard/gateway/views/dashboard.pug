@@ -61,6 +61,7 @@ html
 
         .iframe-div {
           width: 100%;
+          height: 100%;
           padding: 0;
           overflow: hidden;
         }
@@ -109,7 +110,9 @@ html
                 var target = $(e.target).attr('href')
                 if (target == '#terminals-pane') {
                     $('#terminal1-iframe')[0].contentWindow.butterfly.nativeScrollTo();
-                    $('#terminal2-iframe')[0].contentWindow.butterfly.nativeScrollTo();
+                    if ($('#terminal2-iframe')[0]) {
+                        $('#terminal2-iframe')[0].contentWindow.butterfly.nativeScrollTo();
+                    }
                 }
             });
 
@@ -143,8 +146,9 @@ body(onresize="adjust_split_panes()")
             div.tab-pane.fade.show.active#terminals-pane(role="tabpanel" aria-labelledby="terminals-tab")
                 div.split.iframe-div#terminal1-div
                     iframe#terminal1-iframe(src="../terminal/session/1")
-                div.split.iframe-div#terminal2-div
-                    iframe#terminal2-iframe(src="../terminal/session/2")
+                if terminals_tab == 'split'
+                    div.split.iframe-div#terminal2-div
+                        iframe#terminal2-iframe(src="../terminal/session/2")
 
             if console_url
                 div.tab-pane.fade.show.iframe-div#console-pane(role="tabpanel" aria-labelledby="console-tab")
@@ -164,13 +168,17 @@ body(onresize="adjust_split_panes()")
                     adjust_split_panes();
                 }
             });
-
-            split(['#terminal1-div', '#terminal2-div'], {
-                gutterSize: 6,
-                sizes: [60, 40],
-                direction: 'vertical',
-                onDrag: function () {
-                    adjust_split_panes();
-                }
-            });
         });
+
+    if terminals_tab == 'split'
+        script.
+            require(['split'], function(split) {
+                split(['#terminal1-div', '#terminal2-div'], {
+                    gutterSize: 6,
+                    sizes: [60, 40],
+                    direction: 'vertical',
+                    onDrag: function () {
+                        adjust_split_panes();
+                    }
+                });
+            });
