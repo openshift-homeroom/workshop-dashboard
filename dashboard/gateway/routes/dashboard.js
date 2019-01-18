@@ -4,7 +4,7 @@ var fs = require('fs');
 
 var app = express();
 
-app.locals.terminals_tab = process.env.TERMINALS_TAB;
+app.locals.terminal_tab = process.env.TERMINAL_TAB;
 
 app.locals.console_url = process.env.CONSOLE_URL;
 app.locals.restart_url = process.env.RESTART_URL;
