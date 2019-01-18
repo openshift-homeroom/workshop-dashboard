@@ -128,7 +128,7 @@ body(onresize="adjust_split_panes()")
     div.split.split-horizontal.pane-content#workarea-div
         ul.nav.nav-pills.mb-1#workarea-nav(role="tablist")
             li.nav-item
-                a.nav-link.active#terminals-tab(data-toggle="tab" href="#terminals-pane" role="tab" aria-controls="terminals-pane" aria-selected=true) Terminals
+                a.nav-link.active#terminals-tab(data-toggle="tab" href="#terminals-pane" role="tab" aria-controls="terminals-pane" aria-selected=true) Terminal
 
             if console_url
                 li.nav-item
@@ -146,7 +146,7 @@ body(onresize="adjust_split_panes()")
             div.tab-pane.fade.show.active#terminals-pane(role="tabpanel" aria-labelledby="terminals-tab")
                 div.split.iframe-div#terminal1-div
                     iframe#terminal1-iframe(src="../terminal/session/1")
-                if terminals_tab == 'split'
+                if terminal_tab == 'split'
                     div.split.iframe-div#terminal2-div
                         iframe#terminal2-iframe(src="../terminal/session/2")
 
@@ -170,7 +170,7 @@ body(onresize="adjust_split_panes()")
             });
         });
 
-    if terminals_tab == 'split'
+    if terminal_tab == 'split'
         script.
             require(['split'], function(split) {
                 split(['#terminal1-div', '#terminal2-div'], {
