@@ -182,3 +182,14 @@ body(onresize="adjust_split_panes()")
                     }
                 });
             });
+
+    script.
+        $('#terminal1-iframe').on('load', function() {
+            var style = '<style>a { pointer-events: none }</style>';
+            $(this).contents().find('head').append(style);
+        });
+
+        $('#terminal2-iframe').on('load', function() {
+            var style = '<style>a { pointer-events: none }</style>';
+            $(this).contents().find('head').append(style);
+        });
