@@ -104,7 +104,7 @@ html
         }
 
         $(window).on('load', function() {
-           adjust_split_panes();
+            adjust_split_panes();
 
             $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
                 var target = $(e.target).attr('href')
@@ -116,7 +116,7 @@ html
                 }
             });
 
-           $("#cover").hide();
+            $("#cover").hide();
         });
 
 body(onresize="adjust_split_panes()")
