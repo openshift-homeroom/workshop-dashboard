@@ -24,6 +24,10 @@ body {
     font-size: 100%;
 }
 
+.content blockquote {
+    font-size: 100%;
+}
+
 span.execute-glyph {
     display: block;
     float: right;
