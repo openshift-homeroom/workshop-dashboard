@@ -1,17 +1,15 @@
 var express = require('express');
 var proxy = require('http-proxy-middleware');
 
-var uri_root_path = process.env.URI_ROOT_PATH || '';
+module.exports = function(app, prefix) {
+    var router = express.Router();
 
-var uri_pattern = '^' + uri_root_path + '/workshop';
+    router.use(proxy(prefix, {
+        target: 'http://127.0.0.1:10082',
+        pathRewrite: {
+            ['^' + prefix]: ''
+        },
+    }));
 
-var app = express();
-
-app.use(proxy({
-    target: 'http://127.0.0.1:10082',
-    pathRewrite: {
-        [uri_pattern]: ''
-    },
-}));
-
-module.exports = app
+    return router;
+}

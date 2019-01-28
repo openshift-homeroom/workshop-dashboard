@@ -1,21 +1,21 @@
 var express = require('express');
 var proxy = require('http-proxy-middleware');
-
-var uri_root_path = process.env.URI_ROOT_PATH || '';
-
-var uri_pattern = '^' + uri_root_path + '/console';
+var logger = require('../logger');
 
 var console_url = process.env.CONSOLE_URL;
 
-var app = express();
+module.exports = function(app, prefix) {
+    var router = express.Router();
 
-if (console_url) {
-    app.use(proxy({
-        target: console_url,
-        onProxyRes: function (proxyRes, req, res) {
-            delete proxyRes.headers['x-frame-options'];
-        }
-    }));
+    if (console_url) {
+        router.use(proxy(prefix, {
+            target: console_url,
+            ws: true,
+            onProxyRes: function (proxyRes, req, res) {
+                delete proxyRes.headers['x-frame-options'];
+            }
+        }));
+    }
+
+    return router;
 }
-
-module.exports = app
