@@ -1,8 +1,10 @@
 var express = require('express');
 var path = require('path');
 
-var app = express();
+module.exports = function(app, prefix) {
+    var router = express.Router();
 
-app.use(express.static(path.join(__dirname, '..', 'static')));
+    router.use(express.static(path.join(__dirname, '..', 'static')));
 
-module.exports = app
+    return router;
+}
