@@ -99,6 +99,19 @@ html
           height: 100%;
         }
 
+        #workshop-dialog {
+            width: auto;
+            max-width: 90%;
+        }
+
+        .workshop-link {
+            text-align: center;
+        }
+
+        .slides-link {
+            text-align: center;
+        }
+
     script.
         require.config({
           paths: {
@@ -150,6 +163,12 @@ html
                 }
             });
 
+            var dashboard_url = $(location).attr("href");
+            var slides_url = dashboard_url.replace(/\/dashboard\/$/, '/slides/');
+
+            $('#workshop-link').append(dashboard_url);
+            $('#slides-link').append(slides_url);
+
             $("#cover").hide();
         });
 
@@ -168,6 +187,35 @@ body(onresize="adjust_split_panes()")
                 div.modal-footer
                     button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
                     button.btn.btn-primary(type="button", onclick=`location.href='${restart_url}';`) Restart
+
+    div.modal.fade#workshop-links(tabindex="-1", role="dialog", aria-labelledby="exampleModalCenterTitle", aria-hidden="true")
+        div.modal-dialog#workshop-dialog(role="document")
+            div.modal-content
+                div.modal-header
+                    h5.modal-title#exampleModalLongTitle Workshop Links
+                    button.close(type="button", data-dismiss="modal", aria-label="Close")
+                        span(aria-hidden="true") &times;
+                div.modal-body
+                    if workshop_link
+                        h4.workshop-link
+                            span.badge.badge-secondary Workshop
+                            | &nbsp;&nbsp;
+                            | #{workshop_link}
+                    else
+                        h4.workshop-link#workshop-link
+                            span.badge.badge-secondary Workshop
+                            | &nbsp;&nbsp;
+                    if slides_link
+                        p
+                        h4.slides-link
+                            span.badge.badge-secondary Slides
+                            | &nbsp;&nbsp;
+                            | #{slides_link}
+                    else if with_slides
+                        p
+                        h4.slides-link#slides-link
+                            span.badge.badge-secondary Slides
+                            | &nbsp;&nbsp;
 
     div.split.split-horizontal.pane-content.iframe-div#workshop-div
         iframe#workshop-iframe(src="../workshop?embedded=1")
@@ -190,6 +238,11 @@ body(onresize="adjust_split_panes()")
                     button.btn.btn-default#actions-dropdown(type="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
                         span.hamburger
                     ul.dropdown-menu(role="menu", aria-labelledby="actions-dropdown")
+                        li.dropdown-item
+                            a(role="menuitem", data-toggle="modal", data-target="#workshop-links") Workshop Links
+
+                        li.dropdown-divider(role="separator")
+
                         li.dropdown-item
                             a(role="menuitem" onclick=`window.open("../workshop");`) Open Workshop
                         li.dropdown-item
