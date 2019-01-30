@@ -131,6 +131,8 @@ html
             var terminal_iframe = document.getElementById(name);
             terminal_iframe.contentWindow.butterfly.focus();
             terminal_iframe.contentWindow.butterfly.nativeScrollTo();
+            if (value.toLowerCase() == '<ctrl-c>')
+                value = String.fromCharCode(0x03);
             terminal_iframe.contentWindow.butterfly.send(value + '\n');
         }
 
