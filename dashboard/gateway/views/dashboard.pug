@@ -10,304 +10,304 @@ html
         script(src="../static/js/require.min.js")
         link(rel='stylesheet', href="../static/css/bootstrap.min.css")
 
-    style.
-        html, body {
-            height: 100%;
-            margin: 0;
-            overflow: hidden;
-        }
-        body {
-            padding: 6px;
-        }
-        .split {
-            -webkit-box-sizing: border-box;
-               -moz-box-sizing: border-box;
-                    box-sizing: border-box;
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-        .gutter {
-            background-color: transparent;
-            background-repeat: no-repeat;
-            background-position: 50%;
-        }
-        .gutter.gutter-horizontal {
-            cursor: col-resize;
-            background-image: url('../static/img/vertical.png');
-          }
-        .gutter.gutter-vertical {
-            cursor: row-resize;
-            background-image: url('../static/img/horizontal.png');
-        }
-        .split.split-horizontal, .gutter.gutter-horizontal {
-            height: 100%;
-            float: left
-        }
-        .pane-content {
-            height: 100%;
-            margin: 0;
-            overflow: hidden;
-        }
+        style.
+            html, body {
+                height: 100%;
+                margin: 0;
+                overflow: hidden;
+            }
+            body {
+                padding: 6px;
+            }
+            .split {
+                -webkit-box-sizing: border-box;
+                   -moz-box-sizing: border-box;
+                        box-sizing: border-box;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+            .gutter {
+                background-color: transparent;
+                background-repeat: no-repeat;
+                background-position: 50%;
+            }
+            .gutter.gutter-horizontal {
+                cursor: col-resize;
+                background-image: url('../static/img/vertical.png');
+              }
+            .gutter.gutter-vertical {
+                cursor: row-resize;
+                background-image: url('../static/img/horizontal.png');
+            }
+            .split.split-horizontal, .gutter.gutter-horizontal {
+                height: 100%;
+                float: left
+            }
+            .pane-content {
+                height: 100%;
+                margin: 0;
+                overflow: hidden;
+            }
 
-        .hamburger {
-            position: relative;
-            display: inline-block;
-            width: 1.25em;
-            height: 1.2em;
-            margin-right: 0.0em;
-            border-top: 0.2em solid #444;
-            border-bottom: 0.2em solid #444;
-        }
+            .hamburger {
+                position: relative;
+                display: inline-block;
+                width: 1.25em;
+                height: 1.2em;
+                margin-right: 0.0em;
+                border-top: 0.2em solid #444;
+                border-bottom: 0.2em solid #444;
+            }
 
-        .hamburger:before {
-            content: "";
-            position: absolute;
-            top: 0.3em;
-            left: 0px;
-            width: 100%;
-            border-top: 0.2em solid #444;
-        }
+            .hamburger:before {
+                content: "";
+                position: absolute;
+                top: 0.3em;
+                left: 0px;
+                width: 100%;
+                border-top: 0.2em solid #444;
+            }
 
-        .btn:focus,.btn:active {
-           outline: none !important;
-           box-shadow: none;
-        }
+            .btn:focus,.btn:active {
+               outline: none !important;
+               box-shadow: none;
+            }
 
-        #cover {
-            position: fixed;
-            height: 100%;
-            width: 100%;
-            top:0;
-            left: 0;
-            background: #FFFFFF;
-            z-index: 9999;
-            background-image: url('../static/img/OpenShiftPandaFlying.png');
-            background-position: right bottom;
-            background-repeat: no-repeat;
-            background-size: auto 60%;
-        }
+            #cover {
+                position: fixed;
+                height: 100%;
+                width: 100%;
+                top:0;
+                left: 0;
+                background: #FFFFFF;
+                z-index: 9999;
+                background-image: url('../static/img/OpenShiftPandaFlying.png');
+                background-position: right bottom;
+                background-repeat: no-repeat;
+                background-size: auto 60%;
+            }
 
-        .iframe-div {
-          width: 100%;
-          height: 100%;
-          padding: 0;
-          overflow: hidden;
-        }
+            .iframe-div {
+              width: 100%;
+              height: 100%;
+              padding: 0;
+              overflow: hidden;
+            }
 
-        .iframe-div iframe {
-          width: 100%;
-          height: 100%;
-        }
+            .iframe-div iframe {
+              width: 100%;
+              height: 100%;
+            }
 
-        #workshop-dialog {
-            width: auto;
-            max-width: 90%;
-        }
+            #workshop-dialog {
+                width: auto;
+                max-width: 90%;
+            }
 
-        .workshop-link {
-            text-align: center;
-        }
+            .workshop-link {
+                text-align: center;
+            }
 
-        .slides-link {
-            text-align: center;
-        }
+            .slides-link {
+                text-align: center;
+            }
 
-    script.
-        require.config({
-          paths: {
-            "split": "../static/js/split.min"
-          }
-        });
+        script.
+            require.config({
+              paths: {
+                "split": "../static/js/split.min"
+              }
+            });
 
-        var terminal_session_counter = 100;
+            var terminal_session_counter = 100;
 
-        function generate_terminal_session_id() {
-            return terminal_session_counter++;
-        }
+            function generate_terminal_session_id() {
+                return terminal_session_counter++;
+            }
 
-        function send_to_terminal(value, terminal="1") {
-            $("#terminals-tab").trigger("click");
-            var name = "terminal" + terminal + "-iframe";
-            var terminal_iframe = document.getElementById(name);
-            terminal_iframe.contentWindow.butterfly.focus();
-            terminal_iframe.contentWindow.butterfly.nativeScrollTo();
-            if (value.toLowerCase() == '<ctrl-c>')
-                value = String.fromCharCode(0x03);
-            terminal_iframe.contentWindow.butterfly.send(value + '\n');
-        }
+            function send_to_terminal(value, terminal="1") {
+                $("#terminals-tab").trigger("click");
+                var name = "terminal" + terminal + "-iframe";
+                var terminal_iframe = document.getElementById(name);
+                terminal_iframe.contentWindow.butterfly.focus();
+                terminal_iframe.contentWindow.butterfly.nativeScrollTo();
+                if (value.toLowerCase() == '<ctrl-c>')
+                    value = String.fromCharCode(0x03);
+                terminal_iframe.contentWindow.butterfly.send(value + '\n');
+            }
 
-        function adjust_split_panes() {
-            var height = $("#workarea-div").height();
+            function adjust_split_panes() {
+                var height = $("#workarea-div").height();
 
-            height = height - $("#workarea-nav").height();
+                height = height - $("#workarea-nav").height();
 
-            $("#terminals-pane").height(height);
-            $("#console-pane").height(height);
-            $("#slides-pane").height(height);
+                $("#terminals-pane").height(height);
+                $("#console-pane").height(height);
+                $("#slides-pane").height(height);
 
-            var width = $("#workarea-div").width();
+                var width = $("#workarea-div").width();
 
-            $("#terminals-pane").width(width);
-            $("#console-pane").width(width);
-            $("#slides-pane").width(width);
-        }
+                $("#terminals-pane").width(width);
+                $("#console-pane").width(width);
+                $("#slides-pane").width(width);
+            }
 
-        $(window).on('load', function() {
-            adjust_split_panes();
+            $(window).on('load', function() {
+                adjust_split_panes();
 
-            $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-                var target = $(e.target).attr('href')
-                if (target == '#terminals-pane') {
-                    $('#terminal1-iframe')[0].contentWindow.butterfly.nativeScrollTo();
-                    if ($('#terminal2-iframe')[0]) {
-                        $('#terminal2-iframe')[0].contentWindow.butterfly.nativeScrollTo();
+                $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                    var target = $(e.target).attr('href')
+                    if (target == '#terminals-pane') {
+                        $('#terminal1-iframe')[0].contentWindow.butterfly.nativeScrollTo();
+                        if ($('#terminal2-iframe')[0]) {
+                            $('#terminal2-iframe')[0].contentWindow.butterfly.nativeScrollTo();
+                        }
                     }
-                }
+                });
+
+                var dashboard_url = $(location).attr("href");
+                var slides_url = dashboard_url.replace(/\/dashboard\/$/, '/slides/');
+
+                $('#workshop-link').append(dashboard_url);
+                $('#slides-link').append(slides_url);
+
+                $("#cover").hide();
             });
 
-            var dashboard_url = $(location).attr("href");
-            var slides_url = dashboard_url.replace(/\/dashboard\/$/, '/slides/');
+    body(onresize="adjust_split_panes()")
+        div#cover
 
-            $('#workshop-link').append(dashboard_url);
-            $('#slides-link').append(slides_url);
+        div.modal.fade#restart-confirmation(tabindex="-1", role="dialog", aria-labelledby="exampleModalCenterTitle", aria-hidden="true")
+            div.modal-dialog.modal-dialog-centered(role="document")
+                div.modal-content
+                    div.modal-header
+                        h5.modal-title#exampleModalLongTitle Restart Session
+                        button.close(type="button", data-dismiss="modal", aria-label="Close")
+                            span(aria-hidden="true") &times;
+                    div.modal-body
+                        p Restarting the workshop session can result in the loss of progress and/or data. Are you sure?
+                    div.modal-footer
+                        button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
+                        button.btn.btn-primary(type="submit", onclick=`location.href='${restart_url}';`) Restart
 
-            $("#cover").hide();
-        });
+        div.modal.fade#workshop-links(tabindex="-1", role="dialog", aria-labelledby="exampleModalCenterTitle", aria-hidden="true")
+            div.modal-dialog#workshop-dialog(role="document")
+                div.modal-content
+                    div.modal-header
+                        h5.modal-title#exampleModalLongTitle Workshop Links
+                        button.close(type="button", data-dismiss="modal", aria-label="Close")
+                            span(aria-hidden="true") &times;
+                    div.modal-body
+                        if workshop_link
+                            h4.workshop-link
+                                span.badge.badge-secondary Workshop
+                                | &nbsp;&nbsp;
+                                | #{workshop_link}
+                        else
+                            h4.workshop-link#workshop-link
+                                span.badge.badge-secondary Workshop
+                                | &nbsp;&nbsp;
+                        if slides_link
+                            p
+                            h4.slides-link
+                                span.badge.badge-secondary Slides
+                                | &nbsp;&nbsp;
+                                | #{slides_link}
+                        else if with_slides
+                            p
+                            h4.slides-link#slides-link
+                                span.badge.badge-secondary Slides
+                                | &nbsp;&nbsp;
 
-body(onresize="adjust_split_panes()")
-    div#cover
+        div.split.split-horizontal.pane-content.iframe-div#workshop-div
+            iframe#workshop-iframe(src="../workshop?embedded=1")
 
-    div.modal.fade#restart-confirmation(tabindex="-1", role="dialog", aria-labelledby="exampleModalCenterTitle", aria-hidden="true")
-        div.modal-dialog.modal-dialog-centered(role="document")
-            div.modal-content
-                div.modal-header
-                    h5.modal-title#exampleModalLongTitle Restart Session
-                    button.close(type="button", data-dismiss="modal", aria-label="Close")
-                        span(aria-hidden="true") &times;
-                div.modal-body
-                    p Restarting the workshop session can result in the loss of progress and/or data. Are you sure?
-                div.modal-footer
-                    button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
-                    button.btn.btn-primary(type="button", onclick=`location.href='${restart_url}';`) Restart
-
-    div.modal.fade#workshop-links(tabindex="-1", role="dialog", aria-labelledby="exampleModalCenterTitle", aria-hidden="true")
-        div.modal-dialog#workshop-dialog(role="document")
-            div.modal-content
-                div.modal-header
-                    h5.modal-title#exampleModalLongTitle Workshop Links
-                    button.close(type="button", data-dismiss="modal", aria-label="Close")
-                        span(aria-hidden="true") &times;
-                div.modal-body
-                    if workshop_link
-                        h4.workshop-link
-                            span.badge.badge-secondary Workshop
-                            | &nbsp;&nbsp;
-                            | #{workshop_link}
-                    else
-                        h4.workshop-link#workshop-link
-                            span.badge.badge-secondary Workshop
-                            | &nbsp;&nbsp;
-                    if slides_link
-                        p
-                        h4.slides-link
-                            span.badge.badge-secondary Slides
-                            | &nbsp;&nbsp;
-                            | #{slides_link}
-                    else if with_slides
-                        p
-                        h4.slides-link#slides-link
-                            span.badge.badge-secondary Slides
-                            | &nbsp;&nbsp;
-
-    div.split.split-horizontal.pane-content.iframe-div#workshop-div
-        iframe#workshop-iframe(src="../workshop?embedded=1")
-
-    div.split.split-horizontal.pane-content#workarea-div
-        ul.nav.nav-pills.mb-1#workarea-nav(role="tablist")
-            li.nav-item
-                a.nav-link.active#terminals-tab(data-toggle="tab" href="#terminals-pane" role="tab" aria-controls="terminals-pane" aria-selected=true) Terminal
-
-            if console_url
+        div.split.split-horizontal.pane-content#workarea-div
+            ul.nav.nav-pills.mb-1#workarea-nav(role="tablist")
                 li.nav-item
-                    a.nav-link#console-tab(data-toggle="tab" href="#console-pane" role="tab" aria-controls="console-pane" aria-selected=false) Console
+                    a.nav-link.active#terminals-tab(data-toggle="tab" href="#terminals-pane" role="tab" aria-controls="terminals-pane" aria-selected=true) Terminal
 
-            if with_slides
-                li.nav-item
-                    a.nav-link#slides-tab(data-toggle="tab" href="#slides-pane" role="tab" aria-controls="slides-pane" aria-selected=false) Slides
+                if console_url
+                    li.nav-item
+                        a.nav-link#console-tab(data-toggle="tab" href="#console-pane" role="tab" aria-controls="console-pane" aria-selected=false) Console
 
-            li.nav-item.ml-auto
-                div.dropdown
-                    button.btn.btn-default#actions-dropdown(type="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
-                        span.hamburger
-                    ul.dropdown-menu(role="menu", aria-labelledby="actions-dropdown")
-                        li.dropdown-item
-                            a(role="menuitem", data-toggle="modal", data-target="#workshop-links") Workshop Links
+                if with_slides
+                    li.nav-item
+                        a.nav-link#slides-tab(data-toggle="tab" href="#slides-pane" role="tab" aria-controls="slides-pane" aria-selected=false) Slides
 
-                        li.dropdown-divider(role="separator")
-
-                        li.dropdown-item
-                            a(role="menuitem" onclick=`window.open("../workshop");`) Open Workshop
-                        li.dropdown-item
-                            a(role="menuitem" onclick=`window.open("../terminal/session/"+generate_terminal_session_id());`) Open Terminal
-                        if console_url
+                li.nav-item.ml-auto
+                    div.dropdown
+                        button.btn.btn-default#actions-dropdown(type="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
+                            span.hamburger
+                        ul.dropdown-menu(role="menu", aria-labelledby="actions-dropdown")
                             li.dropdown-item
-                                a(role="menuitem" onclick=`window.open("../console");`) Open Console
-                        if with_slides
-                            li.dropdown-item
-                                a(role="menuitem" onclick=`window.open("../slides");`) Open Slides
-                        if restart_url
+                                a(role="menuitem", data-toggle="modal", data-target="#workshop-links") Workshop Links
+
                             li.dropdown-divider(role="separator")
+
                             li.dropdown-item
-                                a(role="menuitem", data-toggle="modal", data-target="#restart-confirmation") Restart Session
+                                a(role="menuitem" onclick=`window.open("../workshop");`) Open Workshop
+                            li.dropdown-item
+                                a(role="menuitem" onclick=`window.open("../terminal/session/"+generate_terminal_session_id());`) Open Terminal
+                            if console_url
+                                li.dropdown-item
+                                    a(role="menuitem" onclick=`window.open("../console");`) Open Console
+                            if with_slides
+                                li.dropdown-item
+                                    a(role="menuitem" onclick=`window.open("../slides");`) Open Slides
+                            if restart_url
+                                li.dropdown-divider(role="separator")
+                                li.dropdown-item
+                                    a(role="menuitem", data-toggle="modal", data-target="#restart-confirmation") Restart Session
 
-        div.tab-content
-            div.tab-pane.fade.show.active#terminals-pane(role="tabpanel" aria-labelledby="terminals-tab")
-                div.split.iframe-div#terminal1-div
-                    iframe#terminal1-iframe(src="../terminal/session/1")
-                if terminal_tab == 'split'
-                    div.split.iframe-div#terminal2-div
-                        iframe#terminal2-iframe(src="../terminal/session/2")
+            div.tab-content
+                div.tab-pane.fade.show.active#terminals-pane(role="tabpanel" aria-labelledby="terminals-tab")
+                    div.split.iframe-div#terminal1-div
+                        iframe#terminal1-iframe(src="../terminal/session/1")
+                    if terminal_tab == 'split'
+                        div.split.iframe-div#terminal2-div
+                            iframe#terminal2-iframe(src="../terminal/session/2")
 
-            if console_url
-                div.tab-pane.fade.show.iframe-div#console-pane(role="tabpanel" aria-labelledby="console-tab")
-                    iframe#console-iframe(src="../console")
+                if console_url
+                    div.tab-pane.fade.show.iframe-div#console-pane(role="tabpanel" aria-labelledby="console-tab")
+                        iframe#console-iframe(src="../console")
 
-            if with_slides
-                div.tab-pane.fade.show.iframe-div#slides-pane(role="tabpanel" aria-labelledby="slides-tab")
-                    iframe#slides-iframe(src="../slides/index.html")
+                if with_slides
+                    div.tab-pane.fade.show.iframe-div#slides-pane(role="tabpanel" aria-labelledby="slides-tab")
+                        iframe#slides-iframe(src="../slides/index.html")
 
-    script.
-        require(['split'], function(split) {
-            split(['#workshop-div', '#workarea-div'], {
-                gutterSize: 6,
-                sizes: [35, 65],
-                cursor: 'row-resize',
-                onDrag: function () {
-                    adjust_split_panes();
-                }
-            });
-        });
-
-    if terminal_tab == 'split'
         script.
             require(['split'], function(split) {
-                split(['#terminal1-div', '#terminal2-div'], {
+                split(['#workshop-div', '#workarea-div'], {
                     gutterSize: 6,
-                    sizes: [60, 40],
-                    direction: 'vertical',
+                    sizes: [35, 65],
+                    cursor: 'row-resize',
                     onDrag: function () {
                         adjust_split_panes();
                     }
                 });
             });
 
-    script.
-        $('#terminal1-iframe').on('load', function() {
-            var style = '<style>a { pointer-events: none }</style>';
-            $(this).contents().find('head').append(style);
-        });
+        if terminal_tab == 'split'
+            script.
+                require(['split'], function(split) {
+                    split(['#terminal1-div', '#terminal2-div'], {
+                        gutterSize: 6,
+                        sizes: [60, 40],
+                        direction: 'vertical',
+                        onDrag: function () {
+                            adjust_split_panes();
+                        }
+                    });
+                });
 
-        $('#terminal2-iframe').on('load', function() {
-            var style = '<style>a { pointer-events: none }</style>';
-            $(this).contents().find('head').append(style);
-        });
+        script.
+            $('#terminal1-iframe').on('load', function() {
+                var style = '<style>a { pointer-events: none }</style>';
+                $(this).contents().find('head').append(style);
+            });
+
+            $('#terminal2-iframe').on('load', function() {
+                var style = '<style>a { pointer-events: none }</style>';
+                $(this).contents().find('head').append(style);
+            });
