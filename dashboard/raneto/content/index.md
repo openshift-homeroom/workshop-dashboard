@@ -32,6 +32,16 @@ echo "execute in terminal 1"
 echo "copy text to buffer"
 ```
 
+#### Interrupt command
+
+```execute
+sleep 3600
+```
+
+```execute
+<ctrl-c>
+```
+
 #### Variable interpolation
 
 base_url: %base_url%

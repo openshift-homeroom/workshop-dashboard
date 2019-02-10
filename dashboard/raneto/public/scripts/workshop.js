@@ -17,19 +17,35 @@ function handle_copy(event) {
 
 $(document).ready(function() {
     $.each([$('code.execute'), $('code.execute-1')], function() {
-        this.parent().prepend('<span class="execute-glyph glyphicon glyphicon-play-circle" aria-hidden="true"></span>');
-	this.parent().click(function(event) {
-            $(this).find('.execute-glyph').addClass('text-danger');
-            handle_execute(event, 1);
-	});
+        if (window.location !== window.parent.location) {
+            this.parent().prepend('<span class="execute-glyph glyphicon glyphicon-play-circle" aria-hidden="true"></span>');
+            this.parent().click(function(event) {
+                $(this).find('.execute-glyph').addClass('text-danger');
+                handle_execute(event, 1);
+            });
+        } else {
+            this.parent().prepend('<span class="copy-glyph glyphicon glyphicon-scissors" aria-hidden="true"></span>');
+            this.parent().click(function(event) {
+                $(this).find('.copy-glyph').addClass('text-danger');
+                handle_copy(event);
+            });
+        }
     });
 
     $.each([$('code.execute-2')], function() {
-        this.parent().prepend('<span class="execute-glyph glyphicon glyphicon-play-circle" aria-hidden="true"></span>');
-	this.parent().click(function(event) {
-            $(this).find('.execute-glyph').addClass('text-danger');
-            handle_execute(event, 2);
-	});
+        if (window.location !== window.parent.location) {
+            this.parent().prepend('<span class="execute-glyph glyphicon glyphicon-play-circle" aria-hidden="true"></span>');
+            this.parent().click(function(event) {
+                $(this).find('.execute-glyph').addClass('text-danger');
+                handle_execute(event, 2);
+            });
+        } else {
+            this.parent().prepend('<span class="copy-glyph glyphicon glyphicon-scissors" aria-hidden="true"></span>');
+            this.parent().click(function(event) {
+                $(this).find('.copy-glyph').addClass('text-danger');
+                handle_copy(event);
+            });
+        }
     });
 
     $.each([$('code.copy')], function() {
