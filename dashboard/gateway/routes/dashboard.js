@@ -5,6 +5,8 @@ var fs = require('fs');
 module.exports = function(app, prefix) {
     var router = express();
 
+    router.locals.project_namespace = process.env.PROJECT_NAMESPACE;
+
     router.locals.terminal_tab = process.env.TERMINAL_TAB;
 
     router.locals.console_url = process.env.CONSOLE_URL;
