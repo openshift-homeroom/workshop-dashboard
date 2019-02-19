@@ -136,6 +136,11 @@ html
                 terminal_iframe.contentWindow.butterfly.send(value + '\n');
             }
 
+            function open_link_in_console(url) {
+                $("#console-iframe").attr('src', url);
+                $("#console-tab").trigger("click");
+            }
+
             function adjust_split_panes() {
                 var height = $("#workarea-div").height();
 
