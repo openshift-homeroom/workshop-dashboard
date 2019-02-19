@@ -15,6 +15,11 @@ function handle_copy(event) {
     document.body.removeChild(input)
 }
 
+function handle_console_link(event) {
+    event.preventDefault();
+    parent.open_link_in_console(event.target.href);
+}
+
 $(document).ready(function() {
     $.each([$('code.execute'), $('code.execute-1')], function() {
         if (window.location !== window.parent.location) {
@@ -50,15 +55,22 @@ $(document).ready(function() {
 
     $.each([$('code.copy')], function() {
         this.parent().prepend('<span class="copy-glyph glyphicon glyphicon-scissors" aria-hidden="true"></span>');
-	this.parent().click(function(event) {
+        this.parent().click(function(event) {
             $(this).find('.copy-glyph').addClass('text-danger');
-	    handle_copy(event);
+            handle_copy(event);
         });
     });
 
     $('section.content a').each(function() {
-      if(!(location.hostname === this.hostname || !this.hostname.length)) {
-	$(this).attr('target','_blank');
-      }
+        if (location.hostname === this.hostname || !this.hostname.length) {
+            if (this.pathname.startsWith('/console')) {
+                $(this).click(function(event) {
+                    handle_console_link(event);
+                });
+            }
+        }
+        else {
+            $(this).attr('target','_blank');
+        }
     });
 });

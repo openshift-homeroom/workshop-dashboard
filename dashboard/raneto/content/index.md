@@ -57,3 +57,13 @@ cluster_subdomain: %cluster_subdomain%
 [External](https://www.openshift.com)
 
 [Internal](index)
+
+#### Console links
+
+[Projects](%console_url%)
+
+[Status](%console_url%/overview/ns/%project_namespace%)
+
+[Events](%console_url%/k8s/ns/%project_namespace%/events)
+
+[Pods](%console_url%/k8s/ns/%project_namespace%/pods)
