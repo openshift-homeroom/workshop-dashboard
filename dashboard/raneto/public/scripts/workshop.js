@@ -72,19 +72,36 @@ $(document).ready(function() {
     });
 
     $('section.content a').each(function() {
+        function normalize(path){
+            path = Array.prototype.join.apply(arguments,['/'])
+            var sPath;
+            while (sPath!==path) {
+                sPath = n(path);
+                path = n(sPath);
+            }
+            function n(s){return s.replace(/\/+/g,'/').replace(/\w+\/+\.\./g,'')}
+            return path.replace(/^\//,'').replace(/\/$/,'');
+        }
+
+        var base_url = (typeof rn_base_url === "undefined") ? "" : rn_base_url;
+
+        var console_url = '/' + normalize(base_url + '/../console');
+        var slides_url = '/' + normalize(base_url + '/../slides');
+        var terminal_url = '/' + normalize(base_url + '/../terminal');
+
         if (location.hostname === this.hostname || !this.hostname.length) {
-            if (this.pathname.startsWith('/console')) {
+            if (this.pathname.startsWith(console_url)) {
                 $(this).click(function(event) {
                     handle_console_link(event);
                 });
             }
-            else if (this.pathname.startsWith('/slides')) {
+            else if (this.pathname.startsWith(slides_url)) {
                 $(this).click(function(event) {
                     handle_slides_link(event);
                 });
             }
-            else if (this.pathname.startsWith('/terminal')) {
-                if (this.pathname == '/terminal') {
+            else if (this.pathname.startsWith(terminal_url)) {
+                if (this.pathname == terminal_url) {
                     $(this).click(function(event) {
                         handle_terminal_link(event);
                     });
