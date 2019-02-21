@@ -46,6 +46,12 @@ sleep 3600
 
 base_url: %base_url%
 
+console_url: %console_url%
+
+terminal_url: %terminal_url%
+
+slides_url: %slides_url%
+
 username: %username%
 
 project_namespace: %project_namespace%
@@ -67,3 +73,11 @@ cluster_subdomain: %cluster_subdomain%
 [Events](%console_url%/k8s/ns/%project_namespace%/events)
 
 [Pods](%console_url%/k8s/ns/%project_namespace%/pods)
+
+#### Terminal links
+
+[Embedded](%terminal_url%)
+
+[Session 1](%terminal_url%/session/1)
+
+[Session 2](%terminal_url%/session/2)
