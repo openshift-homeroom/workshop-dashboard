@@ -140,6 +140,14 @@ var config = {
         content: path.normalize(process.env.URI_ROOT_PATH + '/../console')
       },
       {
+        name: 'slides_url',
+        content: path.normalize(process.env.URI_ROOT_PATH + '/../slides')
+      },
+      {
+        name: 'terminal_url',
+        content: path.normalize(process.env.URI_ROOT_PATH + '/../terminal')
+      },
+      {
         name: 'username',
         content: ((process.env.JUPYTERHUB_USER === undefined)
             ? '' : process.env.JUPYTERHUB_USER)

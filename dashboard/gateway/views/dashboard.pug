@@ -143,6 +143,17 @@ html
                 $("#console-tab").trigger("click");
             }
 
+            function open_link_in_slides(url) {
+                $("#slides-iframe").attr('src', url);
+                $("#slides-tab").trigger("click");
+            }
+
+            function bring_terminal_to_front() {
+                $("#terminals-tab").trigger("click");
+                var terminal_iframe = document.getElementById("terminal1-iframe");
+                terminal_iframe.contentWindow.butterfly.focus();
+            }
+
             function adjust_split_panes() {
                 var height = $("#workarea-div").height();
 
