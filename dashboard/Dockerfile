@@ -1,11 +1,27 @@
-FROM quay.io/openshiftlabs/workshop-terminal:2.3.0
+FROM quay.io/openshiftlabs/workshop-terminal:2.4.0
 
 USER root
 
-COPY bin/. /opt/workshop/bin/.
-COPY etc/. /opt/workshop/etc/.
+RUN cd /opt/workshop && \
+    git clone --depth 1 https://github.com/GrahamDumpleton/workshopper.git workshopper && \
+    cd /opt/workshop/workshopper && \
+    git checkout 35caa0b27a4fc6f0a9bcb9390c7e61f43f909c4a && \
+    source scl_source enable rh-ruby25 && \
+    bundle install --deployment && \
+    bundle exec rake assets:precompile && \
+    rm -rf tmp log && \
+    mkdir -p tmp log && \
+    chown -R 1001:0 tmp log db && \
+    fix-permissions tmp && \
+    fix-permissions log && \
+    fix-permissions db
 
-COPY gateway/. /opt/workshop/gateway/.
+RUN HOME=/opt/workshop/reveal.js && \
+    mkdir /opt/workshop/reveal.js && \
+    cd /opt/workshop/reveal.js && \
+    curl -L -o src.tar.gz https://github.com/hakimel/reveal.js/archive/3.7.0.tar.gz && \
+    tar --strip-components 1 -xf src.tar.gz && \
+    rm src.tar.gz
 
 COPY raneto /opt/workshop/raneto
 
@@ -15,11 +31,9 @@ RUN HOME=/opt/workshop/raneto && \
     npm install --production && \
     npm run gulp
 
-RUN HOME=/opt/workshop/reveal.js && \
-    mkdir /opt/workshop/reveal.js && \
-    cd /opt/workshop/reveal.js && \
-    curl -L -o src.tar.gz https://github.com/hakimel/reveal.js/archive/3.7.0.tar.gz && \
-    tar --strip-components 1 -xf src.tar.gz && \
-    rm src.tar.gz
+COPY gateway/. /opt/workshop/gateway/.
+
+COPY bin/. /opt/workshop/bin/.
+COPY etc/. /opt/workshop/etc/.
 
 USER 1001
