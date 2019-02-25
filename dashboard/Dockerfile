@@ -31,6 +31,11 @@ RUN HOME=/opt/workshop/raneto && \
     npm install --production && \
     npm run gulp
 
+RUN HOME=/opt/workshop/gateway && \
+    cd /opt/workshop/gateway && \
+    source scl_source enable rh-nodejs8 && \
+    npm install axios-retry
+
 COPY gateway/. /opt/workshop/gateway/.
 
 COPY bin/. /opt/workshop/bin/.
