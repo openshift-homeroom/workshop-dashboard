@@ -4,10 +4,6 @@ set -x
 
 set -eo pipefail
 
-export HOME=/opt/workshop/workshopper
-
-cd $HOME
-
 if [ x"$JUPYTERHUB_SERVICE_PREFIX" != x"" ]; then
     export RAILS_RELATIVE_URL_ROOT=${JUPYTERHUB_SERVICE_PREFIX%/}/workshop
     export RAILS_ASSETS_PATH=${JUPYTERHUB_SERVICE_PREFIX%/}/workshop/public
@@ -25,5 +21,9 @@ export RAILS_LOG_TO_STDOUT=true
 export LOG_TO_STDOUT=true
 
 export PORT=${PORT:-10082}
+
+export HOME=/opt/workshop/workshopper
+
+cd $HOME
 
 exec bundle exec rackup -p ${PORT} -E $RAILS_ENV

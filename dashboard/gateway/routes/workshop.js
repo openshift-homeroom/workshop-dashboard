@@ -2,13 +2,16 @@ var express = require('express');
 var proxy = require('http-proxy-middleware');
 var axios = require('axios');
 var axios_retry = require('axios-retry');
+var fs = require('fs');
 
 workshops_urls = process.env.WORKSHOPS_URLS;
 
 module.exports = function(app, prefix) {
     var router = express.Router();
 
-    if (workshops_urls) {
+    if (workshops_urls || fs.existsSync('/opt/app-root/workshop/_workshop.yml') ||
+            fs.existsSync('/opt/app-root/src/workshop/_workshop.yml')) {
+
         // Workshopper.
 
 	router.get('/.redirect-when-workshop-is-ready', function (req, res) {
