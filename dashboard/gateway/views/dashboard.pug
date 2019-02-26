@@ -134,8 +134,11 @@ html
                 if (value.toLowerCase() == '<ctrl-c>' ||
                         value.toLowerCase() == '<ctrl+c>') {
                     value = String.fromCharCode(0x03);
+                    terminal_iframe.contentWindow.butterfly.send(value);
                 }
-                terminal_iframe.contentWindow.butterfly.send(value + '\n');
+                else {
+                    terminal_iframe.contentWindow.butterfly.send(value + '\n');
+                }
             }
 
             function open_link_in_console(url) {
