@@ -30,6 +30,22 @@ function handle_terminal_link(event) {
     parent.bring_terminal_to_front();
 }
 
+function selectElementText(el, win) {
+    win = win || window;
+    var doc = win.document, sel, range;
+    if (win.getSelection && doc.createRange) {
+	sel = win.getSelection();
+	range = doc.createRange();
+	range.selectNodeContents(el);
+	sel.removeAllRanges();
+	sel.addRange(range);
+    } else if (doc.body.createTextRange) {
+	range = doc.body.createTextRange();
+	range.moveToElementText(el);
+	range.select();
+    }
+}
+
 $(document).ready(function() {
     $.each([$('code.execute'), $('code.execute-1')], function() {
         if (window.location !== window.parent.location) {
@@ -37,12 +53,14 @@ $(document).ready(function() {
             this.parent().click(function(event) {
                 $(this).find('.execute-glyph').addClass('text-danger');
                 handle_execute(event, 1);
+                selectElementText(this);
             });
         } else {
             this.parent().prepend('<span class="copy-glyph glyphicon glyphicon-scissors" aria-hidden="true"></span>');
             this.parent().click(function(event) {
                 $(this).find('.copy-glyph').addClass('text-danger');
                 handle_copy(event);
+                selectElementText(this);
             });
         }
     });
@@ -53,21 +71,24 @@ $(document).ready(function() {
             this.parent().click(function(event) {
                 $(this).find('.execute-glyph').addClass('text-danger');
                 handle_execute(event, 2);
+                selectElementText(this);
             });
         } else {
             this.parent().prepend('<span class="copy-glyph glyphicon glyphicon-scissors" aria-hidden="true"></span>');
             this.parent().click(function(event) {
                 $(this).find('.copy-glyph').addClass('text-danger');
                 handle_copy(event);
+                selectElementText(this);
             });
         }
     });
 
-    $.each([$('code.copy')], function() {
+    $.each([$('code.copy'), $('code.copypaste')], function() {
         this.parent().prepend('<span class="copy-glyph glyphicon glyphicon-scissors" aria-hidden="true"></span>');
         this.parent().click(function(event) {
             $(this).find('.copy-glyph').addClass('text-danger');
             handle_copy(event);
+            selectElementText(this);
         });
     });
 
