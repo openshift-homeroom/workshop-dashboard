@@ -39,3 +39,7 @@ span.copy-glyph {
     float: right;
     padding: 8px;
 }
+
+[class^="hljs-"] {
+    pointer-events: none;
+}
