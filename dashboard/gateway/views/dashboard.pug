@@ -202,11 +202,11 @@ html
     body(onresize="adjust_split_panes()")
         div#cover
 
-        div.modal.fade#restart-confirmation(tabindex="-1", role="dialog", aria-labelledby="exampleModalCenterTitle", aria-hidden="true")
+        div.modal.fade#restart-confirmation(tabindex="-1", role="dialog", aria-labelledby="restart-confirmation-title", aria-hidden="true")
             div.modal-dialog.modal-dialog-centered(role="document")
                 div.modal-content
                     div.modal-header
-                        h5.modal-title#exampleModalLongTitle Restart Session
+                        h5.modal-title#restart-confirmation-title Restart Session
                         button.close(type="button", data-dismiss="modal", aria-label="Close")
                             span(aria-hidden="true") &times;
                     div.modal-body
@@ -215,34 +215,52 @@ html
                         button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
                         button.btn.btn-primary(type="submit", onclick=`location.href='${restart_url}';`) Restart
 
-        div.modal.fade#workshop-links(tabindex="-1", role="dialog", aria-labelledby="exampleModalCenterTitle", aria-hidden="true")
-            div.modal-dialog#workshop-dialog(role="document")
+        div.modal.fade#finished-workshop(tabindex="-1", role="dialog", aria-labelledby="finished-workshop-title", aria-hidden="true")
+            div.modal-dialog.modal-dialog-centered(role="document")
                 div.modal-content
                     div.modal-header
-                        h5.modal-title#exampleModalLongTitle Workshop Links
+                        h5.modal-title#finished-workshop-title Finish Workshop
                         button.close(type="button", data-dismiss="modal", aria-label="Close")
                             span(aria-hidden="true") &times;
                     div.modal-body
-                        if workshop_link
-                            h4.workshop-link
-                                span.badge.badge-secondary Workshop
-                                | &nbsp;&nbsp;
-                                | #{workshop_link}
-                        else
-                            h4.workshop-link#workshop-link
-                                span.badge.badge-secondary Workshop
-                                | &nbsp;&nbsp;
-                        if slides_link
-                            p
-                            h4.slides-link
-                                span.badge.badge-secondary Slides
-                                | &nbsp;&nbsp;
-                                | #{slides_link}
-                        else if with_slides
-                            p
-                            h4.slides-link#slides-link
-                                span.badge.badge-secondary Slides
-                                | &nbsp;&nbsp;
+                        p You have finished the workshop. Restart to begin again.
+                    div.modal-footer
+                        button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
+                        button.btn.btn-primary(type="submit", onclick=`location.href='${restart_url}';`) Restart
+
+        div.modal.fade#workshop-links(tabindex="-1", role="dialog", aria-labelledby="workshop-links-title", aria-hidden="true")
+            div.modal-dialog#workshop-dialog(role="document")
+                div.modal-content
+                    div.modal-header
+                        h5.modal-title#workshop-links-title Workshop Links
+                        button.close(type="button", data-dismiss="modal", aria-label="Close")
+                            span(aria-hidden="true") &times;
+                    div.modal-body
+                        div.jumbotron.jumbotron-fluid
+                            div.container
+                                if workshop_link
+                                    h4.workshop-link
+                                        span.badge.badge-secondary Workshop
+                                        | &nbsp;&nbsp;
+                                        | #{workshop_link}
+                                else
+                                    h4.workshop-link#workshop-link
+                                        span.badge.badge-secondary Workshop
+                                        | &nbsp;&nbsp;
+                                if slides_link
+                                    p
+                                    h4.slides-link
+                                        span.badge.badge-secondary Slides
+                                        | &nbsp;&nbsp;
+                                        | #{slides_link}
+                                else if with_slides
+                                    p
+                                    h4.slides-link#slides-link
+                                        span.badge.badge-secondary Slides
+                                        | &nbsp;&nbsp;
+
+                    div.modal-footer
+                        button.btn.btn-secondary(type="button", data-dismiss="modal") Dismiss
 
         div.split.split-horizontal.pane-content.iframe-div#workshop-div
             iframe#workshop-iframe(src="../workshop/.redirect-when-workshop-is-ready")
