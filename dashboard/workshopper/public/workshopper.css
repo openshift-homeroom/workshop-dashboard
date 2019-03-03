@@ -1,0 +1,13 @@
+span.execute-glyph {
+    display: block;
+    float: right;
+    padding: 2px;
+    pointer-events: none;
+}
+
+span.copy-glyph {
+    display: block;
+    float: right;
+    padding: 2px;
+    pointer-events: none;
+}

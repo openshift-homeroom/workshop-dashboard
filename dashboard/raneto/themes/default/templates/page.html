@@ -113,7 +113,7 @@
           {{^meta.exit_link}}
             {{#meta.exit_sign}}
               {{#config.restart_url}}
-                <input type="button" class="btn btn-lg btn-danger pull-right" onclick="window.parent.location.href='{{config.restart_url}}';" value="{{meta.exit_sign}}" />
+                <input type="button" class="btn btn-lg btn-danger pull-right" onclick="window.parent.finished_workshop_dialog();" value="{{meta.exit_sign}}" />
               {{/config.restart_url}}
               {{^config.restart_url}}
                 <input type="button" class="btn btn-lg btn-success pull-right" onclick="location.href='{{config.base_url}}';" value="{{meta.exit_sign}}" />

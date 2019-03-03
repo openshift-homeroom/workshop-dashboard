@@ -1,5 +1,6 @@
 ---
 Title: Nothing to See !!!
+ExitSign: Restart
 ---
 
 Sorry, but it seems there is no workshop content available. See the
