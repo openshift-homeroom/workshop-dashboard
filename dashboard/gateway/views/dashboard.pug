@@ -104,6 +104,10 @@ html
                 max-width: 90%;
             }
 
+            .homeroom-link {
+                text-align: center;
+            }
+
             .workshop-link {
                 text-align: center;
             }
@@ -191,10 +195,7 @@ html
                 });
 
                 var dashboard_url = $(location).attr("href");
-                var slides_url = dashboard_url.replace(/\/dashboard\/$/, '/slides/');
-
                 $('#workshop-link').append(dashboard_url);
-                $('#slides-link').append(slides_url);
 
                 $("#cover").hide();
             });
@@ -238,26 +239,27 @@ html
                     div.modal-body
                         div.jumbotron.jumbotron-fluid
                             div.container
-                                if workshop_link
-                                    h4.workshop-link
-                                        span.badge.badge-secondary Workshop
+                                if homeroom_link
+                                    h4.homeroom-link
+                                        span.badge.badge-secondary Homeroom
                                         | &nbsp;&nbsp;
-                                        | #{workshop_link}
+                                        | #{homeroom_link}
                                 else
-                                    h4.workshop-link#workshop-link
-                                        span.badge.badge-secondary Workshop
-                                        | &nbsp;&nbsp;
+                                    if workshop_link
+                                        h4.workshop-link
+                                            span.badge.badge-secondary Workshop
+                                            | &nbsp;&nbsp;
+                                            | #{workshop_link}
+                                    else
+                                        h4.workshop-link#workshop-link
+                                            span.badge.badge-secondary Workshop
+                                            | &nbsp;&nbsp;
                                 if slides_link
                                     p
                                     h4.slides-link
                                         span.badge.badge-secondary Slides
                                         | &nbsp;&nbsp;
                                         | #{slides_link}
-                                else if with_slides
-                                    p
-                                    h4.slides-link#slides-link
-                                        span.badge.badge-secondary Slides
-                                        | &nbsp;&nbsp;
 
                     div.modal-footer
                         button.btn.btn-secondary(type="button", data-dismiss="modal") Dismiss
@@ -283,10 +285,10 @@ html
                         button.btn.btn-default#actions-dropdown(type="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
                             span.hamburger
                         ul.dropdown-menu(role="menu", aria-labelledby="actions-dropdown")
-                            li.dropdown-item
-                                a(role="menuitem", data-toggle="modal", data-target="#workshop-links") Workshop Links
-
-                            li.dropdown-divider(role="separator")
+                            if homeroom_link || workshop_link || slides_link
+                                li.dropdown-item
+                                    a(role="menuitem", data-toggle="modal", data-target="#workshop-links") Workshop Links
+                                li.dropdown-divider(role="separator")
 
                             li.dropdown-item
                                 a(role="menuitem" onclick=`window.open("../workshop");`) Open Workshop
