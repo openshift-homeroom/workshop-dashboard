@@ -15,6 +15,14 @@ module.exports = function(app, prefix) {
     router.locals.workshop_link = process.env.WORKSHOP_LINK;
     router.locals.slides_link = process.env.SLIDES_LINK;
 
+    router.locals.homeroom_link = process.env.HOMEROOM_LINK;
+
+    if (!process.env.WORKSHOP_LINK) {
+        if (process.env.JUPYTERHUB_ROUTE) {
+            router.locals.workshop_link = process.env.JUPYTERHUB_ROUTE;
+        }
+    }
+
     var workshop_dir = process.env.WORKSHOP_DIR || '/opt/app-root/src/workshop';
 
     var slides_dir = process.env.SLIDES_DIR;
