@@ -19,7 +19,7 @@ RUN cd /opt/workshop && \
 RUN HOME=/opt/workshop/reveal.js && \
     mkdir /opt/workshop/reveal.js && \
     cd /opt/workshop/reveal.js && \
-    curl -L -o src.tar.gz https://github.com/hakimel/reveal.js/archive/3.7.0.tar.gz && \
+    curl -sL -o src.tar.gz https://github.com/hakimel/reveal.js/archive/3.7.0.tar.gz && \
     tar --strip-components 1 -xf src.tar.gz && \
     rm src.tar.gz
 
