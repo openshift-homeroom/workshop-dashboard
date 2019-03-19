@@ -5,7 +5,11 @@ USER root
 RUN cd /opt/workshop && \
     git clone --single-branch --branch style-overrides --depth 5 https://github.com/GrahamDumpleton/workshopper.git workshopper && \
     cd /opt/workshop/workshopper && \
-    git checkout 4110e37535423042916022292f865fe791168d7c && \
+    git checkout 4110e37535423042916022292f865fe791168d7c
+
+COPY workshopper/. /opt/workshop/workshopper/.
+
+RUN cd /opt/workshop/workshopper && \
     source scl_source enable rh-ruby25 && \
     bundle install --deployment && \
     bundle exec rake assets:precompile && \
@@ -35,8 +39,6 @@ RUN HOME=/opt/workshop/gateway && \
     cd /opt/workshop/gateway && \
     source scl_source enable rh-nodejs8 && \
     npm install axios-retry
-
-COPY workshopper/. /opt/workshop/workshopper/.
 
 COPY gateway/. /opt/workshop/gateway/.
 
