@@ -17,15 +17,19 @@
 <body>
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid d-flex justify-content-start">
+    <!--
     <button class="navbar-toggler navbar-toggler-right d-block d-md-none" type="button" data-toggle="collapse" data-target="#labs-menu" aria-expanded="true">
       <span class="navbar-toggler-icon"></span>
     </button>
+    -->
     <% if @workshop %>
       <a class="navbar-brand mb-0 h1" href="<%= url_for(controller: 'welcome', action: 'workshop', workshop: @workshop.id) %>" id="workshopName"><%= @workshop.name %></a>
+      <!--
       <% if @lab %>
         <span class="navbar-text" style="margin-right: 1rem;">|</span>
         <span class="navbar-text"><%= @lab.name %></span>
       <% end %>
+      -->
     <% else %>
       <a class="navbar-brand mb-0 h1" href="#" id="workshopName">Workshopper</a>
     <% end %>
