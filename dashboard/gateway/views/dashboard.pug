@@ -68,6 +68,10 @@ html
                 border-top: 0.2em solid #444;
             }
 
+            .btn-transparent {
+                background: none;
+            }
+
             .btn:focus,.btn:active {
                outline: none !important;
                box-shadow: none;
@@ -282,7 +286,7 @@ html
 
                 li.nav-item.ml-auto
                     div.dropdown
-                        button.btn.btn-default#actions-dropdown(type="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
+                        button.btn.btn-default.btn-transparent#actions-dropdown(type="button", data-toggle="dropdown", aria-haspopup="true", aria-expanded="true")
                             span.hamburger
                         ul.dropdown-menu(role="menu", aria-labelledby="actions-dropdown")
                             if homeroom_link || workshop_link || slides_link

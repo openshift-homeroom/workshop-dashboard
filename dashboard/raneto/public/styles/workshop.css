@@ -43,3 +43,7 @@ span.copy-glyph {
 [class^="hljs-"] {
     pointer-events: none;
 }
+
+.btn-transparent {
+    background: none;
+}
