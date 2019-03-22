@@ -5,7 +5,7 @@ USER root
 RUN cd /opt/workshop && \
     git clone --single-branch --branch style-overrides --depth 5 https://github.com/GrahamDumpleton/workshopper.git workshopper && \
     cd /opt/workshop/workshopper && \
-    git checkout 4110e37535423042916022292f865fe791168d7c
+    git checkout 1ca71378ae9a67c6161fbaca7a6126150e7cbe6b
 
 COPY workshopper/. /opt/workshop/workshopper/.
 
