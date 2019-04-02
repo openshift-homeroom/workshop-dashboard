@@ -1,0 +1,97 @@
+Workshop Dashboard
+==================
+
+This repository contains software for deploying a containerised workshop environment in OpenShift. It is intended to be used in self paced or supervised workshops where users need access to command line clients and other tools when working with OpenShift, and you want to avoid needing to have users install anything on their own local computer.
+
+Users are provided access to a dashboard combining workshop content and a shell environment via a terminal in their web browser.
+
+![](terminal.png)
+
+The dashboard can embed access to the OpenShift web console for the cluster being used.
+
+![](console.png)
+
+A workshop can also includes slides, which a user or the workshop presenter can use.
+
+![](slides.png)
+
+The dashboard image builds on a separate workshop terminal image which provides the following command line clients, tools and software stacks:
+
+* Editors: ``vi``/``vim``, ``nano``.
+* Kubernetes clients: ``kubectl``
+* OpenShift clients: ``oc``, ``odo``.
+* Language runtimes: ``java``, ``node.js``, ``python``, ``ruby``.
+
+For the language runtimes, commonly used packaging tools for working with that language are also included.
+
+Quick start instructions
+------------------------
+
+To quickly see what the workshop environment looks like, run:
+
+```
+oc new-app https://raw.githubusercontent.com/openshift-labs/workshop-dashboard/master/templates/production.json
+```
+
+This will deploy an instance of the user environment as a standalone deployment. The name of the deployment will by default be ``dashboard``.
+
+To determine the hostname assigned to the route which you need to use in the URL to access the terminal, run:
+
+```
+oc get route/dashboard
+```
+
+When you access the URL for the dashboard, you will if necessary be redirected to the login page for the OpenShift cluster the dashboard is deployed to. You should enter your login and password for the OpenShift cluster.
+
+After you have supplied your credentials, you will be granted access to the dashboard.
+
+Note that you will only be granted access to the dashboard if your are listed as a project admin for the project the dashboard is deployed to. Users of the OpenShift cluster who are members of your project but who only have edit or view access, or users who are not a collaborator of your project, will not be granted access to the dashboard.
+
+When you use the ``oc`` and ``kubectl`` command line tools from the terminal, you will already be logged into the cluster as a special service account user. You should have the same rights as a project admin for that project. If you need the full access rights of your original OpenShift user, run ``oc login`` and login as your actual user.
+
+Note that if you do login using ``oc login`` as an actual user, the embedded web console will still only allow access to the original project as the special service account user that is created.
+
+Deploying an existing workshop
+------------------------------
+
+The workshop content when the above command is used will be some sample content used to test the environment is working correctly.
+
+If you know the full image name of a workshop image hosted on an image registry, you can deploy it by providing the ``TERMINAL_IMAGE`` template parameter:
+
+```
+oc new-app https://raw.githubusercontent.com/openshift-labs/workshop-dashboard/master/templates/production.json --param TERMINAL_IMAGE="quay.io/openshiftlabs/lab-kubernetes-fundamentals:master"
+```
+
+The workshop image used in this example:
+
+```
+quay.io/openshiftlabs/lab-kubernetes-fundamentals:master
+
+```
+
+is a workshop on Kubernetes fundamentals. Create a new project, deploy the workshop, and when done delete the project.
+
+Creating multiple terminals
+---------------------------
+
+Depending on what the workshop requires, it will be setup in advance to provide you with one or two terminals displayed within the dashboard. If you want to create additional terminal sessions, you can access the menu top right of the dashboard and select "Open Terminal". This will create you a new terminal session each time.
+
+Note that although this will provide you with a separate terminal session, it is still running your shell in the same container as all other terminal sessions. Seperate containers are not created.
+
+This means you cannot use this mechanism as a means of providing access to multiple users. If you do and are using command line tools such as ``oc`` or ``kubectl``, the users will interfere with each other, as the terminal sessions share the same home directory.
+
+Running a multi user workshop
+-----------------------------
+
+If you want to run a multi user workshop, you could deploy the workshop environment for each user into a separate project where the user is an admin of that project. A better approach is to use the multi user [workshop spawner](https://github.com/openshift-labs/workshop-jupyterhub) application.
+
+Using persistent storage
+------------------------
+
+When working from the terminal, your home directory is ``/opt/app-root/src``. This directory is ephemeral. If the workshop instance is restarted, you will loose any files you have created and saved there.
+
+If you need persistent storage, you will need to claim a persistent volume and mount it against the deployment at a suitable directory.
+
+Note that if using the Python language runtime and installing additional Python packages, these are installed in a Python virtual environment located at ``/opt/app-root``. If the terminal instance is restarted, these would also be lost.
+
+For full persistence, it would be necessary to mount a persistent volume at ``/opt/app-root``, but you would need to use an init container, or some other mechanism to populate the persistent volume with the original contents of the ``/opt/app-root`` directory in the image, prior to then mounting the persistent volume on the ``/opt/app-root`` directory.
