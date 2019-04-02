@@ -79,14 +79,3 @@ Running a multi user workshop
 If you want to run a multi user workshop, you could deploy the workshop environment for each user into a separate project where the user is an admin of that project. A better approach is to use the multi user [workshop spawner](https://github.com/openshift-labs/workshop-jupyterhub) application.
 
 Note that not all custom workshop images may be setup to be able to be used in a multi user environment, and vice versa, one that works in a multiple user environment may not work in a single user environment. This is because the deployment environment can be different, and so a workshop may have been setup only to be used with a specific type of deployment environment. You should check any information provided about a custom workshop to show how it should be deployed.
-
-Using persistent storage
-------------------------
-
-When working from the terminal, your home directory is ``/opt/app-root/src``. This directory is ephemeral. If the workshop instance is restarted, you will loose any files you have created and saved there.
-
-If you need persistent storage, you will need to claim a persistent volume and mount it against the deployment at a suitable directory.
-
-Note that if using the Python language runtime and installing additional Python packages, these are installed in a Python virtual environment located at ``/opt/app-root``. If the terminal instance is restarted, these would also be lost.
-
-For full persistence, it would be necessary to mount a persistent volume at ``/opt/app-root``, but you would need to use an init container, or some other mechanism to populate the persistent volume with the original contents of the ``/opt/app-root`` directory in the image, prior to then mounting the persistent volume on the ``/opt/app-root`` directory.
