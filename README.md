@@ -56,7 +56,7 @@ Deploying an existing workshop
 
 The workshop content when the above command is used will be some sample content used to test the environment is working correctly.
 
-If you know the full image name of a workshop image hosted on an image registry, you can deploy it by providing the ``TERMINAL_IMAGE`` template parameter:
+If you know the name of a custom workshop image hosted on an image registry, which has someone has created, you can deploy it by providing the ``TERMINAL_IMAGE`` template parameter:
 
 ```
 oc new-app https://raw.githubusercontent.com/openshift-labs/workshop-dashboard/master/templates/production.json --param TERMINAL_IMAGE="quay.io/openshiftlabs/lab-kubernetes-fundamentals:master"
@@ -66,7 +66,6 @@ The workshop image used in this example:
 
 ```
 quay.io/openshiftlabs/lab-kubernetes-fundamentals:master
-
 ```
 
 is a workshop on Kubernetes fundamentals. Create a new project, deploy the workshop, and when done delete the project.
@@ -84,6 +83,8 @@ Running a multi user workshop
 -----------------------------
 
 If you want to run a multi user workshop, you could deploy the workshop environment for each user into a separate project where the user is an admin of that project. A better approach is to use the multi user [workshop spawner](https://github.com/openshift-labs/workshop-jupyterhub) application.
+
+Note that not all custom workshop images may be setup to be able to be used in a multi user environment, and vice versa, one that works in a multiple user environment may not work in a single user environment. This is because the deployment environment can be different, and so a workshop may have been setup only to be used with a specific type of deployment environment. You should check any information provided about a custom workshop to show how it should be deployed.
 
 Using persistent storage
 ------------------------
