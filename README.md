@@ -62,13 +62,7 @@ If you know the name of a custom workshop image hosted on an image registry, whi
 oc new-app https://raw.githubusercontent.com/openshift-labs/workshop-dashboard/master/templates/production.json --param TERMINAL_IMAGE="quay.io/openshiftlabs/lab-kubernetes-fundamentals:master"
 ```
 
-The workshop image used in this example:
-
-```
-quay.io/openshiftlabs/lab-kubernetes-fundamentals:master
-```
-
-is a workshop on Kubernetes fundamentals. Create a new project, deploy the workshop, and when done delete the project.
+Create a new project, deploy the workshop, and when done, delete the project.
 
 Creating multiple terminals
 ---------------------------
