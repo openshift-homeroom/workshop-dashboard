@@ -59,7 +59,8 @@ The workshop content when the above command is used will be some sample content 
 If you know the name of a custom workshop image hosted on an image registry, which someone has created, you can deploy it by providing the ``TERMINAL_IMAGE`` template parameter:
 
 ```
-oc new-app https://raw.githubusercontent.com/openshift-labs/workshop-dashboard/master/templates/production.json --param TERMINAL_IMAGE="quay.io/openshiftlabs/lab-kubernetes-fundamentals:master"
+oc new-app https://raw.githubusercontent.com/openshift-labs/workshop-dashboard/master/templates/production.json \
+  --param TERMINAL_IMAGE="quay.io/openshiftlabs/lab-kubernetes-fundamentals:master"
 ```
 
 Create a new project, deploy the workshop, and when done, delete the project.
