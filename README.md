@@ -51,6 +51,12 @@ When you use the ``oc`` and ``kubectl`` command line tools from the terminal, yo
 
 Note that if you do login using ``oc login`` as an actual user, the embedded web console will still only allow access to the original project as the special service account user that is created.
 
+To delete the deployment when done, run:
+
+```
+oc delete all,serviceaccount,rolebinding,configmap -l app=dashboard
+```
+
 Deploying an existing workshop
 ------------------------------
 

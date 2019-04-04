@@ -14,6 +14,14 @@
             "required": true
         },
         {
+            "name": "TERMINAL_ENVVARS",
+            "value": ""
+        },
+        {
+            "name": "WORKSHOP_ENVVARS",
+            "value": ""
+        },
+        {
             "name": "OC_VERSION",
             "value": ""
         },
@@ -27,7 +35,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshiftlabs/workshop-terminal:2.5.1"
+            "value": "quay.io/openshiftlabs/workshop-terminal:2.6.0"
         }
     ],
     "objects": [
@@ -123,6 +131,20 @@
             }
         },
         {
+            "kind": "ConfigMap",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${APPLICATION_NAME}-env",
+                "labels": {
+                    "app": "${APPLICATION_NAME}"
+                }
+            },
+            "data": {
+                "terminal_envvars.sh": "${TERMINAL_ENVVARS}",
+                "workshop_envvars.sh": "${WORKSHOP_ENVVARS}"
+            }
+        },
+        {
             "kind": "DeploymentConfig",
             "apiVersion": "v1",
             "metadata": {
@@ -197,6 +219,12 @@
                                         "name": "CONSOLE_URL",
                                         "value": "http://0.0.0.0:10083"
                                     }
+                                ],
+                                "volumeMounts": [
+                                    {
+                                        "mountPath": "/opt/app-root/envvars",
+                                        "name": "envvars"
+                                    }
                                 ]
                             },
                             {
@@ -225,6 +253,15 @@
                                         "value": "disabled"
                                     }
                                 ]
+                            }
+                        ],
+                        "volumes": [
+                            {
+                                "name": "envvars",
+                                "configMap": {
+                                    "name": "${APPLICATION_NAME}-env",
+                                    "defaultMode": 420
+                                }
                             }
                         ]
                     }
