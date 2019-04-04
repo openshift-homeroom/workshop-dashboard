@@ -2,9 +2,15 @@
 
 set -x
 
-if [ -f /opt/app-root/envvars/workshop_envvars.sh ]; then
+if [ -f /opt/workshop/envvars/workshop.sh ]; then
     set -a
-    . /opt/app-root/envvars/workshop_envvars.sh
+    . /opt/workshop/envvars/workshop.sh
+    set +a
+fi
+
+if [ -f /opt/app-root/envvars/workshop.sh ]; then
+    set -a
+    . /opt/app-root/envvars/workshop.sh
     set +a
 fi
 
