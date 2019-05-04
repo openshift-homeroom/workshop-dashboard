@@ -17,6 +17,8 @@ module.exports = function(app, prefix) {
 
     router.locals.homeroom_link = process.env.HOMEROOM_LINK;
 
+    router.locals.finished_msg = process.env.FINISHED_MSG;
+
     if (!process.env.WORKSHOP_LINK) {
         if (process.env.JUPYTERHUB_ROUTE) {
             router.locals.workshop_link = process.env.JUPYTERHUB_ROUTE;

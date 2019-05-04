@@ -230,7 +230,10 @@ html
                         button.close(type="button", data-dismiss="modal", aria-label="Close")
                             span(aria-hidden="true") &times;
                     div.modal-body
-                        p You have finished the workshop. Restart to begin again.
+                        if finished_msg
+                            p #{finished_msg}
+                        else
+                            p You have finished the workshop. Restart to begin again.
                     div.modal-footer
                         button.btn.btn-secondary(type="button", data-dismiss="modal") Cancel
                         button.btn.btn-primary(type="submit", onclick=`location.href='${restart_url}';`) Restart
