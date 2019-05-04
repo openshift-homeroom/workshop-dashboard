@@ -22,6 +22,10 @@
             "value": ""
         },
         {
+            "name": "GATEWAY_ENVVARS",
+            "value": ""
+        },
+        {
             "name": "OC_VERSION",
             "value": ""
         },
@@ -35,7 +39,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshiftlabs/workshop-terminal:2.6.2"
+            "value": "quay.io/openshiftlabs/workshop-terminal:2.6.3"
         }
     ],
     "objects": [
@@ -141,7 +145,8 @@
             },
             "data": {
                 "terminal.sh": "${TERMINAL_ENVVARS}",
-                "workshop.sh": "${WORKSHOP_ENVVARS}"
+                "workshop.sh": "${WORKSHOP_ENVVARS}",
+                "gateway.sh": "${GATEWAY_ENVVARS}"
             }
         },
         {

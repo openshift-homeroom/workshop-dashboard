@@ -15,7 +15,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshiftlabs/workshop-dashboard:2.10.4",
+            "value": "quay.io/openshiftlabs/workshop-dashboard:2.10.5",
             "required": true
         },
         {
@@ -24,6 +24,10 @@
         },
         {
             "name": "WORKSHOP_ENVVARS",
+            "value": ""
+        },
+        {
+            "name": "GATEWAY_ENVVARS",
             "value": ""
         },
         {
@@ -109,7 +113,8 @@
             },
             "data": {
                 "terminal.sh": "${TERMINAL_ENVVARS}",
-                "workshop.sh": "${WORKSHOP_ENVVARS}"
+                "workshop.sh": "${WORKSHOP_ENVVARS}",
+                "gateway.sh": "${GATEWAY_ENVVARS}"
             }
         },
         {
