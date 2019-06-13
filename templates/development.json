@@ -56,7 +56,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshiftlabs/workshop-terminal:2.9.0"
+            "value": "quay.io/openshiftlabs/workshop-terminal:2.9.1"
         }
     ],
     "objects": [
