@@ -15,7 +15,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshiftlabs/workshop-dashboard:2.14.0",
+            "value": "quay.io/openshiftlabs/workshop-dashboard:2.14.1",
             "required": true
         },
         {
@@ -60,7 +60,12 @@
         },
         {
             "name": "CONSOLE_VERSION",
-            "value": "4.1.0",
+            "value": "4.2.0",
+            "required": true
+        },
+        {
+            "name": "CONSOLE_BRANDING",
+            "value": "openshift",
             "required": true
         }
     ],
@@ -183,9 +188,37 @@
                     },
                     "spec": {
                         "serviceAccountName": "${APPLICATION_NAME}-user",
+                        "initContainers": [
+                            {
+                                "name": "setup-console",
+                                "image": "${TERMINAL_IMAGE}",
+                                "command": [ "/opt/workshop/bin/setup-console.sh" ],
+                                "env": [
+                                    {
+                                        "name": "OPENSHIFT_USERNAME",
+                                        "value": "${OPENSHIFT_USERNAME}"
+                                    },
+                                    {
+                                        "name": "OPENSHIFT_PASSWORD",
+                                        "value": "${OPENSHIFT_PASSWORD}"
+                                    },
+                                    {
+                                        "name": "OPENSHIFT_TOKEN",
+                                        "value": "${OPENSHIFT_TOKEN}"
+                                    }
+                                ],
+                                "volumeMounts": [
+                                    {
+                                        "name": "shared",
+                                        "mountPath": "/var/run/workshop"
+                                    }
+                                ]
+                            }
+                        ],
                         "containers": [
                             {
                                 "name": "terminal",
+                                "image": "${APPLICATION_NAME}:latest",
                                 "ports": [
                                     {
                                         "containerPort": 10080,
@@ -235,10 +268,10 @@
                                         "name": "envvars",
                                         "mountPath": "/opt/workshop/envvars"
                                     },
-									{
-										"name": "token",
-										"mountPath": "/var/run/workshop"
-									}
+                                    {
+                                        "name": "shared",
+                                        "mountPath": "/var/run/workshop"
+                                    }
                                 ]
                             },
                             {
@@ -265,13 +298,17 @@
                                     {
                                         "name": "BRIDGE_USER_AUTH",
                                         "value": "disabled"
+                                    },
+                                    {
+                                        "name": "BRIDGE_BRANDING",
+                                        "value": "${CONSOLE_BRANDING}"
                                     }
                                 ],
                                 "volumeMounts": [
-									{
-										"name": "token",
-										"mountPath": "/var/run/workshop"
-									}
+                                    {
+                                        "name": "shared",
+                                        "mountPath": "/var/run/workshop"
+                                    }
                                 ]
                             }
                         ],
@@ -283,10 +320,10 @@
                                     "defaultMode": 420
                                 }
                             },
-							{
-								"name": "token",
-								"emptyDir": {}
-							}
+                            {
+                                "name": "shared",
+                                "emptyDir": {}
+                            }
                         ]
                     }
                 }
