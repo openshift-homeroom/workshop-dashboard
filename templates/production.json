@@ -205,6 +205,18 @@
                                     {
                                         "name": "OPENSHIFT_TOKEN",
                                         "value": "${OPENSHIFT_TOKEN}"
+                                    },
+                                    {
+                                        "name": "OC_VERSION",
+                                        "value": "${OC_VERSION}"
+                                    },
+                                    {
+                                        "name": "ODO_VERSION",
+                                        "value": "${ODO_VERSION}"
+                                    },
+                                    {
+                                        "name": "KUBECTL_VERSION",
+                                        "value": "${KUBECTL_VERSION}"
                                     }
                                 ],
                                 "volumeMounts": [
@@ -249,6 +261,18 @@
                                     {
                                         "name": "CONSOLE_URL",
                                         "value": "http://0.0.0.0:10083"
+                                    },
+                                    {
+                                        "name": "OC_VERSION",
+                                        "value": "${OC_VERSION}"
+                                    },
+                                    {
+                                        "name": "ODO_VERSION",
+                                        "value": "${ODO_VERSION}"
+                                    },
+                                    {
+                                        "name": "KUBECTL_VERSION",
+                                        "value": "${KUBECTL_VERSION}"
                                     }
                                 ],
                                 "volumeMounts": [
