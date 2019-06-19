@@ -38,6 +38,10 @@
             "value": ""
         },
         {
+            "name": "WORKSHOPPER_URLS",
+            "value": ""
+        },
+        {
             "name": "OC_VERSION",
             "value": ""
         },
@@ -232,6 +236,10 @@
                                     {
                                         "name": "APPLICATION_NAME",
                                         "value": "${APPLICATION_NAME}"
+                                    },
+                                    {
+                                        "name": "WORKSHOPPER_URLS",
+                                        "value": "${WORKSHOPPER_URLS}"
                                     },
                                     {
                                         "name": "OAUTH_SERVICE_ACCOUNT",
