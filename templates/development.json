@@ -279,18 +279,6 @@
                                         "value": "${APPLICATION_NAME}-user"
                                     },
                                     {
-                                        "name": "OPENSHIFT_USERNAME",
-                                        "value": "${OPENSHIFT_USERNAME}"
-                                    },
-                                    {
-                                        "name": "OPENSHIFT_PASSWORD",
-                                        "value": "${OPENSHIFT_PASSWORD}"
-                                    },
-                                    {
-                                        "name": "OPENSHIFT_TOKEN",
-                                        "value": "${OPENSHIFT_TOKEN}"
-                                    },
-                                    {
                                         "name": "CONSOLE_URL",
                                         "value": "http://0.0.0.0:10083"
                                     }
