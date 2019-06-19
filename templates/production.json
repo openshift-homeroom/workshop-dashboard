@@ -193,6 +193,20 @@
                                 "name": "setup-console",
                                 "image": "${TERMINAL_IMAGE}",
                                 "command": [ "/opt/workshop/bin/setup-console.sh" ],
+                                "env": [
+                                    {
+                                        "name": "OPENSHIFT_USERNAME",
+                                        "value": "${OPENSHIFT_USERNAME}"
+                                    },
+                                    {
+                                        "name": "OPENSHIFT_PASSWORD",
+                                        "value": "${OPENSHIFT_PASSWORD}"
+                                    },
+                                    {
+                                        "name": "OPENSHIFT_TOKEN",
+                                        "value": "${OPENSHIFT_TOKEN}"
+                                    }
+                                ],
                                 "volumeMounts": [
                                     {
                                         "name": "shared",
