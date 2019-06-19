@@ -15,8 +15,20 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshiftlabs/workshop-dashboard:2.12.0",
+            "value": "quay.io/openshiftlabs/workshop-dashboard:2.13.1",
             "required": true
+        },
+        {
+            "name": "OPENSHIFT_USERNAME",
+            "value": ""
+        },
+        {
+            "name": "OPENSHIFT_PASSWORD",
+            "value": ""
+        },
+        {
+            "name": "OPENSHIFT_TOKEN",
+            "value": ""
         },
         {
             "name": "TERMINAL_ENVVARS",
@@ -41,6 +53,11 @@
         {
             "name": "KUBECTL_VERSION",
             "value": ""
+        },
+        {
+            "name": "CONSOLE_VERSION",
+            "value": "4.1.0",
+            "required": true
         }
     ],
     "objects": [
@@ -189,21 +206,37 @@
                                         "value": "${APPLICATION_NAME}-user"
                                     },
                                     {
+                                        "name": "OPENSHIFT_USERNAME",
+                                        "value": "${OPENSHIFT_USERNAME}"
+                                    },
+                                    {
+                                        "name": "OPENSHIFT_PASSWORD",
+                                        "value": "${OPENSHIFT_PASSWORD}"
+                                    },
+                                    {
+                                        "name": "OPENSHIFT_TOKEN",
+                                        "value": "${OPENSHIFT_TOKEN}"
+                                    },
+                                    {
                                         "name": "CONSOLE_URL",
                                         "value": "http://0.0.0.0:10083"
                                     }
                                 ],
                                 "volumeMounts": [
                                     {
-                                        "mountPath": "/opt/workshop/envvars",
-                                        "name": "envvars"
-                                    }
+                                        "name": "envvars",
+                                        "mountPath": "/opt/workshop/envvars"
+                                    },
+									{
+										"name": "token",
+										"mountPath": "/var/run/workshop"
+									}
                                 ]
                             },
                             {
                                 "name": "console",
-                                "image": "quay.io/openshift/origin-console:latest",
-                                "command": [ "/opt/bridge/bin/bridge" ],
+                                "image": "quay.io/openshift/origin-console:${CONSOLE_VERSION}",
+                                "command": [ "/var/run/workshop/start-console.sh" ],
                                 "env": [
                                     {
                                         "name": "BRIDGE_K8S_MODE",
@@ -225,6 +258,12 @@
                                         "name": "BRIDGE_USER_AUTH",
                                         "value": "disabled"
                                     }
+                                ],
+                                "volumeMounts": [
+									{
+										"name": "token",
+										"mountPath": "/var/run/workshop"
+									}
                                 ]
                             }
                         ],
@@ -235,7 +274,11 @@
                                     "name": "${APPLICATION_NAME}-env",
                                     "defaultMode": 420
                                 }
-                            }
+                            },
+							{
+								"name": "token",
+								"emptyDir": {}
+							}
                         ]
                     }
                 }
