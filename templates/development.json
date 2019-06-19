@@ -55,7 +55,8 @@
         },
         {
             "name": "CONSOLE_VERSION",
-            "value": "4.1.0",
+            "value": "4.2.0",
+            "required": true
             "required": true
         },
         {
