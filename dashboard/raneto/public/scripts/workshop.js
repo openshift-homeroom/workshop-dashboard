@@ -51,14 +51,22 @@ $(document).ready(function() {
         if (window.location !== window.parent.location) {
             this.parent().prepend('<span class="execute-glyph glyphicon glyphicon-play-circle" aria-hidden="true"></span>');
             this.parent().click(function(event) {
-                $(this).find('.execute-glyph').addClass('text-danger');
-                handle_execute(event, 1);
+                if (event.shiftKey) {
+                    $(this).find('.execute-glyph').removeClass('text-danger');
+                    $(this).find('.execute-glyph').addClass('text-success');
+                    handle_copy(event);
+                }
+                else {
+                    $(this).find('.execute-glyph').removeClass('text-success');
+                    $(this).find('.execute-glyph').addClass('text-danger');
+                    handle_execute(event, 1);
+                }
                 selectElementText(this);
             });
         } else {
             this.parent().prepend('<span class="copy-glyph glyphicon glyphicon-scissors" aria-hidden="true"></span>');
             this.parent().click(function(event) {
-                $(this).find('.copy-glyph').addClass('text-danger');
+                $(this).find('.copy-glyph').addClass('text-success');
                 handle_copy(event);
                 selectElementText(this);
             });
@@ -69,14 +77,22 @@ $(document).ready(function() {
         if (window.location !== window.parent.location) {
             this.parent().prepend('<span class="execute-glyph glyphicon glyphicon-play-circle" aria-hidden="true"></span>');
             this.parent().click(function(event) {
-                $(this).find('.execute-glyph').addClass('text-danger');
-                handle_execute(event, 2);
+                if (event.shiftKey) {
+                    $(this).find('.execute-glyph').removeClass('text-danger');
+                    $(this).find('.execute-glyph').addClass('text-success');
+                    handle_copy(event);
+                }
+                else {
+                    $(this).find('.execute-glyph').removeClass('text-success');
+                    $(this).find('.execute-glyph').addClass('text-danger');
+                    handle_execute(event, 2);
+                }
                 selectElementText(this);
             });
         } else {
             this.parent().prepend('<span class="copy-glyph glyphicon glyphicon-scissors" aria-hidden="true"></span>');
             this.parent().click(function(event) {
-                $(this).find('.copy-glyph').addClass('text-danger');
+                $(this).find('.copy-glyph').addClass('text-success');
                 handle_copy(event);
                 selectElementText(this);
             });
@@ -86,7 +102,7 @@ $(document).ready(function() {
     $.each([$('code.copy'), $('code.copypaste')], function() {
         this.parent().prepend('<span class="copy-glyph glyphicon glyphicon-scissors" aria-hidden="true"></span>');
         this.parent().click(function(event) {
-            $(this).find('.copy-glyph').addClass('text-danger');
+            $(this).find('.copy-glyph').addClass('text-success');
             handle_copy(event);
             selectElementText(this);
         });
