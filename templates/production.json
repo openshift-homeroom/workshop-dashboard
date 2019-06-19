@@ -15,7 +15,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshiftlabs/workshop-dashboard:2.14.2",
+            "value": "quay.io/openshiftlabs/workshop-dashboard:2.14.3",
             "required": true
         },
         {
@@ -205,6 +205,18 @@
                                     {
                                         "name": "OPENSHIFT_TOKEN",
                                         "value": "${OPENSHIFT_TOKEN}"
+                                    },
+                                    {
+                                        "name": "OC_VERSION",
+                                        "value": "${OC_VERSION}"
+                                    },
+                                    {
+                                        "name": "ODO_VERSION",
+                                        "value": "${ODO_VERSION}"
+                                    },
+                                    {
+                                        "name": "KUBECTL_VERSION",
+                                        "value": "${KUBECTL_VERSION}"
                                     }
                                 ],
                                 "volumeMounts": [
@@ -247,20 +259,20 @@
                                         "value": "${APPLICATION_NAME}-user"
                                     },
                                     {
-                                        "name": "OPENSHIFT_USERNAME",
-                                        "value": "${OPENSHIFT_USERNAME}"
-                                    },
-                                    {
-                                        "name": "OPENSHIFT_PASSWORD",
-                                        "value": "${OPENSHIFT_PASSWORD}"
-                                    },
-                                    {
-                                        "name": "OPENSHIFT_TOKEN",
-                                        "value": "${OPENSHIFT_TOKEN}"
-                                    },
-                                    {
                                         "name": "CONSOLE_URL",
                                         "value": "http://0.0.0.0:10083"
+                                    },
+                                    {
+                                        "name": "OC_VERSION",
+                                        "value": "${OC_VERSION}"
+                                    },
+                                    {
+                                        "name": "ODO_VERSION",
+                                        "value": "${ODO_VERSION}"
+                                    },
+                                    {
+                                        "name": "KUBECTL_VERSION",
+                                        "value": "${KUBECTL_VERSION}"
                                     }
                                 ],
                                 "volumeMounts": [
