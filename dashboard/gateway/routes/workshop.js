@@ -4,12 +4,12 @@ var axios = require('axios');
 var axios_retry = require('axios-retry');
 var fs = require('fs');
 
-workshops_urls = process.env.WORKSHOPS_URLS;
+workshopper_urls = process.env.WORKSHOPPER_URLS || process.env.WORKSHOPS_URLS;
 
 module.exports = function(app, prefix) {
     var router = express.Router();
 
-    if (workshops_urls || fs.existsSync('/opt/app-root/workshop/_workshop.yml') ||
+    if (workshopper_urls || fs.existsSync('/opt/app-root/workshop/_workshop.yml') ||
             fs.existsSync('/opt/app-root/src/workshop/_workshop.yml')) {
 
         // Workshopper.
