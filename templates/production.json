@@ -62,6 +62,10 @@
             "name": "CONSOLE_VERSION",
             "value": "4.2.0",
             "required": true
+        },
+        {
+            "name": "CONSOLE_BRANDING",
+            "value": "openshift",
             "required": true
         }
     ],
@@ -280,6 +284,10 @@
                                     {
                                         "name": "BRIDGE_USER_AUTH",
                                         "value": "disabled"
+                                    },
+                                    {
+                                        "name": "BRIDGE_BRANDING",
+                                        "value": "${CONSOLE_BRANDING}"
                                     }
                                 ],
                                 "volumeMounts": [
