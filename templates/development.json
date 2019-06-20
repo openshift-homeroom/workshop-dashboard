@@ -14,6 +14,15 @@
             "required": true
         },
         {
+            "name": "AUTH_USERNAME",
+            "value": ""
+        },
+        {
+            "name": "AUTH_PASSWORD",
+            "generate": "expression",
+            "from": "[a-zA-Z0-9]{16}"
+        },
+        {
             "name": "OPENSHIFT_USERNAME",
             "value": ""
         },
@@ -65,7 +74,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshiftlabs/workshop-terminal:2.10.1"
+            "value": "quay.io/openshiftlabs/workshop-terminal:2.10.2"
         }
     ],
     "objects": [
@@ -283,12 +292,20 @@
                                         "value": "${APPLICATION_NAME}"
                                     },
                                     {
-                                        "name": "WORKSHOPPER_URLS",
-                                        "value": "${WORKSHOPPER_URLS}"
+                                        "name": "AUTH_USERNAME",
+                                        "value": "${AUTH_USERNAME}"
+                                    },
+                                    {
+                                        "name": "AUTH_PASSWORD",
+                                        "value": "${AUTH_PASSWORD}"
                                     },
                                     {
                                         "name": "OAUTH_SERVICE_ACCOUNT",
                                         "value": "${APPLICATION_NAME}-user"
+                                    },
+                                    {
+                                        "name": "WORKSHOPPER_URLS",
+                                        "value": "${WORKSHOPPER_URLS}"
                                     },
                                     {
                                         "name": "CONSOLE_URL",
