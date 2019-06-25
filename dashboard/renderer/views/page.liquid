@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="{{ config.base_url }}/jquery/jquery.min.js"></script>
+  <script src="{{ config.base_url }}/popper/popper.min.js"></script>
+  <script src="{{ config.base_url }}/bootstrap/js/bootstrap.min.js"></script>
+  <script src="{{ config.base_url }}/requirejs/require.js"></script>
+  <script>var workshop_base_url = "{{ config.base_url }}";</script>
+  <link rel="stylesheet" href="{{ config.base_url }}/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{{ config.base_url }}/fontawesome/css/all.min.css">
+  <link rel="stylesheet" href="{{ config.base_url }}/css/workshop.css">
+  {{ config.analytics }}
+</head>
+</body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-6">
+          <a href="{{ config.base_url }}/" class="logo">{{ config.site_title }}</a>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- Main -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 d-sm-block d-none">
+        <!-- Table of Contents -->
+	<ul class="menu">
+          <li class="category">
+            <ul class="pages">
+              <h5 class="category-title">Modules</h5>
+              {% for section in pages %}
+                {% if section.path == page.path %}
+                  <li class="page active"><a href="{{config.base_url}}/{{section.path}}">{{section.title}}</a></li>
+                {% else %}
+                  <li class="page"><a href="{{config.base_url}}/{{section.path}}">{{section.title}}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          </li>
+	</ul>
+      </div>
+      <div class="col-sm-9">
+        <section class="content">
+          <!-- Top Navigation -->
+          <div class="btn-group btn-group-xs float-right">
+            {% if page.prev_page %}
+              <button type="button" onclick="location.href='{{ config.base_url }}/{{ page.prev_page }}';" class="btn btn-xs btn-transparent" aria-label="Prev">
+                <span class="fas fa-arrow-left" aria-hidden="true"></span>
+              </button>
+            {% endif %}
+            <button type="button" onclick="location.href='{{ config.base_url }}';" class="btn btn-xs btn-transparent" aria-label="Home">
+              <span class="fas fa-home" aria-hidden="true"></span>
+            </button>
+            {% if page.next_page %}
+              <button type="button" onclick="location.href='{{ config.base_url }}/{{ page.next_page }}';" class="btn btn-xs btn-transparent" aria-label="Next">
+                <span class="fas fa-arrow-right" aria-hidden="true"></span>
+              </button>
+            {% endif %}
+          </div>
+          <!-- Title -->
+          {% if title %}
+            <h1 class="title">{{ title }}</h1>
+          {% endif %}
+          <!-- Content -->
+          {{ content }}
+          <!-- Bottom Navigation -->
+	  <div class="page-meta clearfix">
+	    {% if page.next_page %}
+	      {% if page.exit_sign %}
+		<input type="button" class="btn btn-lg btn-primary float-right" onclick="location.href='{{ config.base_url }}/{{ page.next_page }}';" value="{{ page.exit_sign }}" />
+	      {% else %}
+		<input type="button" class="btn btn-lg btn-primary float-right" onclick="location.href='{{ config.base_url }}/{{ page.next_page }}';" value="Continue" />
+	      {% endif %}
+	    {% else %}
+	      {% if page.exit_link %}
+		{% if page.exit_sign %}
+		  <input type="button" class="btn btn-lg btn-success float-right" onclick="location.href='{{ page.exit_link }}';" value="{{ page.exit_sign }}" />
+		{% else %}
+		  <input type="button" class="btn btn-lg btn-success float-right" onclick="location.href='{{ page.exit_link }}';" value="Continue" />
+		{% endif %}
+	      {% else %}
+		{% if page.exit_sign %}
+		  {% if config.restart_url %}
+		    <input type="button" class="btn btn-lg btn-danger float-right" onclick="window.parent.finished_workshop_dialog();" value="{{ page.exit_sign }}" />
+		  {% else %}
+		    <input type="button" class="btn btn-lg btn-success float-right" onclick="location.href='{{ config.base_url }}';" value="{{ page.exit_sign }}" />
+		  {% endif %}
+		{% else %}
+		  <input type="button" class="btn btn-lg btn-success float-right" onclick="location.href='{{ config.base_url }}';" value="Home" />
+		{% endif %}
+	      {% endif %}
+	    {% endif %}
+	  </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <!-- Footer -->
+  <footer class="footer">
+  </footer>
+  <!-- Javascript-->
+  <script src="{{ config.base_url }}/js/workshop.js"></script>
+</body>
+</html>

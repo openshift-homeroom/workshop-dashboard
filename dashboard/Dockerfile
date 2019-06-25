@@ -35,6 +35,13 @@ RUN HOME=/opt/workshop/raneto && \
     npm install --production && \
     npm run gulp
 
+COPY renderer /opt/workshop/renderer
+
+RUN HOME=/opt/workshop/renderer && \
+    cd /opt/workshop/renderer && \
+    source scl_source enable rh-nodejs8 && \
+    npm install --production
+
 RUN HOME=/opt/workshop/gateway && \
     cd /opt/workshop/gateway && \
     source scl_source enable rh-nodejs8 && \

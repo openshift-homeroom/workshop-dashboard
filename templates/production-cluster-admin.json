@@ -2,15 +2,20 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "workshop-dashboard-production",
+        "name": "workshop-dashboard-production-cluster-admin",
         "annotations": {
-            "openshift.io/display-name": "Workshop Dashboard (Production)"
+            "openshift.io/display-name": "Workshop Dashboard (Production/Cluster Admin)"
         }
     },
     "parameters": [
         {
             "name": "APPLICATION_NAME",
             "value": "dashboard",
+            "required": true
+        },
+        {
+            "name": "PROJECT_NAME",
+            "value": "",
             "required": true
         },
         {
@@ -26,18 +31,6 @@
             "name": "AUTH_PASSWORD",
             "generate": "expression",
             "from": "[a-zA-Z0-9]{16}"
-        },
-        {
-            "name": "OPENSHIFT_USERNAME",
-            "value": ""
-        },
-        {
-            "name": "OPENSHIFT_PASSWORD",
-            "value": ""
-        },
-        {
-            "name": "OPENSHIFT_TOKEN",
-            "value": ""
         },
         {
             "name": "TERMINAL_ENVVARS",
@@ -95,10 +88,10 @@
             }
         },
         {
-            "kind": "RoleBinding",
+            "kind": "ClusterRoleBinding",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${APPLICATION_NAME}-admin",
+                "name": "${APPLICATION_NAME}-cluster-admin",
                 "labels": {
                     "app": "${APPLICATION_NAME}"
                 }
@@ -106,11 +99,14 @@
             "subjects": [
                 {
                     "kind": "ServiceAccount",
-                    "name": "${APPLICATION_NAME}-user"
+                    "name": "${APPLICATION_NAME}-user",
+                    "namespace": "${PROJECT_NAME}"
                 }
             ],
             "roleRef": {
-                "name": "admin"
+                "apiGroup": "rbac.authorization.k8s.io",
+                "kind": "ClusterRole",
+                "name": "cluster-admin"
             }
         },
         {
@@ -197,45 +193,6 @@
                     },
                     "spec": {
                         "serviceAccountName": "${APPLICATION_NAME}-user",
-                        "initContainers": [
-                            {
-                                "name": "setup-console",
-                                "image": "${TERMINAL_IMAGE}",
-                                "command": [ "/opt/workshop/bin/setup-console.sh" ],
-                                "env": [
-                                    {
-                                        "name": "OPENSHIFT_USERNAME",
-                                        "value": "${OPENSHIFT_USERNAME}"
-                                    },
-                                    {
-                                        "name": "OPENSHIFT_PASSWORD",
-                                        "value": "${OPENSHIFT_PASSWORD}"
-                                    },
-                                    {
-                                        "name": "OPENSHIFT_TOKEN",
-                                        "value": "${OPENSHIFT_TOKEN}"
-                                    },
-                                    {
-                                        "name": "OC_VERSION",
-                                        "value": "${OC_VERSION}"
-                                    },
-                                    {
-                                        "name": "ODO_VERSION",
-                                        "value": "${ODO_VERSION}"
-                                    },
-                                    {
-                                        "name": "KUBECTL_VERSION",
-                                        "value": "${KUBECTL_VERSION}"
-                                    }
-                                ],
-                                "volumeMounts": [
-                                    {
-                                        "name": "shared",
-                                        "mountPath": "/var/run/workshop"
-                                    }
-                                ]
-                            }
-                        ],
                         "containers": [
                             {
                                 "name": "terminal",
@@ -296,17 +253,13 @@
                                     {
                                         "name": "envvars",
                                         "mountPath": "/opt/workshop/envvars"
-                                    },
-                                    {
-                                        "name": "shared",
-                                        "mountPath": "/var/run/workshop"
                                     }
                                 ]
                             },
                             {
                                 "name": "console",
                                 "image": "quay.io/openshift/origin-console:${CONSOLE_VERSION}",
-                                "command": [ "/var/run/workshop/start-console.sh" ],
+                                "command": [ "/opt/bridge/bin/bridge" ],
                                 "env": [
                                     {
                                         "name": "BRIDGE_K8S_MODE",
@@ -332,12 +285,6 @@
                                         "name": "BRIDGE_BRANDING",
                                         "value": "${CONSOLE_BRANDING}"
                                     }
-                                ],
-                                "volumeMounts": [
-                                    {
-                                        "name": "shared",
-                                        "mountPath": "/var/run/workshop"
-                                    }
                                 ]
                             }
                         ],
@@ -348,10 +295,6 @@
                                     "name": "${APPLICATION_NAME}-env",
                                     "defaultMode": 420
                                 }
-                            },
-                            {
-                                "name": "shared",
-                                "emptyDir": {}
                             }
                         ]
                     }
