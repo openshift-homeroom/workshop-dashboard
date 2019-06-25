@@ -2,9 +2,9 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "workshop-dashboard-production",
+        "name": "workshop-dashboard-production-cluster-admin",
         "annotations": {
-            "openshift.io/display-name": "Workshop Dashboard (Production)"
+            "openshift.io/display-name": "Workshop Dashboard (Production/Cluster Admin)"
         }
     },
     "parameters": [
