@@ -33,4 +33,8 @@ if [ -f /opt/app-root/src/workshop/_workshop.yml ]; then
     exec /opt/workshop/bin/start-workshopper.sh
 fi
 
-exec /opt/workshop/bin/start-raneto.sh
+if [ x"$DEFAULT_RENDERER" == x"raneto" ]; then
+    exec /opt/workshop/bin/start-raneto.sh
+else
+    exec /opt/workshop/bin/start-renderer.sh
+fi
