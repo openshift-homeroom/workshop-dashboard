@@ -6,13 +6,13 @@ var config = require('./config.js');
 var content = require('./content.js');
 var logger = require('./logger.js');
 
-// Calculate the list of pages with navigation path and a page
-// index to make it easier to look up attributes of a page.
+// Calculate the list of modules with navigation path and a page
+// index to make it easier to look up attributes of a module.
 
-var pages = content.pages();
-var page_index = content.page_index(pages);
+var modules = content.modules();
+var module_index = content.module_index(modules);
 
-logger.info('Pages', { pages: pages });
+logger.info('Modules', { modules: modules });
 
 // Setup all the sub routes.
 
@@ -21,11 +21,11 @@ router = express.Router();
 // Redirect to the first page in navigation path if root.
 
 router.get('/', function (req, res) {
-    if (pages.length == 0) {
+    if (modules.length == 0) {
         res.redirect(path.join(req.originalUrl, config.default_page));
     }
     else {
-        res.redirect(path.join(req.originalUrl, pages[0].path));
+        res.redirect(path.join(req.originalUrl, modules[0].path));
     }
 });
 
@@ -72,8 +72,8 @@ router.get('/:pathname(*)', async function (req, res, next) {
 
     // Render content and generate page from template.
 
-    var page = page_index[pathname];
-    var title = page && page.title;
+    var module = module_index[pathname];
+    var title = module && module.title;
 
     var variables = config.variables.slice(0);
 
@@ -86,8 +86,8 @@ router.get('/:pathname(*)', async function (req, res, next) {
             config: config,
             title: title,
             content: body,
-            page: page,
-            pages: pages,
+            module: module,
+            modules: modules,
         };
 
         return res.render('page', options);

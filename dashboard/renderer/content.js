@@ -36,31 +36,31 @@ async function render_liquidjs(data, variables) {
 
 // Page navigation.
 
-function pages() {
+function modules() {
     // Use provided page index if one exists. Generate all the
     // prev and next links before returning.
 
-    var pages = []
+    var modules = []
 
-    if (config.pages !== undefined && config.pages.length > 0) {
-        let temp_pages = config.pages.slice(0);
-        let page = temp_pages.shift();
+    if (config.modules !== undefined && config.modules.length > 0) {
+        let temp_modules = config.modules.slice(0);
+        let page = temp_modules.shift();
 
         while (page !== undefined) {
             if (page.title === undefined) {
                 page.title = slug_to_title(page.path);
             }
 
-            if (temp_pages.length > 0) {
-                page.next_page = temp_pages[0].path;
-                temp_pages[0].prev_page = page.path;
+            if (temp_modules.length > 0) {
+                page.next_page = temp_modules[0].path;
+                temp_modules[0].prev_page = page.path;
             }
 
-            pages.push(page);
-            page = temp_pages.shift();
+            modules.push(page);
+            page = temp_modules.shift();
         }
 
-        return pages;
+        return modules;
     }
 
     // See if the default page is Markdown. If it then we can
@@ -94,21 +94,21 @@ function pages() {
       exit_link: meta.exit_link,
     };
 
-    pages.push(details);
+    modules.push(details);
     visited.add(pathname);
 
-    // Traverse the pages to find list of all pages.
+    // Traverse the pages to find list of all modules.
 
     while (meta.next_page) {
         if (visited.has(meta.next_page)) {
-            return pages;
+            return modules;
 	}
 
         pathname = path.join(path.dirname(pathname), meta.next_page);
 	file = path.join(config.content_dir, pathname + '.md');
 
 	if (!fs.existsSync(file)) {
-	    return pages;
+	    return modules;
 	}
 
 	data = fs.readFileSync(file).toString('utf-8');
@@ -116,27 +116,27 @@ function pages() {
 	meta = markdown_extract_metadata(data);
 	title = meta.title ? meta.title : slug_to_title(pathname);
 
-        pages[pages.length-1].next_page = pathname;
+        modules[modules.length-1].next_page = pathname;
 
 	details = {
 	  path: pathname,
 	  title: title,
-	  prev_page: pages[pages.length-1].path,
+	  prev_page: modules[modules.length-1].path,
 	  next_page: null,
           exit_sign: meta.exit_sign,
           exit_link: meta.exit_link,
 	};
 
-        pages.push(details);
+        modules.push(details);
     }
 
-    return pages;
+    return modules;
 }
 
-function page_index(pages) {
+function module_index(modules) {
     var index = {}
 
-    pages.forEach(page => index[page.path] = page);
+    modules.forEach(page => index[page.path] = page);
 
     return index;
 }
@@ -250,8 +250,8 @@ async function render(pathname, variables) {
 // Exports.
 
 exports.default = {
-    pages,
-    page_index,
+    modules,
+    module_index,
     render,
 }
 
