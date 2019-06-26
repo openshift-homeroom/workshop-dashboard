@@ -30,12 +30,12 @@
     <div class="row">
       <div class="col-sm-3 d-sm-block d-none">
         <!-- Table of Contents -->
-	<ul class="menu">
+        <ul class="menu">
           <li class="category">
-            <ul class="pages">
-              <h5 class="category-title">Modules</h5>
-              {% for section in pages %}
-                {% if section.path == page.path %}
+            <ul class="modules">
+              <h5 class="category-title">Workshop Modules</h5>
+              {% for section in modules %}
+                {% if section.path == module.path %}
                   <li class="page active"><a href="{{config.base_url}}/{{section.path}}">{{section.title}}</a></li>
                 {% else %}
                   <li class="page"><a href="{{config.base_url}}/{{section.path}}">{{section.title}}</a></li>
@@ -43,22 +43,22 @@
               {% endfor %}
             </ul>
           </li>
-	</ul>
+        </ul>
       </div>
       <div class="col-sm-9">
         <section class="content">
           <!-- Top Navigation -->
           <div class="btn-group btn-group-xs float-right">
-            {% if page.prev_page %}
-              <button type="button" onclick="location.href='{{ config.base_url }}/{{ page.prev_page }}';" class="btn btn-xs btn-transparent" aria-label="Prev">
+            {% if module.prev_page %}
+              <button type="button" onclick="location.href='{{ config.base_url }}/{{ module.prev_page }}';" class="btn btn-xs btn-transparent" aria-label="Prev">
                 <span class="fas fa-arrow-left" aria-hidden="true"></span>
               </button>
             {% endif %}
-            <button type="button" onclick="location.href='{{ config.base_url }}';" class="btn btn-xs btn-transparent" aria-label="Home">
+            <button type="button" onclick="location.href='{{ config.base_url }}/';" class="btn btn-xs btn-transparent" aria-label="Home">
               <span class="fas fa-home" aria-hidden="true"></span>
             </button>
-            {% if page.next_page %}
-              <button type="button" onclick="location.href='{{ config.base_url }}/{{ page.next_page }}';" class="btn btn-xs btn-transparent" aria-label="Next">
+            {% if module.next_page %}
+              <button type="button" onclick="location.href='{{ config.base_url }}/{{ module.next_page }}';" class="btn btn-xs btn-transparent" aria-label="Next">
                 <span class="fas fa-arrow-right" aria-hidden="true"></span>
               </button>
             {% endif %}
@@ -70,33 +70,33 @@
           <!-- Content -->
           {{ content }}
           <!-- Bottom Navigation -->
-	  <div class="page-meta clearfix">
-	    {% if page.next_page %}
-	      {% if page.exit_sign %}
-		<input type="button" class="btn btn-lg btn-primary float-right" onclick="location.href='{{ config.base_url }}/{{ page.next_page }}';" value="{{ page.exit_sign }}" />
-	      {% else %}
-		<input type="button" class="btn btn-lg btn-primary float-right" onclick="location.href='{{ config.base_url }}/{{ page.next_page }}';" value="Continue" />
-	      {% endif %}
-	    {% else %}
-	      {% if page.exit_link %}
-		{% if page.exit_sign %}
-		  <input type="button" class="btn btn-lg btn-success float-right" onclick="location.href='{{ page.exit_link }}';" value="{{ page.exit_sign }}" />
-		{% else %}
-		  <input type="button" class="btn btn-lg btn-success float-right" onclick="location.href='{{ page.exit_link }}';" value="Continue" />
-		{% endif %}
-	      {% else %}
-		{% if page.exit_sign %}
-		  {% if config.restart_url %}
-		    <input type="button" class="btn btn-lg btn-danger float-right" onclick="window.parent.finished_workshop_dialog();" value="{{ page.exit_sign }}" />
-		  {% else %}
-		    <input type="button" class="btn btn-lg btn-success float-right" onclick="location.href='{{ config.base_url }}';" value="{{ page.exit_sign }}" />
-		  {% endif %}
-		{% else %}
-		  <input type="button" class="btn btn-lg btn-success float-right" onclick="location.href='{{ config.base_url }}';" value="Home" />
-		{% endif %}
-	      {% endif %}
-	    {% endif %}
-	  </div>
+          <div class="page-meta clearfix">
+            {% if module.next_page %}
+              {% if module.exit_sign %}
+                <input type="button" class="btn btn-lg btn-primary float-right" onclick="location.href='{{ config.base_url }}/{{ module.next_page }}';" value="{{ module.exit_sign }}" />
+              {% else %}
+                <input type="button" class="btn btn-lg btn-primary float-right" onclick="location.href='{{ config.base_url }}/{{ module.next_page }}';" value="Continue" />
+              {% endif %}
+            {% else %}
+              {% if module.exit_link %}
+                {% if module.exit_sign %}
+                  <input type="button" class="btn btn-lg btn-success float-right" onclick="location.href='{{ module.exit_link }}';" value="{{ module.exit_sign }}" />
+                {% else %}
+                  <input type="button" class="btn btn-lg btn-success float-right" onclick="location.href='{{ module.exit_link }}';" value="Continue" />
+                {% endif %}
+              {% else %}
+                {% if module.exit_sign %}
+                  {% if config.restart_url %}
+                    <input type="button" class="btn btn-lg btn-danger float-right" onclick="window.parent.finished_workshop_dialog();" value="{{ module.exit_sign }}" />
+                  {% else %}
+                    <input type="button" class="btn btn-lg btn-success float-right" onclick="location.href='{{ config.base_url }}/';" value="{{ module.exit_sign }}" />
+                  {% endif %}
+                {% else %}
+                  <input type="button" class="btn btn-lg btn-success float-right" onclick="location.href='{{ config.base_url }}/';" value="Home" />
+                {% endif %}
+              {% endif %}
+            {% endif %}
+          </div>
         </section>
       </div>
     </div>
