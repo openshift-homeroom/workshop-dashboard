@@ -51,6 +51,22 @@ function modules() {
                 page.title = slug_to_title(page.path);
             }
 
+            if (page.file === undefined) {
+                let file = path.join(config.content_dir, page.path) + '.md';
+
+                if (fs.existsSync(file)) {
+                    page.file = file;
+                }
+            }
+
+            if (page.file === undefined) {
+                let file = path.join(config.content_dir, page.path) + '.adoc';
+
+                if (fs.existsSync(file)) {
+                    page.file = file;
+                }
+            }
+
             if (temp_modules.length > 0) {
                 page.next_page = temp_modules[0].path;
                 temp_modules[0].prev_page = page.path;
@@ -86,6 +102,7 @@ function modules() {
     var title = meta.title ? meta.title : slug_to_title(pathname);
 
     var details = {
+      file: file,
       path: pathname,
       title: title,
       prev_page: null,
@@ -102,30 +119,31 @@ function modules() {
     while (meta.next_page) {
         if (visited.has(meta.next_page)) {
             return modules;
-	}
+        }
 
         pathname = path.join(path.dirname(pathname), meta.next_page);
-	file = path.join(config.content_dir, pathname + '.md');
+        file = path.join(config.content_dir, pathname + '.md');
 
-	if (!fs.existsSync(file)) {
-	    return modules;
-	}
+        if (!fs.existsSync(file)) {
+            return modules;
+        }
 
-	data = fs.readFileSync(file).toString('utf-8');
+        data = fs.readFileSync(file).toString('utf-8');
 
-	meta = markdown_extract_metadata(data);
-	title = meta.title ? meta.title : slug_to_title(pathname);
+        meta = markdown_extract_metadata(data);
+        title = meta.title ? meta.title : slug_to_title(pathname);
 
         modules[modules.length-1].next_page = pathname;
 
-	details = {
-	  path: pathname,
-	  title: title,
-	  prev_page: modules[modules.length-1].path,
-	  next_page: null,
+        details = {
+          file: file,
+          path: pathname,
+          title: title,
+          prev_page: modules[modules.length-1].path,
+          next_page: null,
           exit_sign: meta.exit_sign,
           exit_link: meta.exit_link,
-	};
+        };
 
         modules.push(details);
     }
@@ -233,8 +251,23 @@ async function asciidoc_process_page(file, pathname, variables) {
     return doc.convert();
 }
 
-async function render(pathname, variables) {
-    var file = path.join(config.content_dir, pathname + '.md');
+async function render(module, variables) {
+    var file = module.file;
+    var pathname = module.pathname;
+
+    if (file) {
+        if (file.endsWith('.md')) {
+            return await markdown_process_page(file, pathname, variables);
+        }
+
+        if (file.endsWith('.adoc')) {
+            return await asciidoc_process_page(file, pathname, variables);
+        }
+
+        return;
+    }
+
+    file = path.join(config.content_dir, pathname + '.md');
 
     if (fs.existsSync(file)) {
         return await markdown_process_page(file, pathname, variables);

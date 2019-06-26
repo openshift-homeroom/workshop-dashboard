@@ -79,7 +79,7 @@ router.get('/:pathname(*)', async function (req, res, next) {
 
     variables.push({ name: 'base_url', content: config.base_url });
 
-    var body = await content.render(pathname, variables);
+    var body = await content.render(module, variables);
 
     if (body) {
         var options = {
