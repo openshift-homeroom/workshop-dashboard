@@ -39,6 +39,8 @@ router.use(express.static(path.join(__dirname, 'static')));
 
 // Also look for static files from packages installed by npm.
 
+router.use('/asciidoctor', express.static(path.join(__dirname,
+  'node_modules/\@asciidoctor/core/dist')));
 router.use('/fontawesome', express.static(path.join(__dirname,
   'node_modules/@fortawesome/fontawesome-free')));
 router.use('/bootstrap', express.static(path.join(__dirname,
@@ -73,24 +75,25 @@ router.get('/:pathname(*)', async function (req, res, next) {
     // Render content and generate page from template.
 
     var module = module_index[pathname];
-    var title = module && module.title;
+    if (module) {
+        var title = module.title;
+        var variables = config.variables.slice(0);
 
-    var variables = config.variables.slice(0);
+        variables.push({ name: 'base_url', content: config.base_url });
 
-    variables.push({ name: 'base_url', content: config.base_url });
+        var body = await content.render(module, variables);
 
-    var body = await content.render(module, variables);
+        if (body) {
+            var options = {
+                config: config,
+                title: title,
+                content: body,
+                module: module,
+                modules: modules,
+            };
 
-    if (body) {
-        var options = {
-            config: config,
-            title: title,
-            content: body,
-            module: module,
-            modules: modules,
-        };
-
-        return res.render('page', options);
+            return res.render('page', options);
+        }
     }
 
     // Fall through to next handler if no match. This
