@@ -5,40 +5,40 @@ $(document).ready(function() {
     }
 
     function copy_to_clipboard(value) {
-	const el = document.createElement('textarea');
-	el.value = value;
-	el.setAttribute('readonly', '');
-	el.style.position = 'absolute';
-	el.style.left = '-9999px';
-	document.body.appendChild(el);
-	const selected = document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;
-	el.select();
-	document.execCommand('copy');
-	document.body.removeChild(el);
-	if (selected) {
-	    document.getSelection().removeAllRanges();
-	    document.getSelection().addRange(selected);
-	}
+        const el = document.createElement('textarea');
+        el.value = value;
+        el.setAttribute('readonly', '');
+        el.style.position = 'absolute';
+        el.style.left = '-9999px';
+        document.body.appendChild(el);
+        const selected = document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        if (selected) {
+            document.getSelection().removeAllRanges();
+            document.getSelection().addRange(selected);
+        }
     }
 
     function handle_copy(event) {
-	copy_to_clipboard(event.target.innerText.trim());
+        copy_to_clipboard(event.target.innerText.trim());
     }
 
     function selectElementText(el, win) {
-	win = win || window;
-	var doc = win.document, sel, range;
-	if (win.getSelection && doc.createRange) {
-	    sel = win.getSelection();
-	    range = doc.createRange();
-	    range.selectNodeContents(el);
-	    sel.removeAllRanges();
-	    sel.addRange(range);
-	} else if (doc.body.createTextRange) {
-	    range = doc.body.createTextRange();
-	    range.moveToElementText(el);
-	    range.select();
-	}
+        win = win || window;
+        var doc = win.document, sel, range;
+        if (win.getSelection && doc.createRange) {
+            sel = win.getSelection();
+            range = doc.createRange();
+            range.selectNodeContents(el);
+            sel.removeAllRanges();
+            sel.addRange(range);
+        } else if (doc.body.createTextRange) {
+            range = doc.body.createTextRange();
+            range.moveToElementText(el);
+            range.select();
+        }
     }
 
     $.each([$('.execute .content'), $('.execute-1 .content')], function() {
