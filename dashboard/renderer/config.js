@@ -241,7 +241,7 @@ function process_workshop_config(workshop_config) {
         // Read the workshops file first to get the site title
         // and list of activated workshops.
 
-        pathname = path.join(workshop_dir, pathname);
+        pathname = path.join(config.workshop_dir, pathname);
 
         let workshop_data = fs.readFileSync(pathname, 'utf8');
         let workshop_info = yaml.safeLoad(workshop_data);
@@ -251,7 +251,7 @@ function process_workshop_config(workshop_config) {
         // Now iterate over list of activated modules are populate
         // modules list in config.
 
-        pathname = path.join(workshop_dir, 'modules.yaml');
+        pathname = path.join(config.workshop_dir, 'modules.yaml');
 
         let modules_data = fs.readFileSync(pathname, 'utf8');
         let modules_info = yaml.safeLoad(modules_data);
@@ -309,7 +309,7 @@ if (fs.existsSync(config.config_file)) {
     var override_config = process_workshop_config();
 }
 else {
-    let file = path.join(workshop_dir, workshop_file);
+    let file = path.join(config.workshop_dir, workshop_file);
 
     if (fs.existsSync(file)) {
         function initialize_workshop_file(workshop) {
