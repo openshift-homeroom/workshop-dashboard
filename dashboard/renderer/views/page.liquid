@@ -9,9 +9,13 @@
   <script src="{{ config.base_url }}/bootstrap/js/bootstrap.min.js"></script>
   <script src="{{ config.base_url }}/requirejs/require.js"></script>
   <script>var workshop_base_url = "{{ config.base_url }}";</script>
+  {% if module.format == "asciidoc" %}
+  <link rel="stylesheet" href="{{ config.base_url }}/asciidoctor/css/asciidoctor.css">
+  {% endif %}
   <link rel="stylesheet" href="{{ config.base_url }}/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="{{ config.base_url }}/fontawesome/css/all.min.css">
   <link rel="stylesheet" href="{{ config.base_url }}/css/workshop.css">
+  <link rel="stylesheet" href="{{ config.base_url }}/css/workshop-{{ module.format }}.css">
   {{ config.analytics }}
 </head>
 </body>
@@ -46,7 +50,7 @@
         </ul>
       </div>
       <div class="col-sm-9">
-        <section class="content">
+        <section class="page-content">
           <!-- Top Navigation -->
           <div class="btn-group btn-group-xs float-right">
             {% if module.prev_page %}
@@ -106,5 +110,6 @@
   </footer>
   <!-- Javascript-->
   <script src="{{ config.base_url }}/js/workshop.js"></script>
+  <script src="{{ config.base_url }}/js/workshop-{{ module.format }}.js"></script>
 </body>
 </html>

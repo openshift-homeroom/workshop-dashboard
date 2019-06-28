@@ -1,7 +1,6 @@
-'use strict';
-
 var path = require('path');
 var fs = require('fs');
+var yaml = require('js-yaml');
 
 var base_url = process.env.URI_ROOT_PATH || '';
 
@@ -127,39 +126,24 @@ var config = {
 };
 
 var workshop_dir = process.env.WORKSHOP_DIR || '/opt/app-root/src/workshop';
+var workshop_file = process.env.WORKSHOP_FILE || 'workshop.yaml';
 
-var config_file = process.env.CONFIG_FILE;
-var content_dir = process.env.CONTENT_DIR;
+var config_file = undefined;
 
-// Check for alternate locations for content.
+// Check various locations for content and config.
 
-if (content_dir && fs.existsSync(content_dir)) {
-    config.content_dir = content_dir;
+if (fs.existsSync(workshop_dir + '/content')) {
+    config.content_dir = workshop_dir + '/content';
 }
-else {
-    content_dir = undefined;
-}
-
-if (!content_dir) {
-    if (fs.existsSync(workshop_dir + '/content')) {
-        config.content_dir = workshop_dir + '/content';
-    }
-    else if (fs.existsSync('/opt/app-root/workshop/content')) {
-        config.content_dir = '/opt/app-root/workshop/content';
-    }
+else if (fs.existsSync('/opt/app-root/workshop/content')) {
+    config.content_dir = '/opt/app-root/workshop/content';
 }
 
-if (config_file && !fs.existsSync(config_file)) {
-    config_file = undefined;
+if (fs.existsSync(workshop_dir + '/config.js')) {
+    config_file = workshop_dir + '/config.js';
 }
-
-if (!config_file) {
-    if (fs.existsSync(workshop_dir + '/config.js')) {
-        config_file = workshop_dir + '/config.js';
-    }
-    else if (fs.existsSync('/opt/app-root/workshop/config.js')) {
-        config_file = '/opt/app-root/workshop/config.js';
-    }
+else if (fs.existsSync('/opt/app-root/workshop/config.js')) {
+    config_file = '/opt/app-root/workshop/config.js';
 }
 
 // If user config.js is supplied with alternate content, merge
@@ -172,12 +156,14 @@ const google_analytics = `
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag("js", new Date());
-  gtag("config", "UA-XXXXXXXXX-1");
+  gtag("config", "UA-XXXX-1");
 </script>
 `;
 
-function process_config_file(config_file) {
-    var workshop_config = require(config_file);
+function process_workshop_config(workshop_config) {
+    if (workshop_config === undefined) {
+        workshop_config = require(config_file);
+    }
 
     if (typeof workshop_config != 'function') {
         return workshop_config;
@@ -204,16 +190,18 @@ function process_config_file(config_file) {
     }
 
     function google_tracking_id(id) {
-        config.analytics = google_analytics.replace("UA-XXXXXXXXX-1", id);
+        if (google_tracking_id) {
+            config.analytics = google_analytics.replace("UA-XXXX-1", id);
+        }
     }
 
     function template_engine(engine) {
         config.template_engine = engine;
     }
 
-    function module_metadata(path, title, exit_sign) {
+    function module_metadata(pathname, title, exit_sign) {
         config.modules.push({
-            path: path,
+            path: pathname,
             title: title,
             exit_sign: exit_sign,
         });
@@ -238,6 +226,54 @@ function process_config_file(config_file) {
         });
     }
 
+    function load_workshop(pathname) {
+        if (pathname === undefined) {
+            pathname = 'workshop.yaml';
+        }
+
+        // Read the workshops file first to get the site title
+        // and list of activated workshops.
+
+        pathname = path.join(workshop_dir, pathname);
+
+        let workshop_data = fs.readFileSync(pathname, 'utf8');
+        let workshop_info = yaml.safeLoad(workshop_data);
+
+        config.site_title = workshop_info.name;
+
+        // Now iterate over list of activated modules are populate
+        // modules list in config.
+
+        pathname = path.join(workshop_dir, 'modules.yaml');
+
+        let modules_data = fs.readFileSync(pathname, 'utf8');
+        let modules_info = yaml.safeLoad(modules_data);
+
+        for (let i = 0; i < workshop_info.modules.activate.length; i++) {
+            let name = workshop_info.modules.activate[i];
+            let module_info = modules_info.modules[name];
+
+            module_metadata(name, module_info.name, module_info.exit_sign);
+        }
+
+        // Next set data variables and any other config settings.
+
+        let modules_conf = modules_info.config || { vars: [] };
+
+        template_engine(modules_info.config.template_engine);
+        analytics_tracking_code(modules_info.config.analytics_tracking_code);
+        google_tracking_id(modules_info.config.google_tracking_id);
+
+        for (let i = 0; i < modules_conf.vars.length; i++) {
+            let vars_info = modules_conf.vars[i];
+
+            let name = vars_info.name;
+            let value = vars_info.value;
+
+            data_variable(name, value);
+        }
+    }
+
     var workshop = {
         config: config,
         site_title: site_title,
@@ -246,6 +282,7 @@ function process_config_file(config_file) {
         google_tracking_id: google_tracking_id,
         module_metadata: module_metadata,
         data_variable: data_variable,
+        load_workshop: load_workshop,
     }
 
     workshop_config(workshop);
@@ -261,9 +298,22 @@ const allowed_config = new Set([
     'variables',
 ]);
 
-if (config_file && fs.existsSync(config_file)) {
-    var config_overrides = process_config_file(config_file);
+if (config_file) {
+    var config_overrides = process_workshop_config();
+}
+else {
+    let file = path.join(workshop_dir, workshop_file);
 
+    if (fs.existsSync(file)) {
+        function initialize_workshop_file(workshop) {
+            workshop.load_workshop(workshop_file);
+        }
+
+        var config_overrides = process_workshop_config(initialize_workshop_file);
+    }
+}
+
+if (config_overrides) {
     for (var key1 in config_overrides) {
         if (allowed_config.has(key1)) {
             var value1 = config_overrides[key1];

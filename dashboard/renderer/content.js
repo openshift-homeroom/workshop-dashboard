@@ -56,6 +56,7 @@ function modules() {
 
                 if (fs.existsSync(file)) {
                     page.file = file;
+                    page.format = 'markdown';
                 }
             }
 
@@ -64,6 +65,7 @@ function modules() {
 
                 if (fs.existsSync(file)) {
                     page.file = file;
+                    page.format = 'asciidoc';
                 }
             }
 
@@ -103,6 +105,7 @@ function modules() {
 
     var details = {
       file: file,
+      format: 'markdown',
       path: pathname,
       title: title,
       prev_page: null,
@@ -137,6 +140,7 @@ function modules() {
 
         details = {
           file: file,
+          format: 'markdown',
           path: pathname,
           title: title,
           prev_page: modules[modules.length-1].path,
