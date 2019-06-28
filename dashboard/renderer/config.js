@@ -126,39 +126,24 @@ var config = {
 };
 
 var workshop_dir = process.env.WORKSHOP_DIR || '/opt/app-root/src/workshop';
+var workshop_file = process.env.WORKSHOP_FILE || 'workshop.yaml';
 
-var config_file = process.env.CONFIG_FILE;
-var content_dir = process.env.CONTENT_DIR;
+var config_file = undefined;
 
-// Check for alternate locations for content.
+// Check various locations for content and config.
 
-if (content_dir && fs.existsSync(content_dir)) {
-    config.content_dir = content_dir;
+if (fs.existsSync(workshop_dir + '/content')) {
+    config.content_dir = workshop_dir + '/content';
 }
-else {
-    content_dir = undefined;
-}
-
-if (!content_dir) {
-    if (fs.existsSync(workshop_dir + '/content')) {
-        config.content_dir = workshop_dir + '/content';
-    }
-    else if (fs.existsSync('/opt/app-root/workshop/content')) {
-        config.content_dir = '/opt/app-root/workshop/content';
-    }
+else if (fs.existsSync('/opt/app-root/workshop/content')) {
+    config.content_dir = '/opt/app-root/workshop/content';
 }
 
-if (config_file && !fs.existsSync(config_file)) {
-    config_file = undefined;
+if (fs.existsSync(workshop_dir + '/config.js')) {
+    config_file = workshop_dir + '/config.js';
 }
-
-if (!config_file) {
-    if (fs.existsSync(workshop_dir + '/config.js')) {
-        config_file = workshop_dir + '/config.js';
-    }
-    else if (fs.existsSync('/opt/app-root/workshop/config.js')) {
-        config_file = '/opt/app-root/workshop/config.js';
-    }
+else if (fs.existsSync('/opt/app-root/workshop/config.js')) {
+    config_file = '/opt/app-root/workshop/config.js';
 }
 
 // If user config.js is supplied with alternate content, merge
@@ -171,12 +156,14 @@ const google_analytics = `
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag("js", new Date());
-  gtag("config", "UA-XXXXXXXXX-1");
+  gtag("config", "UA-XXXX-1");
 </script>
 `;
 
-function process_config_file(config_file) {
-    let workshop_config = require(config_file);
+function process_workshop_config(workshop_config) {
+    if (workshop_config === undefined) {
+        workshop_config = require(config_file);
+    }
 
     if (typeof workshop_config != 'function') {
         return workshop_config;
@@ -204,7 +191,7 @@ function process_config_file(config_file) {
 
     function google_tracking_id(id) {
         if (google_tracking_id) {
-            config.analytics = google_analytics.replace("UA-XXXXXXXXX-1", id);
+            config.analytics = google_analytics.replace("UA-XXXX-1", id);
         }
     }
 
@@ -247,7 +234,7 @@ function process_config_file(config_file) {
         // Read the workshops file first to get the site title
         // and list of activated workshops.
 
-        pathname = path.join(path.dirname(config_file), pathname);
+        pathname = path.join(workshop_dir, pathname);
 
         let workshop_data = fs.readFileSync(pathname, 'utf8');
         let workshop_info = yaml.safeLoad(workshop_data);
@@ -257,7 +244,7 @@ function process_config_file(config_file) {
         // Now iterate over list of activated modules are populate
         // modules list in config.
 
-        pathname = path.join(path.dirname(config_file), 'modules.yaml');
+        pathname = path.join(workshop_dir, 'modules.yaml');
 
         let modules_data = fs.readFileSync(pathname, 'utf8');
         let modules_info = yaml.safeLoad(modules_data);
@@ -311,9 +298,22 @@ const allowed_config = new Set([
     'variables',
 ]);
 
-if (config_file && fs.existsSync(config_file)) {
-    var config_overrides = process_config_file(config_file);
+if (config_file) {
+    var config_overrides = process_workshop_config();
+}
+else {
+    let file = path.join(workshop_dir, workshop_file);
 
+    if (fs.existsSync(file)) {
+        function initialize_workshop_file(workshop) {
+            workshop.load_workshop(workshop_file);
+        }
+
+        var config_overrides = process_workshop_config(initialize_workshop_file);
+    }
+}
+
+if (config_overrides) {
     for (var key1 in config_overrides) {
         if (allowed_config.has(key1)) {
             var value1 = config_overrides[key1];
