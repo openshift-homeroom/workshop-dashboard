@@ -139,7 +139,7 @@ var config = {
 
 // Check various locations for content and config.
 
-var workshop_dir = process.env.WORKSHOP_DIR;
+var workshop_dir = process.env.WORKSHOP_DIR || '/opt/app-root/src/workshop';
 var workshop_file = process.env.WORKSHOP_FILE || 'workshop.yaml';
 
 if (workshop_dir && fs.existsSync(workshop_dir)) {
