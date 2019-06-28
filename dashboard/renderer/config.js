@@ -17,6 +17,18 @@ var config = {
 
     base_url: base_url,
 
+    // Specifies the path of workshop folder where the workshop
+    // files are located. This will be overridden down below to
+    // look in other valid places that content can be kept.
+
+    workshop_dir: __dirname,
+
+    // Specifies the path of config file for workshop. This will
+    // be overridden down below to look in other valid places
+    // that content can be kept.
+
+    config_file: path.join(__dirname, 'config.js'),
+
     // Specifies the path of content folder where all content
     // files are located. This will be overridden down below to
     // look in other valid places that content can be kept.
@@ -125,25 +137,20 @@ var config = {
     ],
 };
 
-var workshop_dir = process.env.WORKSHOP_DIR || '/opt/app-root/src/workshop';
-var workshop_file = process.env.WORKSHOP_FILE || 'workshop.yaml';
-
-var config_file = undefined;
-
 // Check various locations for content and config.
 
-if (fs.existsSync(workshop_dir + '/content')) {
-    config.content_dir = workshop_dir + '/content';
-}
-else if (fs.existsSync('/opt/app-root/workshop/content')) {
-    config.content_dir = '/opt/app-root/workshop/content';
-}
+var workshop_dir = process.env.WORKSHOP_DIR;
+var workshop_file = process.env.WORKSHOP_FILE || 'workshop.yaml';
 
-if (fs.existsSync(workshop_dir + '/config.js')) {
-    config_file = workshop_dir + '/config.js';
+if (workshop_dir && fs.existsSync(workshop_dir)) {
+    config.workshop_dir = workshop_dir;
+    config.config_file = path.join(workshop_dir, 'config.js');
+    config.content_dir = path.join(config.workshop_dir, 'content');
 }
-else if (fs.existsSync('/opt/app-root/workshop/config.js')) {
-    config_file = '/opt/app-root/workshop/config.js';
+else if (fs.existsSync('/opt/app-root/workshop')) {
+    config.workshop_dir = '/opt/app-root/workshop';
+    config.config_file = path.join('/opt/app-root/workshop', 'config.js');
+    config.content_dir = path.join('/opt/app-root/workshop', 'content');
 }
 
 // If user config.js is supplied with alternate content, merge
@@ -162,14 +169,14 @@ const google_analytics = `
 
 function process_workshop_config(workshop_config) {
     if (workshop_config === undefined) {
-        workshop_config = require(config_file);
+        workshop_config = require(config.config_file);
     }
 
     if (typeof workshop_config != 'function') {
         return workshop_config;
     }
 
-    var config = {
+    var temp_config = {
         site_title: "Homeroom",
 
         analytics: "",
@@ -182,25 +189,25 @@ function process_workshop_config(workshop_config) {
     };
 
     function site_title(title) {
-        config.site_title = title;
+        temp_config.site_title = title;
     }
 
     function analytics_tracking_code(code) {
-        config.analytics = code;
+        temp_config.analytics = code;
     }
 
     function google_tracking_id(id) {
         if (google_tracking_id) {
-            config.analytics = google_analytics.replace("UA-XXXX-1", id);
+            temp_config.analytics = google_analytics.replace("UA-XXXX-1", id);
         }
     }
 
     function template_engine(engine) {
-        config.template_engine = engine;
+        temp_config.template_engine = engine;
     }
 
     function module_metadata(pathname, title, exit_sign) {
-        config.modules.push({
+        temp_config.modules.push({
             path: pathname,
             title: title,
             exit_sign: exit_sign,
@@ -220,7 +227,7 @@ function process_workshop_config(workshop_config) {
                 }
             }
         }
-        config.variables.push({
+        temp_config.variables.push({
             name: name,
             content: value
         });
@@ -228,7 +235,7 @@ function process_workshop_config(workshop_config) {
 
     function load_workshop(pathname) {
         if (pathname === undefined) {
-            pathname = 'workshop.yaml';
+            pathname = workshop_file;
         }
 
         // Read the workshops file first to get the site title
@@ -239,7 +246,7 @@ function process_workshop_config(workshop_config) {
         let workshop_data = fs.readFileSync(pathname, 'utf8');
         let workshop_info = yaml.safeLoad(workshop_data);
 
-        config.site_title = workshop_info.name;
+        temp_config.site_title = workshop_info.name;
 
         // Now iterate over list of activated modules are populate
         // modules list in config.
@@ -275,7 +282,7 @@ function process_workshop_config(workshop_config) {
     }
 
     var workshop = {
-        config: config,
+        config: temp_config,
         site_title: site_title,
         template_engine: template_engine,
         analytics_tracking_code: analytics_tracking_code,
@@ -287,7 +294,7 @@ function process_workshop_config(workshop_config) {
 
     workshop_config(workshop);
 
-    return config;
+    return temp_config;
 }
 
 const allowed_config = new Set([
@@ -298,8 +305,8 @@ const allowed_config = new Set([
     'variables',
 ]);
 
-if (config_file) {
-    var config_overrides = process_workshop_config();
+if (fs.existsSync(config.config_file)) {
+    var override_config = process_workshop_config();
 }
 else {
     let file = path.join(workshop_dir, workshop_file);
@@ -309,14 +316,14 @@ else {
             workshop.load_workshop(workshop_file);
         }
 
-        var config_overrides = process_workshop_config(initialize_workshop_file);
+        var override_config = process_workshop_config(initialize_workshop_file);
     }
 }
 
-if (config_overrides) {
-    for (var key1 in config_overrides) {
+if (override_config) {
+    for (var key1 in override_config) {
         if (allowed_config.has(key1)) {
-            var value1 = config_overrides[key1];
+            var value1 = override_config[key1];
             if (value1.constructor == Array) {
                 config[key1] = config[key1].concat(value1);
             }
