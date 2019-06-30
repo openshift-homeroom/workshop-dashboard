@@ -13,6 +13,7 @@ var modules = content.modules();
 var module_index = content.module_index(modules);
 
 logger.info('Modules', { modules: modules });
+logger.info('Variables', { variables: config.variables });
 
 // Setup all the sub routes.
 

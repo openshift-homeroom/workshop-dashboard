@@ -238,10 +238,10 @@ async function markdown_process_page(file, pathname, variables) {
     return marked(data);
 }
 
+// Asciidoc rendering.
+
 async function asciidoc_process_page(file, pathname, variables) {
     var data = fs.readFileSync(file).toString('utf-8');
-
-    data = markdown_extract_content(data);
 
     if (config.template_engine == 'liquid.js') {
         data = await render_liquidjs(data, variables);
@@ -250,21 +250,30 @@ async function asciidoc_process_page(file, pathname, variables) {
         data = replace_variables(data, variables);
     }
 
-    var doc = asciidoctor.load(data, { safe: 'server' });
+    let attributes = {}
+
+    if (config.images_url) {
+        attributes['imagesdir'] = config.images_url;
+    }
+
+    var doc = asciidoctor.load(data,
+            { safe: 'server', attributes: attributes });
 
     return doc.convert();
 }
+
+// Entrypoint for rendering.
 
 async function render(module, variables) {
     var file = module.file;
     var pathname = module.pathname;
 
     if (file) {
-        if (file.endsWith('.md')) {
+        if (module.format == 'markdown') {
             return await markdown_process_page(file, pathname, variables);
         }
 
-        if (file.endsWith('.adoc')) {
+        if (module.format == 'asciidoc') {
             return await asciidoc_process_page(file, pathname, variables);
         }
 

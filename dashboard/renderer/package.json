@@ -19,6 +19,8 @@
     "marked": "^0.6.2",
     "morgan": "^1.9.1",
     "popper.js": "^1.15.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
     "requirejs": "^2.3.6",
     "underscore.string": "^3.3.5",
     "winston": "^3.2.1"
