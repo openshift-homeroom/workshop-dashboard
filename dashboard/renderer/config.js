@@ -295,6 +295,7 @@ function process_workshop_config(workshop_config) {
 
                 let name = vars_info.name;
                 let value = vars_info.value;
+                let aliases = vars_info.aliases;
 
                 // We override default value with that from the
                 // workshop file if specified.
@@ -307,7 +308,7 @@ function process_workshop_config(workshop_config) {
 
                 variables_set.add(name);
 
-                data_variable(name, value);
+                data_variable(name, value, aliases);
             }
         }
 
