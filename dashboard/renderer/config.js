@@ -287,6 +287,8 @@ function process_workshop_config(workshop_config) {
 
         config.images_url = modules_info.config.images_url;
 
+        let variables_set = new Set();
+
         if (modules_conf.vars) {
             for (let i = 0; i < modules_conf.vars.length; i++) {
                 let vars_info = modules_conf.vars[i];
@@ -294,15 +296,29 @@ function process_workshop_config(workshop_config) {
                 let name = vars_info.name;
                 let value = vars_info.value;
 
+                // We override default value with that from the
+                // workshop file if specified.
+
+                if (workshop_info.vars) {
+                    if (workshop_info.vars[name] !== undefined) {
+                        value = workshop_info.vars[name];
+                    }
+                }
+
+                variables_set.add(name);
+
                 data_variable(name, value);
             }
         }
 
-        // Now override any data variables from the workshop file.
+        // Now override any data variables from the workshop file
+        // if haven't already added them.
 
         if (workshop_info.vars) {
             for (let name in workshop_info.vars) {
-                data_variable(name, workshop_info.vars[name]);
+                if (!variables_set.has(name)) {
+                    data_variable(name, workshop_info.vars[name]);
+                }
             }
         }
     }
