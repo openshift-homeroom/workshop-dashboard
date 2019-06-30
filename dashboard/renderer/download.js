@@ -62,7 +62,7 @@ async function main() {
     // given by the workshop file.
 
     try {
-        fs.mkdirSync(workshop_dir);
+        fs.mkdirSync(workshop_dir, { recursive: true });
     }
     catch (err) {
         if (err.code != 'EEXIST') {
@@ -165,7 +165,7 @@ async function main() {
     // in the content sub directory.
 
     try {
-        fs.mkdirSync(path.join(workshop_dir, 'content'));
+        fs.mkdirSync(path.join(workshop_dir, 'content'), { recursive: true });
     }
     catch (err) {
         if (err.code != 'EEXIST') {
@@ -196,8 +196,20 @@ async function main() {
             return;
         });
 
-        fs.writeFileSync(path.join(workshop_dir,
-                'content', modules[i] + '.adoc'), module_body);
+        let module_file = path.join(workshop_dir, 'content', modules[i] + '.adoc');
+        let module_dir = path.dirname(module_file);
+
+        try {
+            fs.mkdirSync(module_dir, { recursive: true });
+        }
+        catch (err) {
+            if (err.code != 'EEXIST') {
+                console.log('Unable to create module parent directory.', err);
+                process.exit(1);
+            }
+        }
+
+        fs.writeFileSync(module_file, module_body);
     }
 }
 
