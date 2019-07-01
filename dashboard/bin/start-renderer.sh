@@ -18,8 +18,13 @@ fi
 export PORT=${PORT:-10082}
 
 if [ x"$DOWNLOAD_URL" != x"" ]; then
-    node download.js /tmp/workshop "$DOWNLOAD_URL" "$WORKSHOP_FILE"
     export WORKSHOP_DIR=/tmp/workshop
+
+    node download.js "$WORKSHOP_DIR" "$DOWNLOAD_URL" "$WORKSHOP_FILE"
+
+    if [ ! -f "$WORKSHOP_DIR/config.js" ]; then
+        unset WORKSHOP_FILE
+    fi
 fi
 
 exec npm start
