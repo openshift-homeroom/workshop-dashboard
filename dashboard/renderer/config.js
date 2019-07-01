@@ -35,6 +35,13 @@ var config = {
 
     content_dir: path.join(__dirname, 'content'),
 
+    // Specifies URL where images are available. This is only
+    // used with AsciiDoc and would only be used when serving
+    // legacy Workshopper content from a remote server. This URL
+    // will be used as prefix to all relative paths for images.
+
+    images_url: process.env.IMAGES_URL,
+
     // URL where the users should be redirected to restart the
     // workshop when they reach the final page.
 
@@ -193,17 +200,21 @@ function process_workshop_config(workshop_config) {
     }
 
     function analytics_tracking_code(code) {
-        temp_config.analytics = code;
+        if (code) {
+            temp_config.analytics = code;
+        }
     }
 
     function google_tracking_id(id) {
-        if (google_tracking_id) {
+        if (id) {
             temp_config.analytics = google_analytics.replace("UA-XXXX-1", id);
         }
     }
 
     function template_engine(engine) {
-        temp_config.template_engine = engine;
+        if (engine) {
+            temp_config.template_engine = engine;
+        }
     }
 
     function module_metadata(pathname, title, exit_sign) {
@@ -227,6 +238,12 @@ function process_workshop_config(workshop_config) {
                 }
             }
         }
+        else {
+            if (process.env[name] !== undefined) {
+                value = process.env[name];
+            }
+        }
+
         temp_config.variables.push({
             name: name,
             content: value
@@ -263,21 +280,51 @@ function process_workshop_config(workshop_config) {
             module_metadata(name, module_info.name, module_info.exit_sign);
         }
 
-        // Next set data variables and any other config settings.
+        // Next set data variables and any other config settings
+        // from the modules file.
 
-        let modules_conf = modules_info.config || { vars: [] };
+        let modules_conf = modules_info.config || {};
 
-        template_engine(modules_info.config.template_engine);
-        analytics_tracking_code(modules_info.config.analytics_tracking_code);
-        google_tracking_id(modules_info.config.google_tracking_id);
+        template_engine(modules_conf.template_engine);
+        analytics_tracking_code(modules_conf.analytics_tracking_code);
+        google_tracking_id(modules_conf.google_tracking_id);
 
-        for (let i = 0; i < modules_conf.vars.length; i++) {
-            let vars_info = modules_conf.vars[i];
+        config.images_url = modules_conf.images_url;
 
-            let name = vars_info.name;
-            let value = vars_info.value;
+        let variables_set = new Set();
 
-            data_variable(name, value);
+        if (modules_conf.vars) {
+            for (let i = 0; i < modules_conf.vars.length; i++) {
+                let vars_info = modules_conf.vars[i];
+
+                let name = vars_info.name;
+                let value = vars_info.value;
+                let aliases = vars_info.aliases;
+
+                // We override default value with that from the
+                // workshop file if specified.
+
+                if (workshop_info.vars) {
+                    if (workshop_info.vars[name] !== undefined) {
+                        value = workshop_info.vars[name];
+                    }
+                }
+
+                variables_set.add(name);
+
+                data_variable(name, value, aliases);
+            }
+        }
+
+        // Now override any data variables from the workshop file
+        // if haven't already added them.
+
+        if (workshop_info.vars) {
+            for (let name in workshop_info.vars) {
+                if (!variables_set.has(name)) {
+                    data_variable(name, workshop_info.vars[name]);
+                }
+            }
         }
     }
 
@@ -305,10 +352,16 @@ const allowed_config = new Set([
     'variables',
 ]);
 
+var override_config;
+
 if (fs.existsSync(config.config_file)) {
+    // User provided config.js file.
+
     var override_config = process_workshop_config();
 }
 else {
+    // User provided workshop.yaml file.
+
     let file = path.join(config.workshop_dir, workshop_file);
 
     if (fs.existsSync(file)) {
@@ -316,7 +369,7 @@ else {
             workshop.load_workshop(workshop_file);
         }
 
-        var override_config = process_workshop_config(initialize_workshop_file);
+        override_config = process_workshop_config(initialize_workshop_file);
     }
 }
 
@@ -324,16 +377,18 @@ if (override_config) {
     for (var key1 in override_config) {
         if (allowed_config.has(key1)) {
             var value1 = override_config[key1];
-            if (value1.constructor == Array) {
-                config[key1] = config[key1].concat(value1);
-            }
-            else if (value1.constructor == Object) {
-                for (var key2 in value1) {
-                    config[key1][key2] = value1[key2];
+            if (value1 !== undefined && value1 != null) {
+                if (value1.constructor == Array) {
+                    config[key1] = config[key1].concat(value1);
                 }
-            }
-            else {
-                config[key1] = value1;
+                else if (value1.constructor == Object) {
+                    for (var key2 in value1) {
+                        config[key1][key2] = value1[key2];
+                    }
+                }
+                else {
+                    config[key1] = value1;
+                }
             }
         }
     }
