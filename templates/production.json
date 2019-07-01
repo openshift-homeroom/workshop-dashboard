@@ -15,7 +15,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshiftlabs/workshop-dashboard:3.3.0",
+            "value": "quay.io/openshiftlabs/workshop-dashboard:3.3.1",
             "required": true
         },
         {
@@ -49,6 +49,14 @@
         },
         {
             "name": "GATEWAY_ENVVARS",
+            "value": ""
+        },
+        {
+            "name": "DOWNLOAD_URL",
+            "value": ""
+        },
+        {
+            "name": "WORKSHOP_FILE",
             "value": ""
         },
         {
@@ -270,6 +278,14 @@
                                     {
                                         "name": "OAUTH_SERVICE_ACCOUNT",
                                         "value": "${APPLICATION_NAME}-user"
+                                    },
+                                    {
+                                        "name": "DOWNLOAD_URL",
+                                        "value": "${DOWNLOAD_URL}"
+                                    },
+                                    {
+                                        "name": "WORKSHOP_FILE",
+                                        "value": "${WORKSHOP_FILE}"
                                     },
                                     {
                                         "name": "WORKSHOPPER_URLS",

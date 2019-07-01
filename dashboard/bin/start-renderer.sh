@@ -17,4 +17,9 @@ fi
 
 export PORT=${PORT:-10082}
 
+if [ x"$DOWNLOAD_URL" != x"" ]; then
+    node download.js /tmp/workshop "$DOWNLOAD_URL" "$WORKSHOP_FILE"
+    export WORKSHOP_DIR=/tmp/workshop
+fi
+
 exec npm start
