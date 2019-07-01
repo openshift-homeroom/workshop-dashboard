@@ -200,17 +200,21 @@ function process_workshop_config(workshop_config) {
     }
 
     function analytics_tracking_code(code) {
-        temp_config.analytics = code;
+        if (code) {
+            temp_config.analytics = code;
+        }
     }
 
     function google_tracking_id(id) {
-        if (google_tracking_id) {
+        if (id) {
             temp_config.analytics = google_analytics.replace("UA-XXXX-1", id);
         }
     }
 
     function template_engine(engine) {
-        temp_config.template_engine = engine;
+        if (engine) {
+            temp_config.template_engine = engine;
+        }
     }
 
     function module_metadata(pathname, title, exit_sign) {
@@ -373,16 +377,18 @@ if (override_config) {
     for (var key1 in override_config) {
         if (allowed_config.has(key1)) {
             var value1 = override_config[key1];
-            if (value1.constructor == Array) {
-                config[key1] = config[key1].concat(value1);
-            }
-            else if (value1.constructor == Object) {
-                for (var key2 in value1) {
-                    config[key1][key2] = value1[key2];
+            if (value1 !== undefined && value1 != null) {
+                if (value1.constructor == Array) {
+                    config[key1] = config[key1].concat(value1);
                 }
-            }
-            else {
-                config[key1] = value1;
+                else if (value1.constructor == Object) {
+                    for (var key2 in value1) {
+                        config[key1][key2] = value1[key2];
+                    }
+                }
+                else {
+                    config[key1] = value1;
+                }
             }
         }
     }
