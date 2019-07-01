@@ -47,6 +47,14 @@
             "value": ""
         },
         {
+            "name": "DOWNLOAD_URL",
+            "value": ""
+        },
+        {
+            "name": "WORKSHOP_FILE",
+            "value": ""
+        },
+        {
             "name": "WORKSHOPPER_URLS",
             "value": ""
         },
@@ -302,6 +310,14 @@
                                     {
                                         "name": "OAUTH_SERVICE_ACCOUNT",
                                         "value": "${APPLICATION_NAME}-user"
+                                    },
+                                    {
+                                        "name": "DOWNLOAD_URL",
+                                        "value": "${DOWNLOAD_URL}"
+                                    },
+                                    {
+                                        "name": "WORKSHOP_FILE",
+                                        "value": "${WORKSHOP_FILE}"
                                     },
                                     {
                                         "name": "WORKSHOPPER_URLS",
