@@ -285,7 +285,7 @@ function process_workshop_config(workshop_config) {
         analytics_tracking_code(modules_conf.analytics_tracking_code);
         google_tracking_id(modules_conf.google_tracking_id);
 
-        config.images_url = modules_info.config.images_url;
+        config.images_url = modules_conf.images_url;
 
         let variables_set = new Set();
 
