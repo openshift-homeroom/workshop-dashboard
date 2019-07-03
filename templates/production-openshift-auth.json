@@ -2,9 +2,9 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "workshop-dashboard-production-cluster-admin",
+        "name": "workshop-dashboard-production-openshift-auth",
         "annotations": {
-            "openshift.io/display-name": "Workshop Dashboard (Production/Cluster Admin)"
+            "openshift.io/display-name": "Workshop Dashboard (Production/OpenShift Auth)"
         }
     },
     "parameters": [
@@ -15,6 +15,16 @@
         },
         {
             "name": "PROJECT_NAME",
+            "value": "",
+            "required": true
+        },
+        {
+            "name": "CLUSTER_SUBDOMAIN",
+            "value": "",
+            "required": true
+        },
+        {
+            "name": "CLUSTER_API_URL",
             "value": "",
             "required": true
         },
@@ -77,6 +87,11 @@
             "name": "CONSOLE_BRANDING",
             "value": "openshift",
             "required": true
+        },
+        {
+            "name": "CONSOLE_OAUTH_SECRET",
+            "generate": "expression",
+            "from": "[a-zA-Z0-9]{32}"
         }
     ],
     "objects": [
@@ -87,35 +102,23 @@
                 "name": "${APPLICATION_NAME}-user",
                 "labels": {
                     "app": "${APPLICATION_NAME}"
-                },
-                "annotations": {
-                    "serviceaccounts.openshift.io/oauth-redirectreference.first": "{\"kind\":\"OAuthRedirectReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"Route\",\"name\":\"${APPLICATION_NAME}\"}}",
-                    "serviceaccounts.openshift.io/oauth-redirecturi.first": "oauth_callback",
-                    "serviceaccounts.openshift.io/oauth-want-challenges": "false"
                 }
             }
         },
         {
-            "kind": "ClusterRoleBinding",
-            "apiVersion": "v1",
+            "kind": "OAuthClient",
+            "apiVersion": "oauth.openshift.io/v1",
             "metadata": {
-                "name": "${APPLICATION_NAME}-cluster-admin",
+                "name": "${APPLICATION_NAME}-${PROJECT_NAME}-console",
                 "labels": {
                     "app": "${APPLICATION_NAME}"
                 }
             },
-            "subjects": [
-                {
-                    "kind": "ServiceAccount",
-                    "name": "${APPLICATION_NAME}-user",
-                    "namespace": "${PROJECT_NAME}"
-                }
-            ],
-            "roleRef": {
-                "apiGroup": "rbac.authorization.k8s.io",
-                "kind": "ClusterRole",
-                "name": "cluster-admin"
-            }
+            "secret": "${CONSOLE_OAUTH_SECRET}",
+            "grantMethod": "auto",
+            "redirectURIs": [
+                "https://${APPLICATION_NAME}-${PROJECT_NAME}.${CLUSTER_SUBDOMAIN}/console/auth/callback"
+            ]
         },
         {
             "kind": "ImageStream",
@@ -139,6 +142,33 @@
                         }
                     }
                 ]
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Secret",
+            "metadata": {
+                "name": "${APPLICATION_NAME}-console",
+                "labels": {
+                    "app": "${APPLICATION_NAME}"
+                }
+            },
+            "type": "Opaque",
+            "stringData": {
+                "clientSecret": "${CONSOLE_OAUTH_SECRET}"
+            }
+        },
+        {
+            "kind": "ConfigMap",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${APPLICATION_NAME}-console",
+                "labels": {
+                    "app": "console"
+                }
+            },
+            "data": {
+                "console-config.yaml": "apiVersion: console.openshift.io/v1\nauth:\n  clientID: ${APPLICATION_NAME}-${PROJECT_NAME}-console\n  clientSecretFile: /var/oauth-config/clientSecret\n  logoutRedirect: \"\"\n  oauthEndpointCAFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt\nclusterInfo:\n  consoleBaseAddress: https://${APPLICATION_NAME}-${PROJECT_NAME}.${CLUSTER_SUBDOMAIN}\n  consoleBasePath: /console/\n  masterPublicURL: ${CLUSTER_API_URL}\ncustomization:\n  branding: ocp\nkind: ConsoleConfig\nservingInfo:\n  bindAddress: http://0.0.0.0:10083\n"
             }
         },
         {
@@ -233,10 +263,6 @@
                                         "value": "${AUTH_PASSWORD}"
                                     },
                                     {
-                                        "name": "OAUTH_SERVICE_ACCOUNT",
-                                        "value": "${APPLICATION_NAME}-user"
-                                    },
-                                    {
                                         "name": "DOWNLOAD_URL",
                                         "value": "${DOWNLOAD_URL}"
                                     },
@@ -275,31 +301,22 @@
                             {
                                 "name": "console",
                                 "image": "quay.io/openshift/origin-console:${CONSOLE_VERSION}",
-                                "command": [ "/opt/bridge/bin/bridge" ],
-                                "env": [
+                                "command": [
+                                    "/opt/bridge/bin/bridge",
+                                    "--public-dir=/opt/bridge/static",
+                                    "--config=/var/console-config/console-config.yaml",
+                                    ""
+                                ],
+                                "volumeMounts": [
                                     {
-                                        "name": "BRIDGE_K8S_MODE",
-                                        "value": "in-cluster"
+                                        "mountPath": "/var/oauth-config",
+                                        "name": "console-oauth-config",
+                                        "readOnly": true
                                     },
                                     {
-                                        "name": "BRIDGE_LISTEN",
-                                        "value": "http://0.0.0.0:10083"
-                                    },
-                                    {
-                                        "name": "BRIDGE_BASE_PATH",
-                                        "value": "/console/"
-                                    },
-                                    {
-                                        "name": "BRIDGE_PUBLIC_DIR",
-                                        "value": "/opt/bridge/static"
-                                    },
-                                    {
-                                        "name": "BRIDGE_USER_AUTH",
-                                        "value": "disabled"
-                                    },
-                                    {
-                                        "name": "BRIDGE_BRANDING",
-                                        "value": "${CONSOLE_BRANDING}"
+                                        "mountPath": "/var/console-config",
+                                        "name": "console-config",
+                                        "readOnly": true
                                     }
                                 ]
                             }
@@ -310,6 +327,20 @@
                                 "configMap": {
                                     "name": "${APPLICATION_NAME}-env",
                                     "defaultMode": 420
+                                }
+                            },
+                            {
+                                "name": "console-oauth-config",
+                                "secret": {
+                                    "defaultMode": 420,
+                                    "secretName": "${APPLICATION_NAME}-console"
+                                }
+                            },
+                            {
+                                "name": "console-config",
+                                "configMap": {
+                                    "defaultMode": 420,
+                                    "name": "${APPLICATION_NAME}-console"
                                 }
                             }
                         ]
