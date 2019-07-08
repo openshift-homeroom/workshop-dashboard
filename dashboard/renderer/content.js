@@ -165,8 +165,23 @@ function module_index(modules) {
 
 // Markdown rendering.
 
+marked_renderer = new marked.Renderer();
+marked_renderer.image_original = marked_renderer.image;
+
+marked_renderer.image = function(href, title, text) {
+    if (config.images_url) {
+        if (!href.startsWith('http://') &&!href.startsWith('https://')) {
+            if (!path.isAbsolute(href)) {
+                href = config.images_url.replace(/\/$/, "") + '/' +
+                        path.join(path.dirname(this.options.pathname), href);
+            }
+        }
+    }
+    return marked_renderer.image_original(href, title, text);
+}
+
 marked.setOptions({
-  renderer: new marked.Renderer(),
+  renderer: marked_renderer,
   pedantic: false,
   gfm: true,
   tables: true,
@@ -235,7 +250,7 @@ async function markdown_process_page(file, pathname, variables) {
         data = replace_variables(data, variables);
     }
 
-    return marked(data);
+    return marked(data, { pathname: pathname });
 }
 
 // Asciidoc rendering.
@@ -253,7 +268,8 @@ async function asciidoc_process_page(file, pathname, variables) {
     let attributes = {}
 
     if (config.images_url) {
-        attributes['imagesdir'] = config.images_url;
+        attributes['imagesdir'] = config.images_url.replace(/\/$/, "") +
+                '/' + path.join(path.dirname(pathname));
     }
 
     var doc = asciidoctor.load(data,
@@ -266,7 +282,7 @@ async function asciidoc_process_page(file, pathname, variables) {
 
 async function render(module, variables) {
     var file = module.file;
-    var pathname = module.pathname;
+    var pathname = module.path;
 
     if (file) {
         if (module.format == 'markdown') {

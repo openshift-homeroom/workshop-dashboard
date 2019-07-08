@@ -77,6 +77,7 @@ async function main() {
     config_url = download_url + '/config.js';
 
     config_body = await rp(config_url).then((body) => {
+        console.log('Downloaded:', config_url);
         return body;
     }).catch((err) => {
         return;
@@ -114,6 +115,7 @@ async function main() {
     modules_url = download_url + '/' + modules_file;
 
     modules_body = await rp(modules_url).then((body) => {
+        console.log('Downloaded:', modules_url);
         return body;
     }).catch((err) => {
         return;
@@ -159,10 +161,9 @@ async function main() {
     fs.writeFileSync(path.join(workshop_dir, 'modules.yaml'), modules_body);
 
     // Next we need to download each of the workshop content
-    // files. We only support the files being of type AsciiDoc.
-    // If workshop is legacy Workshopper content, the files are
-    // in the top level directory, otherwise expect them to be
-    // in the content sub directory.
+    // files. If workshop is legacy Workshopper content, the
+    // files are in the top level directory, otherwise expect
+    // them to be in the content sub directory.
 
     try {
         fs.mkdirSync(path.join(workshop_dir, 'content'), { recursive: true });
@@ -181,7 +182,9 @@ async function main() {
     for (let i = 0; i < modules.length; i++) {
         let module_url;
         let module_body;
-        
+
+        // First try AsciiDoc files.
+
         if (!legacy_mode) {
             module_url = download_url + '/content/' + modules[i] + '.adoc';
         }
@@ -196,20 +199,61 @@ async function main() {
             return;
         });
 
-        let module_file = path.join(workshop_dir, 'content', modules[i] + '.adoc');
-        let module_dir = path.dirname(module_file);
+        if (module_body) {
+            let module_file = path.join(workshop_dir, 'content',
+                    modules[i] + '.adoc');
+            let module_dir = path.dirname(module_file);
 
-        try {
-            fs.mkdirSync(module_dir, { recursive: true });
-        }
-        catch (err) {
-            if (err.code != 'EEXIST') {
-                console.log('Unable to create module parent directory.', err);
-                process.exit(1);
+            try {
+                fs.mkdirSync(module_dir, { recursive: true });
             }
+            catch (err) {
+                if (err.code != 'EEXIST') {
+                    console.log('Unable to create module parent directory.', err);
+                    process.exit(1);
+                }
+            }
+
+            fs.writeFileSync(module_file, module_body);
+
+            continue;
         }
 
-        fs.writeFileSync(module_file, module_body);
+        // Next try Markdown fils.
+
+        if (!legacy_mode) {
+            module_url = download_url + '/content/' + modules[i] + '.md';
+        }
+        else {
+            module_url = download_url + '/' + modules[i] + '.md';
+        }
+
+        module_body = await rp(module_url).then((body) => {
+            console.log('Downloaded:', module_url);
+            return body;
+        }).catch((err) => {
+            return;
+        });
+
+        if (module_body) {
+            let module_file = path.join(workshop_dir, 'content',
+                    modules[i] + '.md');
+            let module_dir = path.dirname(module_file);
+
+            try {
+                fs.mkdirSync(module_dir, { recursive: true });
+            }
+            catch (err) {
+                if (err.code != 'EEXIST') {
+                    console.log('Unable to create module parent directory.', err);
+                    process.exit(1);
+                }
+            }
+
+            fs.writeFileSync(module_file, module_body);
+
+            continue;
+        }
     }
 }
 
