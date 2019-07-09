@@ -277,7 +277,9 @@ function process_workshop_config(workshop_config) {
             let name = workshop_info.modules.activate[i];
             let module_info = modules_info.modules[name];
 
-            module_metadata(name, module_info.name, module_info.exit_sign);
+            if (module_info) {
+                module_metadata(name, module_info.name, module_info.exit_sign);
+            }
         }
 
         // Next set data variables and any other config settings
