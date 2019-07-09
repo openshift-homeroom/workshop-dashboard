@@ -63,7 +63,7 @@ cluster_subdomain: %cluster_subdomain%
 
 [External](https://www.openshift.com)
 
-[Internal](index)
+[Internal](%base_url%)
 
 #### Console links
 
