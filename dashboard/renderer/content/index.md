@@ -33,7 +33,7 @@ echo "execute in terminal 1"
 echo "copy text to buffer"
 ```
 
-#### Click text to copy (edit)
+#### Click text to copy (and edit)
 
 ```copy-and-edit
 echo "copy text to buffer"
