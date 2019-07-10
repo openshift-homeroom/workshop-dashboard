@@ -6,6 +6,10 @@ span.copy-glyph {
   margin: 3px;
 }
 
+span.copy-and-edit-glyph {
+  margin: 3px;
+}
+
 .listingblock .content {
   padding: 0px 0px;
   margin: 0px 0px;

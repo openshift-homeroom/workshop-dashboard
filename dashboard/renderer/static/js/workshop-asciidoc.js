@@ -59,4 +59,13 @@ $(document).ready(function() {
             selectElementText(this);
         });
     });
+
+    $.each([$('.copy-and-edit .content')], function() {
+        $(this).find('.highlight').prepend('<span class="copy-and-edit-glyph fas fa-user-edit" aria-hidden="true"></span>');
+        this.parent().click(function(event) {
+            $(this).find('.copy-and-edit-glyph').addClass('text-warning');
+            handle_copy(event);
+            selectElementText(this);
+        });
+    });
 });
