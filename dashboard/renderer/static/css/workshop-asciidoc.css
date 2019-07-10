@@ -6,6 +6,14 @@ span.copy-glyph {
   margin: 3px;
 }
 
+span.copy-and-edit-glyph {
+  margin: 3px;
+}
+
+.listingblock.copypaste.copypaste-warning>.content>.highlight {
+    border: 1px solid #FF0000;
+}
+
 .listingblock .content {
   padding: 0px 0px;
   margin: 0px 0px;

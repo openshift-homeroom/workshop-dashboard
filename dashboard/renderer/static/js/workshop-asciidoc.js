@@ -16,7 +16,7 @@ $(document).ready(function() {
                 selectElementText(this);
             });
         } else {
-            $(this).find('.highlight').prepend('<span class="copy-glyph fas fa-paste" aria-hidden="true"></span>');
+            $(this).find('.highlight').prepend('<span class="copy-glyph fas fa-copy" aria-hidden="true"></span>');
             this.parent().click(function(event) {
                 $(this).find('.copy-glyph').addClass('text-success');
                 handle_copy(event);
@@ -42,7 +42,7 @@ $(document).ready(function() {
                 selectElementText(this);
             });
         } else {
-            $(this).find('.highlight').prepend('<span class="copy-glyph fas fa-paste" aria-hidden="true"></span>');
+            $(this).find('.highlight').prepend('<span class="copy-glyph fas fa-copy" aria-hidden="true"></span>');
             this.parent().click(function(event) {
                 $(this).find('.copy-glyph').addClass('text-success');
                 handle_copy(event);
@@ -52,9 +52,18 @@ $(document).ready(function() {
     });
 
     $.each([$('.copypaste .content'), $('.copy .content')], function() {
-        $(this).find('.highlight').prepend('<span class="copy-glyph fas fa-paste" aria-hidden="true"></span>');
+        $(this).find('.highlight').prepend('<span class="copy-glyph fas fa-copy" aria-hidden="true"></span>');
         this.parent().click(function(event) {
             $(this).find('.copy-glyph').addClass('text-success');
+            handle_copy(event);
+            selectElementText(this);
+        });
+    });
+
+    $.each([$('.copy-and-edit .content')], function() {
+        $(this).find('.highlight').prepend('<span class="copy-and-edit-glyph fas fa-user-edit" aria-hidden="true"></span>');
+        this.parent().click(function(event) {
+            $(this).find('.copy-and-edit-glyph').addClass('text-warning');
             handle_copy(event);
             selectElementText(this);
         });

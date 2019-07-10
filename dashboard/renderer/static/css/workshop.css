@@ -181,3 +181,10 @@ span.copy-glyph {
   padding: 3px;
   pointer-events: none;
 }
+
+span.copy-and-edit-glyph {
+  display: block;
+  float: right;
+  padding: 3px;
+  pointer-events: none;
+}
