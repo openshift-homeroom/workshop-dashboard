@@ -16,7 +16,7 @@ $(document).ready(function() {
                 selectElementText(this);
             });
         } else {
-            this.parent().prepend('<span class="copy-glyph fas fa-paste" aria-hidden="true"></span>');
+            this.parent().prepend('<span class="copy-glyph fas fa-copy" aria-hidden="true"></span>');
             this.parent().click(function(event) {
                 $(this).find('.copy-glyph').addClass('text-success');
                 handle_copy(event);
@@ -42,7 +42,7 @@ $(document).ready(function() {
                 selectElementText(this);
             });
         } else {
-            this.parent().prepend('<span class="copy-glyph fas fa-paste" aria-hidden="true"></span>');
+            this.parent().prepend('<span class="copy-glyph fas fa-copy" aria-hidden="true"></span>');
             this.parent().click(function(event) {
                 $(this).find('.copy-glyph').addClass('text-success');
                 handle_copy(event);
@@ -52,7 +52,7 @@ $(document).ready(function() {
     });
 
     $.each([$('code.language-copy'), $('code.language-copypaste')], function() {
-        this.parent().prepend('<span class="copy-glyph fas fa-paste" aria-hidden="true"></span>');
+        this.parent().prepend('<span class="copy-glyph fas fa-copy" aria-hidden="true"></span>');
         this.parent().click(function(event) {
             $(this).find('.copy-glyph').addClass('text-success');
             handle_copy(event);
