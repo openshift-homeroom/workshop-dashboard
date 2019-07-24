@@ -140,6 +140,11 @@ var config = {
         name: 'cluster_subdomain',
         content: ((process.env.CLUSTER_SUBDOMAIN === undefined)
             ? '' : process.env.CLUSTER_SUBDOMAIN)
+      },
+      {
+        name: 'image_registry',
+        content: ((process.env.OPENSHIFT_IMAGE_REGISTRY === undefined)
+            ? '' : process.env.OPENSHIFT_IMAGE_REGISTRY)
       }
     ],
 };
