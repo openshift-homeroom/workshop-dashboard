@@ -1,4 +1,4 @@
-FROM quay.io/openshiftlabs/workshop-terminal:2.12.0
+FROM quay.io/openshiftlabs/workshop-terminal:2.12.1
 
 USER root
 
