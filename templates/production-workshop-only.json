@@ -2,9 +2,9 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "workshop-dashboard-production-cluster-admin",
+        "name": "workshop-dashboard-workshop-only",
         "annotations": {
-            "openshift.io/display-name": "Workshop Dashboard (Production/Cluster Admin)"
+            "openshift.io/display-name": "Workshop Dashboard (Production/Workshop Only)"
         }
     },
     "parameters": [
@@ -14,34 +14,12 @@
             "required": true
         },
         {
-            "name": "PROJECT_NAME",
-            "value": "",
-            "required": true
-        },
-        {
             "name": "TERMINAL_IMAGE",
             "value": "quay.io/openshiftlabs/workshop-dashboard:3.7.0",
             "required": true
         },
         {
-            "name": "AUTH_USERNAME",
-            "value": ""
-        },
-        {
-            "name": "AUTH_PASSWORD",
-            "generate": "expression",
-            "from": "[a-zA-Z0-9]{16}"
-        },
-        {
-            "name": "TERMINAL_ENVVARS",
-            "value": ""
-        },
-        {
             "name": "WORKSHOP_ENVVARS",
-            "value": ""
-        },
-        {
-            "name": "GATEWAY_ENVVARS",
             "value": ""
         },
         {
@@ -51,32 +29,6 @@
         {
             "name": "WORKSHOP_FILE",
             "value": ""
-        },
-        {
-            "name": "WORKSHOPPER_URLS",
-            "value": ""
-        },
-        {
-            "name": "OC_VERSION",
-            "value": ""
-        },
-        {
-            "name": "ODO_VERSION",
-            "value": ""
-        },
-        {
-            "name": "KUBECTL_VERSION",
-            "value": ""
-        },
-        {
-            "name": "CONSOLE_VERSION",
-            "value": "4.2.0",
-            "required": true
-        },
-        {
-            "name": "CONSOLE_BRANDING",
-            "value": "openshift",
-            "required": true
         }
     ],
     "objects": [
@@ -87,34 +39,7 @@
                 "name": "${APPLICATION_NAME}-user",
                 "labels": {
                     "app": "${APPLICATION_NAME}"
-                },
-                "annotations": {
-                    "serviceaccounts.openshift.io/oauth-redirectreference.first": "{\"kind\":\"OAuthRedirectReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"Route\",\"name\":\"${APPLICATION_NAME}\"}}",
-                    "serviceaccounts.openshift.io/oauth-redirecturi.first": "oauth_callback",
-                    "serviceaccounts.openshift.io/oauth-want-challenges": "false"
                 }
-            }
-        },
-        {
-            "kind": "ClusterRoleBinding",
-            "apiVersion": "v1",
-            "metadata": {
-                "name": "${APPLICATION_NAME}-cluster-admin",
-                "labels": {
-                    "app": "${APPLICATION_NAME}"
-                }
-            },
-            "subjects": [
-                {
-                    "kind": "ServiceAccount",
-                    "name": "${APPLICATION_NAME}-user",
-                    "namespace": "${PROJECT_NAME}"
-                }
-            ],
-            "roleRef": {
-                "apiGroup": "rbac.authorization.k8s.io",
-                "kind": "ClusterRole",
-                "name": "cluster-admin"
             }
         },
         {
@@ -151,9 +76,7 @@
                 }
             },
             "data": {
-                "terminal.sh": "${TERMINAL_ENVVARS}",
-                "workshop.sh": "${WORKSHOP_ENVVARS}",
-                "gateway.sh": "${GATEWAY_ENVVARS}"
+                "workshop.sh": "${WORKSHOP_ENVVARS}"
             }
         },
         {
@@ -201,6 +124,7 @@
                     },
                     "spec": {
                         "serviceAccountName": "${APPLICATION_NAME}-user",
+                        "automountServiceAccountToken": false,
                         "containers": [
                             {
                                 "name": "terminal",
@@ -225,16 +149,8 @@
                                         "value": "${APPLICATION_NAME}"
                                     },
                                     {
-                                        "name": "AUTH_USERNAME",
-                                        "value": "${AUTH_USERNAME}"
-                                    },
-                                    {
-                                        "name": "AUTH_PASSWORD",
-                                        "value": "${AUTH_PASSWORD}"
-                                    },
-                                    {
-                                        "name": "OAUTH_SERVICE_ACCOUNT",
-                                        "value": "${APPLICATION_NAME}-user"
+                                        "name": "WORKSHOP_ONLY",
+                                        "value": "true"
                                     },
                                     {
                                         "name": "DOWNLOAD_URL",
@@ -243,63 +159,12 @@
                                     {
                                         "name": "WORKSHOP_FILE",
                                         "value": "${WORKSHOP_FILE}"
-                                    },
-                                    {
-                                        "name": "WORKSHOPPER_URLS",
-                                        "value": "${WORKSHOPPER_URLS}"
-                                    },
-                                    {
-                                        "name": "CONSOLE_URL",
-                                        "value": "http://0.0.0.0:10083"
-                                    },
-                                    {
-                                        "name": "OC_VERSION",
-                                        "value": "${OC_VERSION}"
-                                    },
-                                    {
-                                        "name": "ODO_VERSION",
-                                        "value": "${ODO_VERSION}"
-                                    },
-                                    {
-                                        "name": "KUBECTL_VERSION",
-                                        "value": "${KUBECTL_VERSION}"
                                     }
                                 ],
                                 "volumeMounts": [
                                     {
                                         "name": "envvars",
                                         "mountPath": "/opt/workshop/envvars"
-                                    }
-                                ]
-                            },
-                            {
-                                "name": "console",
-                                "image": "quay.io/openshift/origin-console:${CONSOLE_VERSION}",
-                                "command": [ "/opt/bridge/bin/bridge" ],
-                                "env": [
-                                    {
-                                        "name": "BRIDGE_K8S_MODE",
-                                        "value": "in-cluster"
-                                    },
-                                    {
-                                        "name": "BRIDGE_LISTEN",
-                                        "value": "http://0.0.0.0:10083"
-                                    },
-                                    {
-                                        "name": "BRIDGE_BASE_PATH",
-                                        "value": "/console/"
-                                    },
-                                    {
-                                        "name": "BRIDGE_PUBLIC_DIR",
-                                        "value": "/opt/bridge/static"
-                                    },
-                                    {
-                                        "name": "BRIDGE_USER_AUTH",
-                                        "value": "disabled"
-                                    },
-                                    {
-                                        "name": "BRIDGE_BRANDING",
-                                        "value": "${CONSOLE_BRANDING}"
                                     }
                                 ]
                             }
@@ -359,10 +224,6 @@
                 },
                 "port": {
                     "targetPort": "10080-tcp"
-                },
-                "tls": {
-                    "termination": "edge",
-                    "insecureEdgeTerminationPolicy": "Redirect"
                 }
             }
         }

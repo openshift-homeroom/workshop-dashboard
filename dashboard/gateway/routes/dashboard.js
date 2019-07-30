@@ -2,8 +2,14 @@ var express = require('express');
 var path = require('path');
 var fs = require('fs');
 
+var enable_dashboard = process.env.ENABLE_DASHBOARD;
+
 module.exports = function(app, prefix) {
     var router = express();
+
+    if (enable_dashboard != 'true') {
+        return router;
+    }
 
     router.locals.project_namespace = process.env.PROJECT_NAMESPACE;
 

@@ -15,8 +15,8 @@ module.exports = function(app, prefix) {
 
         // Workshopper.
 
-	router.get('/.redirect-when-workshop-is-ready', function (req, res) {
-	    var client = axios.create({ baseURL: 'http://127.0.0.1:10082' });
+        router.get('/.redirect-when-workshop-is-ready', function (req, res) {
+            var client = axios.create({ baseURL: 'http://127.0.0.1:10082' });
 
             var options = {
                 retries: 3,
@@ -25,13 +25,13 @@ module.exports = function(app, prefix) {
                 }
             };
 
-	    axios_retry(client, options);
+            axios_retry(client, options);
 
-	    client.get(req.baseUrl + '/')
-		.then(result => {
-		    res.redirect(req.baseUrl + '/');
-	        });
-	})
+            client.get(req.baseUrl + '/')
+                .then(result => {
+                    res.redirect(req.baseUrl + '/');
+                });
+        })
 
         router.use(proxy(prefix, {
             target: 'http://127.0.0.1:10082',
