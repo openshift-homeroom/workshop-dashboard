@@ -30,7 +30,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshiftlabs/workshop-dashboard:3.7.0",
+            "value": "quay.io/openshiftlabs/workshop-dashboard:3.7.1",
             "required": true
         },
         {
@@ -80,7 +80,12 @@
         },
         {
             "name": "CONSOLE_VERSION",
-            "value": "4.2.0",
+            "value": "",
+            "description": "OBSOLETE: Use CONSOLE_IMAGE instead."
+        },
+        {
+            "name": "CONSOLE_IMAGE",
+            "value": "quay.io/openshift/origin-console:4.1",
             "required": true
         },
         {
@@ -300,7 +305,7 @@
                             },
                             {
                                 "name": "console",
-                                "image": "quay.io/openshift/origin-console:${CONSOLE_VERSION}",
+                                "image": "${CONSOLE_IMAGE}",
                                 "command": [
                                     "/opt/bridge/bin/bridge",
                                     "--public-dir=/opt/bridge/static",
