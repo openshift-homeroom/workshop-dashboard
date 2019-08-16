@@ -20,7 +20,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshiftlabs/workshop-dashboard:3.7.1",
+            "value": "quay.io/openshiftlabs/workshop-dashboard:3.7.2",
             "required": true
         },
         {
