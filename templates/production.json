@@ -28,6 +28,10 @@
             "from": "[a-zA-Z0-9]{16}"
         },
         {
+            "name": "CLUSTER_SUBDOMAIN",
+            "value": ""
+        },
+        {
             "name": "OPENSHIFT_PROJECT",
             "value": ""
         },
@@ -221,6 +225,10 @@
                                 "command": [ "/opt/workshop/bin/setup-console.sh" ],
                                 "env": [
                                     {
+                                        "name": "CLUSTER_SUBDOMAIN",
+                                        "value": "${CLUSTER_SUBDOMAIN}"
+                                    },
+                                    {
                                         "name": "OPENSHIFT_PROJECT",
                                         "value": "${OPENSHIFT_PROJECT}"
                                     },
@@ -287,6 +295,10 @@
                                     {
                                         "name": "AUTH_PASSWORD",
                                         "value": "${AUTH_PASSWORD}"
+                                    },
+                                    {
+                                        "name": "CLUSTER_SUBDOMAIN",
+                                        "value": "${CLUSTER_SUBDOMAIN}"
                                     },
                                     {
                                         "name": "OAUTH_SERVICE_ACCOUNT",
