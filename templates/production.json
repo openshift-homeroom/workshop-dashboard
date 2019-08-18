@@ -15,7 +15,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshiftlabs/workshop-dashboard:3.7.3",
+            "value": "quay.io/openshiftlabs/workshop-dashboard:3.7.4",
             "required": true
         },
         {
@@ -26,6 +26,14 @@
             "name": "AUTH_PASSWORD",
             "generate": "expression",
             "from": "[a-zA-Z0-9]{16}"
+        },
+        {
+            "name": "CLUSTER_SUBDOMAIN",
+            "value": ""
+        },
+        {
+            "name": "OPENSHIFT_PROJECT",
+            "value": ""
         },
         {
             "name": "OPENSHIFT_USERNAME",
@@ -217,6 +225,14 @@
                                 "command": [ "/opt/workshop/bin/setup-console.sh" ],
                                 "env": [
                                     {
+                                        "name": "CLUSTER_SUBDOMAIN",
+                                        "value": "${CLUSTER_SUBDOMAIN}"
+                                    },
+                                    {
+                                        "name": "OPENSHIFT_PROJECT",
+                                        "value": "${OPENSHIFT_PROJECT}"
+                                    },
+                                    {
                                         "name": "OPENSHIFT_USERNAME",
                                         "value": "${OPENSHIFT_USERNAME}"
                                     },
@@ -279,6 +295,10 @@
                                     {
                                         "name": "AUTH_PASSWORD",
                                         "value": "${AUTH_PASSWORD}"
+                                    },
+                                    {
+                                        "name": "CLUSTER_SUBDOMAIN",
+                                        "value": "${CLUSTER_SUBDOMAIN}"
                                     },
                                     {
                                         "name": "OAUTH_SERVICE_ACCOUNT",
