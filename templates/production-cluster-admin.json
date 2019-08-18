@@ -20,7 +20,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshiftlabs/workshop-dashboard:3.7.2",
+            "value": "quay.io/openshiftlabs/workshop-dashboard:3.7.3",
             "required": true
         },
         {
@@ -31,6 +31,10 @@
             "name": "AUTH_PASSWORD",
             "generate": "expression",
             "from": "[a-zA-Z0-9]{16}"
+        },
+        {
+            "name": "OPENSHIFT_PROJECT",
+            "value": ""
         },
         {
             "name": "TERMINAL_ENVVARS",
@@ -236,6 +240,10 @@
                                     {
                                         "name": "AUTH_PASSWORD",
                                         "value": "${AUTH_PASSWORD}"
+                                    },
+                                    {
+                                        "name": "OPENSHIFT_PROJECT",
+                                        "value": "${OPENSHIFT_PROJECT}"
                                     },
                                     {
                                         "name": "OAUTH_SERVICE_ACCOUNT",
