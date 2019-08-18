@@ -28,6 +28,10 @@
             "from": "[a-zA-Z0-9]{16}"
         },
         {
+            "name": "OPENSHIFT_PROJECT",
+            "value": ""
+        },
+        {
             "name": "OPENSHIFT_USERNAME",
             "value": ""
         },
@@ -216,6 +220,10 @@
                                 "image": "${TERMINAL_IMAGE}",
                                 "command": [ "/opt/workshop/bin/setup-console.sh" ],
                                 "env": [
+                                    {
+                                        "name": "OPENSHIFT_PROJECT",
+                                        "value": "${OPENSHIFT_PROJECT}"
+                                    },
                                     {
                                         "name": "OPENSHIFT_USERNAME",
                                         "value": "${OPENSHIFT_USERNAME}"
