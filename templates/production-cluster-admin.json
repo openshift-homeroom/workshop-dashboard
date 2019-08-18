@@ -33,6 +33,10 @@
             "from": "[a-zA-Z0-9]{16}"
         },
         {
+            "name": "OPENSHIFT_PROJECT",
+            "value": ""
+        },
+        {
             "name": "TERMINAL_ENVVARS",
             "value": ""
         },
@@ -236,6 +240,10 @@
                                     {
                                         "name": "AUTH_PASSWORD",
                                         "value": "${AUTH_PASSWORD}"
+                                    },
+                                    {
+                                        "name": "OPENSHIFT_PROJECT",
+                                        "value": "${OPENSHIFT_PROJECT}"
                                     },
                                     {
                                         "name": "OAUTH_SERVICE_ACCOUNT",
