@@ -15,7 +15,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshiftlabs/workshop-dashboard:3.7.5",
+            "value": "quay.io/openshifthomeroom/workshop-dashboard:4.0.0",
             "required": true
         },
         {
@@ -69,7 +69,8 @@
         },
         {
             "name": "WORKSHOPPER_URLS",
-            "value": ""
+            "value": "",
+            "description": "OBSOLETE: See DOWNLOAD_URL instead."
         },
         {
             "name": "OC_VERSION",
@@ -86,7 +87,7 @@
         {
             "name": "CONSOLE_VERSION",
             "value": "",
-            "description": "OBSOLETE: Use CONSOLE_IMAGE instead."
+            "description": "OBSOLETE: See CONSOLE_IMAGE instead."
         },
         {
             "name": "CONSOLE_IMAGE",
@@ -311,10 +312,6 @@
                                     {
                                         "name": "WORKSHOP_FILE",
                                         "value": "${WORKSHOP_FILE}"
-                                    },
-                                    {
-                                        "name": "WORKSHOPPER_URLS",
-                                        "value": "${WORKSHOPPER_URLS}"
                                     },
                                     {
                                         "name": "CONSOLE_URL",

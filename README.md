@@ -30,7 +30,7 @@ Quick start instructions
 To quickly see what the workshop environment looks like, run:
 
 ```
-oc new-app https://raw.githubusercontent.com/openshift-labs/workshop-dashboard/master/templates/production.json
+oc new-app https://raw.githubusercontent.com/openshift-homeroom/workshop-dashboard/master/templates/production.json
 ```
 
 This will deploy an instance of the user environment as a standalone deployment. The name of the deployment will by default be ``dashboard``.
@@ -65,7 +65,7 @@ The workshop content when the above command is used will be some sample content 
 If you know the name of a custom workshop image hosted on an image registry, which someone has created, you can deploy it by providing the ``TERMINAL_IMAGE`` template parameter:
 
 ```
-oc new-app https://raw.githubusercontent.com/openshift-labs/workshop-dashboard/master/templates/production.json \
+oc new-app https://raw.githubusercontent.com/openshift-homeroom/workshop-dashboard/master/templates/production.json \
   --param TERMINAL_IMAGE="quay.io/openshiftlabs/lab-kubernetes-fundamentals:master"
 ```
 
