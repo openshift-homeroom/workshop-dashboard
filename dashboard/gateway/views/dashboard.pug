@@ -157,6 +157,38 @@ html
                 }
             }
 
+            function reload_workshop() {
+                var workshop_iframe = $("#workshop-iframe");
+
+                if (workshop_iframe) {
+                    workshop_iframe.attr('src', workshop_iframe.attr('src'));
+                }
+            }
+
+            function reload_terminal() {
+                $("#terminals-tab").trigger("click");
+
+                var terminal1_iframe = $("#terminal1-iframe");
+                var terminal2_iframe = $("#terminal2-iframe");
+
+                if (terminal1_iframe) {
+                    terminal1_iframe.attr('src', terminal1_iframe.attr('src'));
+                }
+                if (terminal2_iframe) {
+                    terminal2_iframe.attr('src', terminal2_iframe.attr('src'));
+                }
+            }
+
+            function reload_console() {
+                $("#console-tab").trigger("click");
+
+                var console_iframe = $("#console-iframe");
+
+                if (console_iframe) {
+                    console_iframe.attr('src', console_iframe.attr('src'));
+                }
+            }
+
             function open_link_in_console(url) {
                 $("#console-iframe").attr('src', url);
                 $("#console-tab").trigger("click");
@@ -304,6 +336,16 @@ html
                                 li.dropdown-item
                                     a(role="menuitem", data-toggle="modal", data-target="#workshop-links") Workshop Links
                                 li.dropdown-divider(role="separator")
+
+                            li.dropdown-item
+                                a(role="menuitem" onclick=`reload_workshop();`) Reload Workshop
+                            li.dropdown-item
+                                a(role="menuitem" onclick=`reload_terminal();`) Reload Terminal
+                            if console_url
+                                li.dropdown-item
+                                    a(role="menuitem" onclick=`reload_console();`) Reload Console
+
+                            li.dropdown-divider(role="separator")
 
                             li.dropdown-item
                                 a(role="menuitem" onclick=`window.open("../workshop");`) Open Workshop
