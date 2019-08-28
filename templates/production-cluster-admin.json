@@ -239,6 +239,10 @@
                                         "value": "${APPLICATION_NAME}"
                                     },
                                     {
+                                        "name": "CONFIGURATION_TYPE",
+                                        "value": "cluster-admin"
+                                    },
+                                    {
                                         "name": "AUTH_USERNAME",
                                         "value": "${AUTH_USERNAME}"
                                     },

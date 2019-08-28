@@ -261,6 +261,10 @@
                                         "value": "${APPLICATION_NAME}"
                                     },
                                     {
+                                        "name": "CONFIGURATION_TYPE",
+                                        "value": "openshift-auth"
+                                    },
+                                    {
                                         "name": "AUTH_USERNAME",
                                         "value": "${AUTH_USERNAME}"
                                     },

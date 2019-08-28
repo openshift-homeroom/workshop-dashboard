@@ -149,6 +149,10 @@
                                         "value": "${APPLICATION_NAME}"
                                     },
                                     {
+                                        "name": "CONFIGURATION_TYPE",
+                                        "value": "workshop-only"
+                                    },
+                                    {
                                         "name": "WORKSHOP_ONLY",
                                         "value": "true"
                                     },
