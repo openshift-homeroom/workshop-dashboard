@@ -162,7 +162,8 @@ html
                 var workshop_iframe = $("#workshop-iframe");
 
                 if (workshop_iframe) {
-                    workshop_iframe.attr('src', workshop_iframe.attr('src'));
+                    workshop_iframe.attr('src',
+                      workshop_iframe.contents().get(0).location.href);
                 }
             }
 
@@ -190,7 +191,8 @@ html
                 var console_iframe = $("#console-iframe");
 
                 if (console_iframe) {
-                    console_iframe.attr('src', console_iframe.attr('src'));
+                    console_iframe.attr('src',
+                      console_iframe.contents().get(0).location.href);
                 }
             }
 
