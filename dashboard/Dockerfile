@@ -1,4 +1,4 @@
-FROM quay.io/openshifthomeroom/workshop-terminal:3.0.0
+FROM quay.io/openshifthomeroom/workshop-terminal:3.0.1
 
 USER root
 
@@ -15,11 +15,6 @@ RUN HOME=/opt/workshop/renderer && \
     cd /opt/workshop/renderer && \
     source scl_source enable rh-nodejs10 && \
     npm install --production
-
-RUN HOME=/opt/workshop/gateway && \
-    cd /opt/workshop/gateway && \
-    source scl_source enable rh-nodejs10 && \
-    npm install axios-retry
 
 COPY gateway/. /opt/workshop/gateway/.
 

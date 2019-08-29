@@ -270,7 +270,7 @@ function process_workshop_config(workshop_config) {
 
         temp_config.site_title = workshop_info.name;
 
-        // Now iterate over list of activated modules are populate
+        // Now iterate over list of activated modules and populate
         // modules list in config.
 
         pathname = path.join(config.workshop_dir, 'modules.yaml');

@@ -235,7 +235,7 @@ async function main() {
             return;
         });
 
-        if (module_body) {
+        if (module_body !== undefined) {
             let module_file = path.join(workshop_dir, 'content',
                     modules[i] + '.md');
             let module_dir = path.dirname(module_file);

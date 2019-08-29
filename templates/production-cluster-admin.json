@@ -20,7 +20,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshifthomeroom/workshop-dashboard:4.0.0",
+            "value": "quay.io/openshifthomeroom/workshop-dashboard:4.1.0",
             "required": true
         },
         {
@@ -237,6 +237,10 @@
                                     {
                                         "name": "APPLICATION_NAME",
                                         "value": "${APPLICATION_NAME}"
+                                    },
+                                    {
+                                        "name": "CONFIGURATION_TYPE",
+                                        "value": "cluster-admin"
                                     },
                                     {
                                         "name": "AUTH_USERNAME",

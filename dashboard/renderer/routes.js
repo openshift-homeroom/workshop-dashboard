@@ -84,7 +84,7 @@ router.get('/:pathname(*)', async function (req, res, next) {
 
         var body = await content.render(module, variables);
 
-        if (body) {
+        if (body !== undefined) {
             var options = {
                 config: config,
                 title: title,

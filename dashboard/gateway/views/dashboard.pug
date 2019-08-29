@@ -109,6 +109,7 @@ html
             .iframe-div iframe {
               width: 100%;
               height: 100%;
+              border: 0;
             }
 
             #workshop-dialog {
@@ -157,6 +158,44 @@ html
                 }
             }
 
+            function reload_workshop() {
+                var workshop_iframe = $("#workshop-iframe");
+
+                if (workshop_iframe) {
+                    workshop_iframe.attr('src',
+                      workshop_iframe.contents().get(0).location.href);
+                }
+            }
+
+            function reload_terminal() {
+                $("#terminals-tab").trigger("click");
+
+                var terminal1_iframe = $("#terminal1-iframe");
+                var terminal2_iframe = $("#terminal2-iframe");
+                var terminal3_iframe = $("#terminal3-iframe");
+
+                if (terminal1_iframe) {
+                    terminal1_iframe.attr('src', terminal1_iframe.attr('src'));
+                }
+                if (terminal2_iframe) {
+                    terminal2_iframe.attr('src', terminal2_iframe.attr('src'));
+                }
+                if (terminal3_iframe) {
+                    terminal3_iframe.attr('src', terminal3_iframe.attr('src'));
+                }
+            }
+
+            function reload_console() {
+                $("#console-tab").trigger("click");
+
+                var console_iframe = $("#console-iframe");
+
+                if (console_iframe) {
+                    console_iframe.attr('src',
+                      console_iframe.contents().get(0).location.href);
+                }
+            }
+
             function open_link_in_console(url) {
                 $("#console-iframe").attr('src', url);
                 $("#console-tab").trigger("click");
@@ -202,6 +241,9 @@ html
                         $('#terminal1-iframe')[0].contentWindow.butterfly.nativeScrollTo();
                         if ($('#terminal2-iframe')[0]) {
                             $('#terminal2-iframe')[0].contentWindow.butterfly.nativeScrollTo();
+                        }
+                        if ($('#terminal3-iframe')[0]) {
+                            $('#terminal3-iframe')[0].contentWindow.butterfly.nativeScrollTo();
                         }
                     }
                 });
@@ -306,6 +348,16 @@ html
                                 li.dropdown-divider(role="separator")
 
                             li.dropdown-item
+                                a(role="menuitem" onclick=`reload_workshop();`) Reload Workshop
+                            li.dropdown-item
+                                a(role="menuitem" onclick=`reload_terminal();`) Reload Terminal
+                            if console_url
+                                li.dropdown-item
+                                    a(role="menuitem" onclick=`reload_console();`) Reload Console
+
+                            li.dropdown-divider(role="separator")
+
+                            li.dropdown-item
                                 a(role="menuitem" onclick=`window.open("../workshop");`) Open Workshop
                             li.dropdown-item
                                 a(role="menuitem" onclick=`window.open("../terminal/session/"+generate_terminal_session_id());`) Open Terminal
@@ -327,6 +379,11 @@ html
                     if terminal_tab == 'split'
                         div.split.iframe-div#terminal2-div
                             iframe#terminal2-iframe(src="../terminal/session/2")
+                    if terminal_tab == 'split/2'
+                        div.split.iframe-div#terminal2-div
+                            iframe#terminal2-iframe(src="../terminal/session/2")
+                        div.split.iframe-div#terminal3-div
+                            iframe#terminal3-iframe(src="../terminal/session/3")
 
                 if console_url
                     div.tab-pane.fade.show.iframe-div#console-pane(role="tabpanel" aria-labelledby="console-tab")
@@ -339,7 +396,7 @@ html
         script.
             require(['split'], function(split) {
                 split(['#workshop-div', '#workarea-div'], {
-                    gutterSize: 6,
+                    gutterSize: 8,
                     sizes: [35, 65],
                     cursor: 'row-resize',
                     onDrag: function () {
@@ -352,8 +409,21 @@ html
             script.
                 require(['split'], function(split) {
                     split(['#terminal1-div', '#terminal2-div'], {
-                        gutterSize: 6,
+                        gutterSize: 8,
                         sizes: [60, 40],
+                        direction: 'vertical',
+                        onDrag: function () {
+                            adjust_split_panes();
+                        }
+                    });
+                });
+
+        if terminal_tab == 'split/2'
+            script.
+                require(['split'], function(split) {
+                    split(['#terminal1-div', '#terminal2-div', '#terminal3-div'], {
+                        gutterSize: 8,
+                        sizes: [50, 25, 25],
                         direction: 'vertical',
                         onDrag: function () {
                             adjust_split_panes();
@@ -368,6 +438,11 @@ html
             });
 
             $('#terminal2-iframe').on('load', function() {
+                var style = '<style>a { pointer-events: none }</style>';
+                $(this).contents().find('head').append(style);
+            });
+
+            $('#terminal3-iframe').on('load', function() {
                 var style = '<style>a { pointer-events: none }</style>';
                 $(this).contents().find('head').append(style);
             });
