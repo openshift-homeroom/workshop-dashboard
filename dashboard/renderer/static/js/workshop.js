@@ -1,18 +1,13 @@
 function handle_execute(event, terminal) {
-    var element = event.target;
-    var value = element.innerText.trim();
-    parent.send_to_terminal(value, terminal);
+    var text = $(event.target).text().trim();
+    parent.send_to_terminal(text, terminal);
 }
 
 function handle_copy(event) {
-    var element = event.target;
-    var value = element.innerText.trim();
-    var input = document.createElement('input');
-    input.setAttribute('value', value);
-    document.body.appendChild(input);
-    input.select();
+    var text = $(event.target).text().trim();
+    var element = $('<textarea>').appendTo('body').val(text).select();
     document.execCommand('copy');
-    document.body.removeChild(input)
+    element.remove();
 }
 
 function handle_console_link(event) {
