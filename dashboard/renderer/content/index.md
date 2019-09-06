@@ -27,10 +27,26 @@ echo "execute in terminal 2"
 echo "execute in terminal 1"
 ```
 
+#### Click text to execute (multiline)
+
+```execute-1
+echo "execute in terminal 1 (#1)"
+echo "execute in terminal 1 (#2)"
+```
+
 #### Click text to copy
 
 ```copy
 echo "copy text to buffer"
+```
+
+#### Click text to copy (multiline)
+
+```copy
+echo "copy text to buffer (#1)"
+echo "copy text to buffer (#2)"
+echo "copy text to buffer (#3)"
+echo "copy text to buffer (#4)"
 ```
 
 #### Click text to copy (and edit)
