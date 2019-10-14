@@ -15,7 +15,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshifthomeroom/workshop-dashboard:4.1.1",
+            "value": "quay.io/openshifthomeroom/workshop-dashboard:4.2.0",
             "required": true
         },
         {
