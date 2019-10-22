@@ -88,7 +88,7 @@
         },
         {
             "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshifthomeroom/workshop-terminal:3.1.2"
+            "value": "quay.io/openshifthomeroom/workshop-terminal:3.2.0"
         }
     ],
     "objects": [
