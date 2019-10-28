@@ -33,12 +33,12 @@ To quickly see what the workshop environment looks like, run:
 oc new-app https://raw.githubusercontent.com/openshift-homeroom/workshop-dashboard/master/templates/production.json
 ```
 
-This will deploy an instance of the user environment as a standalone deployment. The name of the deployment will by default be ``dashboard``.
+This will deploy an instance of the user environment as a standalone deployment. The name of the deployment will by default be ``workshop``.
 
 To determine the hostname assigned to the route which you need to use in the URL to access the terminal, run:
 
 ```
-oc get route/dashboard
+oc get route/workshop
 ```
 
 When you access the URL for the dashboard, you will if necessary be redirected to the login page for the OpenShift cluster the dashboard is deployed to. You should enter your login and password for the OpenShift cluster.
@@ -54,7 +54,7 @@ Note that if you do login using ``oc login`` as an actual user, the embedded web
 To delete the deployment when done, run:
 
 ```
-oc delete all,serviceaccount,rolebinding,configmap -l app=dashboard
+oc delete all,serviceaccount,rolebinding,configmap -l app=workshop
 ```
 
 Deploying an existing workshop
