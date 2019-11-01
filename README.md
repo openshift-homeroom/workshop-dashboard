@@ -20,7 +20,7 @@ The dashboard image builds on a separate workshop terminal image which provides 
 * Editors: ``vi``/``vim``, ``nano``.
 * Kubernetes clients: ``kubectl``
 * OpenShift clients: ``oc``, ``odo``.
-* Language runtimes: ``java``, ``node.js``, ``python``, ``ruby``.
+* Language runtimes: ``java``, ``node.js``, ``python``.
 
 For the language runtimes, commonly used packaging tools for working with that language are also included.
 
@@ -62,11 +62,11 @@ Deploying an existing workshop
 
 The workshop content when the above command is used will be some sample content used to test the environment is working correctly.
 
-If you know the name of a custom workshop image hosted on an image registry, which someone has created, you can deploy it by providing the ``TERMINAL_IMAGE`` template parameter:
+If you know the name of a custom workshop image hosted on an image registry, which someone has created, you can deploy it by providing the ``WORKSHOP_IMAGE`` template parameter:
 
 ```
 oc new-app https://raw.githubusercontent.com/openshift-homeroom/workshop-dashboard/master/templates/production.json \
-  --param TERMINAL_IMAGE="quay.io/openshiftlabs/lab-kubernetes-fundamentals:master"
+  --param WORKSHOP_IMAGE="quay.io/openshiftlabs/lab-kubernetes-fundamentals:master"
 ```
 
 Create a new project, deploy the workshop, and when done, delete the project.
