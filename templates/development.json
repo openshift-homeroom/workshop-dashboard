@@ -73,7 +73,7 @@
         },
         {
             "name": "CONSOLE_IMAGE",
-            "value": "quay.io/openshift/origin-console:4.1",
+            "value": "quay.io/openshift/origin-console:4.2",
             "required": true
         },
         {
