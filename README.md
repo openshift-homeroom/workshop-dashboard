@@ -20,7 +20,7 @@ The dashboard image builds on a separate workshop terminal image which provides 
 * Editors: ``vi``/``vim``, ``nano``.
 * Kubernetes clients: ``kubectl``
 * OpenShift clients: ``oc``, ``odo``.
-* Language runtimes: ``java``, ``node.js``, ``python``, ``ruby``.
+* Language runtimes: ``java``, ``node.js``, ``python``.
 
 For the language runtimes, commonly used packaging tools for working with that language are also included.
 
@@ -33,12 +33,12 @@ To quickly see what the workshop environment looks like, run:
 oc new-app https://raw.githubusercontent.com/openshift-homeroom/workshop-dashboard/master/templates/production.json
 ```
 
-This will deploy an instance of the user environment as a standalone deployment. The name of the deployment will by default be ``dashboard``.
+This will deploy an instance of the user environment as a standalone deployment. The name of the deployment will by default be ``workshop``.
 
 To determine the hostname assigned to the route which you need to use in the URL to access the terminal, run:
 
 ```
-oc get route/dashboard
+oc get route/workshop
 ```
 
 When you access the URL for the dashboard, you will if necessary be redirected to the login page for the OpenShift cluster the dashboard is deployed to. You should enter your login and password for the OpenShift cluster.
@@ -54,7 +54,7 @@ Note that if you do login using ``oc login`` as an actual user, the embedded web
 To delete the deployment when done, run:
 
 ```
-oc delete all,serviceaccount,rolebinding,configmap -l app=dashboard
+oc delete all,serviceaccount,rolebinding,configmap -l app=workshop
 ```
 
 Deploying an existing workshop
@@ -62,11 +62,11 @@ Deploying an existing workshop
 
 The workshop content when the above command is used will be some sample content used to test the environment is working correctly.
 
-If you know the name of a custom workshop image hosted on an image registry, which someone has created, you can deploy it by providing the ``TERMINAL_IMAGE`` template parameter:
+If you know the name of a custom workshop image hosted on an image registry, which someone has created, you can deploy it by providing the ``WORKSHOP_IMAGE`` template parameter:
 
 ```
 oc new-app https://raw.githubusercontent.com/openshift-homeroom/workshop-dashboard/master/templates/production.json \
-  --param TERMINAL_IMAGE="quay.io/openshiftlabs/lab-kubernetes-fundamentals:master"
+  --param WORKSHOP_IMAGE="quay.io/openshiftlabs/lab-kubernetes-fundamentals:master"
 ```
 
 Create a new project, deploy the workshop, and when done, delete the project.

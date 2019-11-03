@@ -9,18 +9,23 @@
     },
     "parameters": [
         {
-            "name": "APPLICATION_NAME",
-            "value": "dashboard",
+            "name": "WORKSHOP_NAME",
+            "value": "workshop",
             "required": true
         },
         {
-            "name": "PROJECT_NAME",
+            "name": "NAME_PREFIX",
+            "value": "",
+            "required": false
+        },
+        {
+            "name": "WORKSHOP_NAMESPACE",
             "value": "",
             "required": true
         },
         {
-            "name": "TERMINAL_IMAGE",
-            "value": "quay.io/openshifthomeroom/workshop-dashboard:4.3.0",
+            "name": "WORKSHOP_IMAGE",
+            "value": "quay.io/openshifthomeroom/workshop-dashboard:5.0.0",
             "required": true
         },
         {
@@ -61,11 +66,6 @@
             "value": ""
         },
         {
-            "name": "WORKSHOPPER_URLS",
-            "value": "",
-            "description": "OBSOLETE: See DOWNLOAD_URL instead."
-        },
-        {
             "name": "OC_VERSION",
             "value": ""
         },
@@ -78,13 +78,8 @@
             "value": ""
         },
         {
-            "name": "CONSOLE_VERSION",
-            "value": "",
-            "description": "OBSOLETE: See CONSOLE_IMAGE instead."
-        },
-        {
             "name": "CONSOLE_IMAGE",
-            "value": "quay.io/openshift/origin-console:4.1",
+            "value": "quay.io/openshift/origin-console:4.2",
             "required": true
         },
         {
@@ -98,12 +93,12 @@
             "kind": "ServiceAccount",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${APPLICATION_NAME}-user",
+                "name": "${NAME_PREFIX}${WORKSHOP_NAME}-user",
                 "labels": {
-                    "app": "${APPLICATION_NAME}"
+                    "app": "${NAME_PREFIX}${WORKSHOP_NAME}"
                 },
                 "annotations": {
-                    "serviceaccounts.openshift.io/oauth-redirectreference.first": "{\"kind\":\"OAuthRedirectReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"Route\",\"name\":\"${APPLICATION_NAME}\"}}",
+                    "serviceaccounts.openshift.io/oauth-redirectreference.first": "{\"kind\":\"OAuthRedirectReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"Route\",\"name\":\"${NAME_PREFIX}${WORKSHOP_NAME}\"}}",
                     "serviceaccounts.openshift.io/oauth-redirecturi.first": "oauth_callback",
                     "serviceaccounts.openshift.io/oauth-want-challenges": "false"
                 }
@@ -113,16 +108,16 @@
             "kind": "ClusterRoleBinding",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${APPLICATION_NAME}-cluster-admin",
+                "name": "${NAME_PREFIX}${WORKSHOP_NAME}-cluster-admin",
                 "labels": {
-                    "app": "${APPLICATION_NAME}"
+                    "app": "${NAME_PREFIX}${WORKSHOP_NAME}"
                 }
             },
             "subjects": [
                 {
                     "kind": "ServiceAccount",
-                    "name": "${APPLICATION_NAME}-user",
-                    "namespace": "${PROJECT_NAME}"
+                    "name": "${NAME_PREFIX}${WORKSHOP_NAME}-user",
+                    "namespace": "${WORKSHOP_NAMESPACE}"
                 }
             ],
             "roleRef": {
@@ -135,9 +130,9 @@
             "kind": "ImageStream",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${APPLICATION_NAME}",
+                "name": "${NAME_PREFIX}${WORKSHOP_NAME}",
                 "labels": {
-                    "app": "${APPLICATION_NAME}"
+                    "app": "${NAME_PREFIX}${WORKSHOP_NAME}"
                 }
             },
             "spec": {
@@ -149,7 +144,7 @@
                         "name": "latest",
                         "from": {
                             "kind": "DockerImage",
-                            "name": "${TERMINAL_IMAGE}"
+                            "name": "${WORKSHOP_IMAGE}"
                         }
                     }
                 ]
@@ -159,9 +154,9 @@
             "kind": "ConfigMap",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${APPLICATION_NAME}-env",
+                "name": "${NAME_PREFIX}${WORKSHOP_NAME}-env",
                 "labels": {
-                    "app": "${APPLICATION_NAME}"
+                    "app": "${NAME_PREFIX}${WORKSHOP_NAME}"
                 }
             },
             "data": {
@@ -174,9 +169,9 @@
             "kind": "DeploymentConfig",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${APPLICATION_NAME}",
+                "name": "${NAME_PREFIX}${WORKSHOP_NAME}",
                 "labels": {
-                    "app": "${APPLICATION_NAME}"
+                    "app": "${NAME_PREFIX}${WORKSHOP_NAME}"
                 }
             },
             "spec": {
@@ -196,29 +191,29 @@
                             ],
                             "from": {
                                 "kind": "ImageStreamTag",
-                                "name": "${APPLICATION_NAME}:latest"
+                                "name": "${NAME_PREFIX}${WORKSHOP_NAME}:latest"
                             }
                         }
                     }
                 ],
                 "replicas": 1,
                 "selector": {
-                    "app": "${APPLICATION_NAME}",
-                    "deploymentconfig": "${APPLICATION_NAME}"
+                    "app": "${NAME_PREFIX}${WORKSHOP_NAME}",
+                    "deploymentconfig": "${NAME_PREFIX}${WORKSHOP_NAME}"
                 },
                 "template": {
                     "metadata": {
                         "labels": {
-                            "app": "${APPLICATION_NAME}",
-                            "deploymentconfig": "${APPLICATION_NAME}"
+                            "app": "${NAME_PREFIX}${WORKSHOP_NAME}",
+                            "deploymentconfig": "${NAME_PREFIX}${WORKSHOP_NAME}"
                         }
                     },
                     "spec": {
-                        "serviceAccountName": "${APPLICATION_NAME}-user",
+                        "serviceAccountName": "${NAME_PREFIX}${WORKSHOP_NAME}-user",
                         "containers": [
                             {
                                 "name": "terminal",
-                                "image": "${APPLICATION_NAME}:latest",
+                                "image": "${NAME_PREFIX}${WORKSHOP_NAME}:latest",
                                 "ports": [
                                     {
                                         "containerPort": 10080,
@@ -236,7 +231,11 @@
                                     },
                                     {
                                         "name": "APPLICATION_NAME",
-                                        "value": "${APPLICATION_NAME}"
+                                        "value": "${NAME_PREFIX}${WORKSHOP_NAME}"
+                                    },
+                                    {
+                                        "name": "WORKSHOP_NAME",
+                                        "value": "${WORKSHOP_NAME}"
                                     },
                                     {
                                         "name": "CONFIGURATION_TYPE",
@@ -260,7 +259,7 @@
                                     },
                                     {
                                         "name": "OAUTH_SERVICE_ACCOUNT",
-                                        "value": "${APPLICATION_NAME}-user"
+                                        "value": "${NAME_PREFIX}${WORKSHOP_NAME}-user"
                                     },
                                     {
                                         "name": "DOWNLOAD_URL",
@@ -330,7 +329,7 @@
                             {
                                 "name": "envvars",
                                 "configMap": {
-                                    "name": "${APPLICATION_NAME}-env",
+                                    "name": "${NAME_PREFIX}${WORKSHOP_NAME}-env",
                                     "defaultMode": 420
                                 }
                             }
@@ -343,9 +342,9 @@
             "kind": "Service",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${APPLICATION_NAME}",
+                "name": "${NAME_PREFIX}${WORKSHOP_NAME}",
                 "labels": {
-                    "app": "${APPLICATION_NAME}"
+                    "app": "${NAME_PREFIX}${WORKSHOP_NAME}"
                 }
             },
             "spec": {
@@ -358,8 +357,8 @@
                     }
                 ],
                 "selector": {
-                    "app": "${APPLICATION_NAME}",
-                    "deploymentconfig": "${APPLICATION_NAME}"
+                    "app": "${NAME_PREFIX}${WORKSHOP_NAME}",
+                    "deploymentconfig": "${NAME_PREFIX}${WORKSHOP_NAME}"
                 }
             }
         },
@@ -367,16 +366,16 @@
             "kind": "Route",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${APPLICATION_NAME}",
+                "name": "${NAME_PREFIX}${WORKSHOP_NAME}",
                 "labels": {
-                    "app": "${APPLICATION_NAME}"
+                    "app": "${NAME_PREFIX}${WORKSHOP_NAME}"
                 }
             },
             "spec": {
                 "host": "",
                 "to": {
                     "kind": "Service",
-                    "name": "${APPLICATION_NAME}",
+                    "name": "${NAME_PREFIX}${WORKSHOP_NAME}",
                     "weight": 100
                 },
                 "port": {
