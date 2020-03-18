@@ -326,7 +326,7 @@ html
 
         div.split.split-horizontal.pane-content#workarea-div
             ul.nav.nav-pills.mb-1#workarea-nav(role="tablist")
-                if terminal_tab != 'disable'
+                if terminal_tab != 'disabled'
                     li.nav-item
                         a.nav-link.active#terminals-tab(data-toggle="tab" href="#terminals-pane" role="tab" aria-controls="terminals-pane" aria-selected=true) Terminal
 
@@ -350,7 +350,7 @@ html
 
                             li.dropdown-item
                                 a(role="menuitem" onclick=`reload_workshop();`) Reload Workshop
-                            if terminal_tab != 'disable'
+                            if terminal_tab != 'disabled'
                                 li.dropdown-item
                                     a(role="menuitem" onclick=`reload_terminal();`) Reload Terminal
                             if console_url
@@ -361,7 +361,7 @@ html
 
                             li.dropdown-item
                                 a(role="menuitem" onclick=`window.open("../workshop");`) Open Workshop
-                            if terminal_tab != 'disable'
+                            if terminal_tab != 'disabled'
                                 li.dropdown-item
                                     a(role="menuitem" onclick=`window.open("../terminal/session/"+generate_terminal_session_id());`) Open Terminal
                             if console_url
@@ -375,7 +375,7 @@ html
                                 li.dropdown-item
                                     a(role="menuitem", data-toggle="modal", data-target="#restart-confirmation") Restart Session
 
-            if terminal_tab != 'disable'
+            if terminal_tab != 'disabled'
                 div.tab-content
                     div.tab-pane.fade.show.active#terminals-pane(role="tabpanel" aria-labelledby="terminals-tab")
                         div.split.iframe-div#terminal1-div
