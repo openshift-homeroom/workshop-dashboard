@@ -375,8 +375,8 @@ html
                                 li.dropdown-item
                                     a(role="menuitem", data-toggle="modal", data-target="#restart-confirmation") Restart Session
 
-            if terminal_tab != 'disabled'
-                div.tab-content
+            div.tab-content
+                if terminal_tab != 'disabled'
                     div.tab-pane.fade.show.active#terminals-pane(role="tabpanel" aria-labelledby="terminals-tab")
                         div.split.iframe-div#terminal1-div
                             iframe#terminal1-iframe(src="../terminal/session/1")
@@ -389,13 +389,13 @@ html
                             div.split.iframe-div#terminal3-div
                                 iframe#terminal3-iframe(src="../terminal/session/3")
 
-                    if console_url
-                        div.tab-pane.fade.show.iframe-div#console-pane(role="tabpanel" aria-labelledby="console-tab")
-                            iframe#console-iframe(src="../console")
+                if console_url
+                    div.tab-pane.fade.show.iframe-div#console-pane(role="tabpanel" aria-labelledby="console-tab")
+                        iframe#console-iframe(src="../console")
 
-                    if with_slides
-                        div.tab-pane.fade.show.iframe-div#slides-pane(role="tabpanel" aria-labelledby="slides-tab")
-                            iframe#slides-iframe(src="../slides/index.html")
+                if with_slides
+                    div.tab-pane.fade.show.iframe-div#slides-pane(role="tabpanel" aria-labelledby="slides-tab")
+                        iframe#slides-iframe(src="../slides/index.html")
 
         script.
             require(['split'], function(split) {
@@ -450,3 +450,5 @@ html
                 var style = '<style>a { pointer-events: none }</style>';
                 $(this).contents().find('head').append(style);
             });
+
+            $($('#workarea-nav>li>a')[0]).trigger("click");
