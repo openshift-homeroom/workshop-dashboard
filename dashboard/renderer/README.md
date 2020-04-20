@@ -2,7 +2,7 @@
 
 This application renders content in asciidoc and markdown format in a Homeroom dashboard application.
 
-## Run locally
+## Run locally
 
 If you want to run the renderer locally, you can just use a sample content.
 
