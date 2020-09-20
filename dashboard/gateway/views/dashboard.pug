@@ -326,8 +326,9 @@ html
 
         div.split.split-horizontal.pane-content#workarea-div
             ul.nav.nav-pills.mb-1#workarea-nav(role="tablist")
-                li.nav-item
-                    a.nav-link.active#terminals-tab(data-toggle="tab" href="#terminals-pane" role="tab" aria-controls="terminals-pane" aria-selected=true) Terminal
+                if terminal_tab != 'disabled'
+                    li.nav-item
+                        a.nav-link.active#terminals-tab(data-toggle="tab" href="#terminals-pane" role="tab" aria-controls="terminals-pane" aria-selected=true) Terminal
 
                 if console_url
                     li.nav-item
@@ -349,8 +350,9 @@ html
 
                             li.dropdown-item
                                 a(role="menuitem" onclick=`reload_workshop();`) Reload Workshop
-                            li.dropdown-item
-                                a(role="menuitem" onclick=`reload_terminal();`) Reload Terminal
+                            if terminal_tab != 'disabled'
+                                li.dropdown-item
+                                    a(role="menuitem" onclick=`reload_terminal();`) Reload Terminal
                             if console_url
                                 li.dropdown-item
                                     a(role="menuitem" onclick=`reload_console();`) Reload Console
@@ -359,8 +361,9 @@ html
 
                             li.dropdown-item
                                 a(role="menuitem" onclick=`window.open("../workshop");`) Open Workshop
-                            li.dropdown-item
-                                a(role="menuitem" onclick=`window.open("../terminal/session/"+generate_terminal_session_id());`) Open Terminal
+                            if terminal_tab != 'disabled'
+                                li.dropdown-item
+                                    a(role="menuitem" onclick=`window.open("../terminal/session/"+generate_terminal_session_id());`) Open Terminal
                             if console_url
                                 li.dropdown-item
                                     a(role="menuitem" onclick=`window.open("../console");`) Open Console
@@ -373,17 +376,18 @@ html
                                     a(role="menuitem", data-toggle="modal", data-target="#restart-confirmation") Restart Session
 
             div.tab-content
-                div.tab-pane.fade.show.active#terminals-pane(role="tabpanel" aria-labelledby="terminals-tab")
-                    div.split.iframe-div#terminal1-div
-                        iframe#terminal1-iframe(src="../terminal/session/1")
-                    if terminal_tab == 'split'
-                        div.split.iframe-div#terminal2-div
-                            iframe#terminal2-iframe(src="../terminal/session/2")
-                    if terminal_tab == 'split/2'
-                        div.split.iframe-div#terminal2-div
-                            iframe#terminal2-iframe(src="../terminal/session/2")
-                        div.split.iframe-div#terminal3-div
-                            iframe#terminal3-iframe(src="../terminal/session/3")
+                if terminal_tab != 'disabled'
+                    div.tab-pane.fade.show.active#terminals-pane(role="tabpanel" aria-labelledby="terminals-tab")
+                        div.split.iframe-div#terminal1-div
+                            iframe#terminal1-iframe(src="../terminal/session/1")
+                        if terminal_tab == 'split'
+                            div.split.iframe-div#terminal2-div
+                                iframe#terminal2-iframe(src="../terminal/session/2")
+                        if terminal_tab == 'split/2'
+                            div.split.iframe-div#terminal2-div
+                                iframe#terminal2-iframe(src="../terminal/session/2")
+                            div.split.iframe-div#terminal3-div
+                                iframe#terminal3-iframe(src="../terminal/session/3")
 
                 if console_url
                     div.tab-pane.fade.show.iframe-div#console-pane(role="tabpanel" aria-labelledby="console-tab")
@@ -446,3 +450,5 @@ html
                 var style = '<style>a { pointer-events: none }</style>';
                 $(this).contents().find('head').append(style);
             });
+
+            $($('#workarea-nav>li>a')[0]).trigger("click");
